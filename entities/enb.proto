@@ -1,0 +1,203 @@
+syntax = "proto3";
+package entities;
+
+message Enb{
+	EnbType enb_type = 1;
+	repeated ServedCellInfo served_cells = 2;
+	repeated string gu_group_ids = 3;
+}
+
+message ServedCellInfo{
+	uint32 pci = 1;
+	string cell_id = 2;
+	string tac	= 3;
+	repeated string broadcast_plmns = 4;
+	ChoiceEUTRAMode choice_eutra_mode = 5;
+	Eutra.Mode eutra_mode = 6;
+	NumberOfAntennaPorts number_of_antenna_ports = 7;
+	PrachConfiguration prach_configuration = 8;
+	repeated MbsfnSubframe mbsfn_subframe_infos = 9;
+	string csg_id = 10;
+	repeated string mbms_service_area_identities = 11;
+	repeated uint32 multiband_infos = 12;
+	FreqBandIndicatorPriority freq_band_indicator_priority = 13;
+	BandwidthReducedSI bandwidth_reduced_si = 14;
+	repeated NeighbourInformation neighbour_infos = 15;
+}
+
+message ChoiceEUTRAMode{
+		FddInfo fdd  = 1;
+		TddInfo tdd  = 2;
+}
+
+message Eutra{
+	enum Mode{
+		UNKNOWN = 0;
+		FDD = 1;
+		TDD = 2;
+	}
+}
+
+message NeighbourInformation{
+	string ecgi = 1;
+	uint32 pci = 2;
+	uint32 ear_fcn = 3;
+	string tac = 4;
+}
+
+enum FreqBandIndicatorPriority{
+	UNKNOWN_FREQ_BAND_INDICATOR_PRIORITY = 0;
+	NOT_BROADCASTED = 1;
+	BROADCASTED = 2;
+}
+
+enum BandwidthReducedSI{
+	UNKNOWN_BANDWIDTH_REDUCED_SI = 0;
+	SCHEDULED = 1;
+}
+
+message MbsfnSubframe{
+	RadioframeAllocationPeriod	radioframe_allocation_period = 1;
+	uint32 radioframe_allocation_offset = 2;
+	string subframe_allocation = 3;
+	SubframeAllocationType subframe_allocation_type = 4;
+}
+
+enum SubframeAllocationType{
+	UNKNOWN_SUBFRAME_ALLOCATION_TYPE = 0;
+	ONE_FRAME = 1;
+	FOUR_FRAME = 2;
+}
+
+enum RadioframeAllocationPeriod{
+	UNKNOWN_RADIOFRAME_ALLOCATION_PERIOD = 0;
+	N1 = 1;
+	N2 = 2;
+	N4 = 3;
+	N8 = 4;
+	N16 = 5;
+	N32 = 6;
+}
+message PrachConfiguration{
+	uint32 root_sequence_index = 1;
+	uint32 zero_correlation_zone_configuration	= 2;
+	bool high_speed_flag = 3;
+	uint32 prach_frequency_offset = 4;
+	uint32 prach_configuration_index = 5;
+}
+
+enum NumberOfAntennaPorts{
+	UNKNOWN_NUMBER_OF_ANTENNA_PORTS = 0;
+	AN1 = 1;
+	AN2 = 2;
+	AN4 = 3;
+}
+
+message TddInfo{
+	uint32 ear_fcn = 1;
+	TransmissionBandwidth transmission_bandwidth = 2;
+	SubframeAssignment subframe_assignment = 3;
+	SpecialSubframeInfo special_subframe_info = 4;
+	AdditionalSpecialSubframeInfo additional_special_subframe_info = 5;
+	AdditionalSpecialSubframeExtensionInfo additional_special_subframe_extension_info = 6;
+}
+
+message AdditionalSpecialSubframeExtensionInfo{
+	AdditionalSpecialSubframePatterns.Extension additional_special_subframe_patterns_extension = 1;
+	CyclicPrefix cyclic_prefix_dl = 2;
+	CyclicPrefix cyclic_prefix_ul = 3;
+}
+
+message AdditionalSpecialSubframeInfo{
+	AdditionalSpecialSubframe.Patterns additional_special_subframe_patterns = 1;
+	CyclicPrefix cyclic_prefix_dl = 2;
+	CyclicPrefix cyclic_prefix_ul = 3;
+}
+
+message FddInfo{
+	uint32 ulear_fcn = 1;
+	uint32 dlear_fcn = 2;
+	TransmissionBandwidth ul_transmission_bandwidth = 3;
+	TransmissionBandwidth dl_transmission_bandwidth = 4;
+}
+
+message SpecialSubframeInfo{
+	SpecialSubframe.Patterns special_subframe_patterns = 1;
+	CyclicPrefix cyclic_prefix_dl = 2;
+	CyclicPrefix cyclic_prefix_ul = 3;
+}
+
+enum EnbType{
+	UNKNOWN_ENB_TYPE = 0;
+	MACRO_ENB = 1;
+	HOME_ENB = 2;
+	SHORT_MACRO_ENB = 3;
+	LONG_MACRO_ENB = 4;
+}
+
+enum SubframeAssignment{
+	UNKNOWN_SUBFRAME_ASSIGNMENT = 0;
+	SA0 = 1;
+	SA1 = 2;
+	SA2 = 3;
+	SA3 = 4;
+	SA4 = 5;
+	SA5 = 6;
+	SA6 = 7;
+}
+
+enum CyclicPrefix{
+	UNKNOWN_CYCLIC_PREFIX = 0;
+	NORMAL = 1;
+	EXTENDED = 2;
+}
+
+message SpecialSubframe{
+enum Patterns{
+	UNKNOWN = 0;
+	SSP0 = 1;
+	SSP1 = 2;
+	SSP2 = 3;
+	SSP3 = 4;
+	SSP4 = 5;
+	SSP5 = 6;
+	SSP6 = 7;
+	SSP7 = 8;
+	SSP8 = 9;
+}
+}
+
+message AdditionalSpecialSubframe{ 
+	enum Patterns{
+		UNKNOWN = 0;
+		SSP0 = 1;
+		SSP1 = 2;
+		SSP2 = 3;
+		SSP3 = 4;
+		SSP4 = 5;
+		SSP5 = 6;
+		SSP6 = 7;
+		SSP7 = 8;
+		SSP8 = 9;
+		SSP9 = 10;
+	}
+}
+
+message AdditionalSpecialSubframePatterns{
+	enum Extension{
+		UNKNOWN = 0;
+		SSP10 = 1;
+	}
+}
+
+enum TransmissionBandwidth{
+	UNKNOWN_TRANSMISSION_BANDWIDTH = 0;
+	BW6 = 1;
+	BW15 = 2;
+	BW25 = 3;
+	BW50 = 4;
+	BW75 = 5;
+	BW100 = 6;
+	BW1 = 7;
+}
+

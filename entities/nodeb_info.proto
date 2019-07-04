@@ -1,0 +1,45 @@
+syntax = "proto3";
+package entities;
+import "gnb.proto";
+import "enb.proto";
+import "x2_setup_failure_response.proto";
+import "nb_identity.proto";
+
+message NodebInfo{
+    string ran_name = 1;
+    string ip = 2;
+    uint32 port = 3;
+    ConnectionStatus connection_status = 4;
+    GlobalNbId global_nb_id = 5;
+    Node.Type node_type = 6;
+    oneof configuration{
+        Enb enb = 7;
+        Gnb gnb = 8;
+    }
+    Failure.Type failure_type = 9;
+    SetupFailure setup_failure = 10;
+}
+
+enum ConnectionStatus{
+    UNKNOWN_CONNECTION_STATUS = 0;
+    CONNECTED = 1;
+    NOT_CONNECTED = 2;
+    CONNECTED_SETUP_FAILED = 3;
+    CONNECTING = 4;
+}
+
+message Node{
+    enum Type{
+        UNKNOWN = 0;
+        ENB = 1;
+        GNB = 2;
+    }
+}
+
+message Failure{
+    enum Type{
+        UNKNOWN_TYPE = 0;
+        X2_SETUP_FAILURE = 1;
+        ENDC_X2_SETUP_FAILURE = 2;
+    }
+}

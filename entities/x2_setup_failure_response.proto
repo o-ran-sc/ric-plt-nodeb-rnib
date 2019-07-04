@@ -1,0 +1,146 @@
+syntax = "proto3";
+package entities;
+
+message SetupFailure{
+    oneof cause_group{
+        RadioNetworkLayer.Cause network_layer_cause = 1;
+        TransportLayer.Cause transport_layer_cause = 2;
+        Protocol.Cause protocol_cause = 3;
+        Miscellaneous.Cause miscellaneous_cause = 4;
+    }
+    TimeToWait time_to_wait = 5;
+    CriticalityDiagnostics criticality_diagnostics = 6;
+}
+
+message RadioNetworkLayer{
+    enum Cause{
+        UNKNOWN = 0;
+        HANDOVER_DESIRABLE_FOR_RADIO_REASONS = 1;
+        TIME_CRITICAL_HANDOVER = 2;
+        RESOURCE_OPTIMISATION_HANDOVER = 3;
+        REDUCE_LOAD_IN_SERVING_CELL = 4;
+        PARTIAL_HANDOVER = 5;
+        UNKNOWN_NEW_ENB_UE_X2AP_ID = 6;
+        UNKNOWN_OLD_ENBME_UE_X2AP_ID = 7;
+        UNKNOWN_PAIR_OF_UE_X2AP_ID = 8;
+        HO_TARGET_NOT_ALLOWED = 9;
+        TX2_RELOC_OVERALL_EXPIRY = 10;
+        T_RELOC_PREP_EXPIRY = 11;
+        CELL_NOT_AVAILABLE = 12;
+        NO_RADIO_RESOURCES_AVAILABLE_IN_TARGET_CELL = 13;
+        INVALID_MME_GROUP_ID = 14;
+        UNKNOWN_MME_CODE = 15;
+        ENCRYPTION_INTEGRITY_PROTECTION_ALGORITHMS_NOT_SUPPORTED = 16;
+        REPORT_CHARACTERISTICS_EMPTY = 17;
+        NO_REPORT_PERIODICITY = 18;
+        EXISTING_MEASUREMENT_ID = 19;
+        UNKNOWN_ENB_MEASUREMENT_ID = 20;
+        MEASUREMENT_TEMPORARILY_NOT_AVAILABLE = 21;
+        UNSPECIFIED = 22;
+        LOAD_BALANCING = 23;
+        HANDOVER_OPTIMISATION = 24;
+        VALUE_OUT_OF_ALLOWED_RANGE = 25;
+        MULTIPLE_E_RAB_ID_INSTANCES = 26;
+        SWITCH_OFF_ONGOING = 27;
+        NOT_SUPPORTED_QCI_VALUE = 28;
+        MEASUREMENT_NOT_SUPPORTED_FOR_THE_OBJECT = 29;
+        TDC_OVERALL_EXPIRY = 30;
+        TDC_PREP_EXPIRY = 31;
+        ACTION_DESIRABLE_FOR_RADIO_REASONS = 32;
+        REDUCE_LOAD = 33;
+        RESOURCE_OPTIMISATION = 34;
+        TIME_CRITICAL_ACTION = 35;
+        TARGET_NOT_ALLOWED = 36;
+        NO_RADIO_RESOURCES_AVAILABLE = 37;
+        INVALID_QOS_COMBINATION = 38;
+        ENCRYPTION_ALGORITHMS_NOT_SUPPORTED = 39;
+        PROCEDURE_CANCELLED = 40;
+        RRM_PURPOSE = 41;
+        IMPROVE_USER_BIT_RATE = 42;
+        USER_INACTIVITY = 43;
+        RADIO_CONNECTION_WITH_UE_LOST = 44;
+        FAILURE_IN_THE_RADIO_INTERFACE_PROCEDURE = 45;
+        BEARER_OPTION_NOT_SUPPORTED = 46;
+        MCG_MOBILITY = 47;
+        SCG_MOBILITY = 48;
+        COUNT_REACHES_MAX_VALUE = 49;
+        UNKNOWN_OLD_EN_GNB_UE_X2AP_ID = 50;
+        PDCP_OVERLOAD = 51;
+    }
+}
+
+message TransportLayer{
+    enum Cause {
+        UNKNOWN = 0;
+        TRANSPORT_RESOURCE_UNAVAILABLE = 1;
+        UNSPECIFIED = 2;
+    }
+}
+
+message Protocol{
+    enum Cause {
+        UNKNOWN = 0;
+        TRANSFER_SYNTAX_ERROR =  1;
+        ABSTRACT_SYNTAX_ERROR_REJECT =  2;
+        ABSTRACT_SYNTAX_ERROR_IGNORE_AND_NOTIFY =  3;
+        MESSAGE_NOT_COMPATIBLE_WITH_RECEIVER_STATE =  4;
+        SEMANTIC_ERROR =  5;
+        UNSPECIFIED =  6;
+        ABSTRACT_SYNTAX_ERROR_FALSELY_CONSTRUCTED_MESSAGE =  7;
+    }
+}
+
+message Miscellaneous{
+    enum Cause {
+        UNKNOWN = 0;
+        CONTROL_PROCESSING_OVERLOAD =  1;
+        HARDWARE_FAILURE =  2;
+        OM_INTERVENTION =  3;
+        NOT_ENOUGH_USER_PLANE_PROCESSING_RESOURCES =  4;
+        UNSPECIFIED =  5;
+    }
+}
+
+message CriticalityDiagnostics{
+    uint32 procedure_code = 1;
+    TriggeringMessage triggering_message = 2;
+    Criticality procedure_criticality = 3;
+    repeated InformationElementCriticalityDiagnostic information_element_criticality_diagnostics = 4;
+}
+
+message InformationElementCriticalityDiagnostic{
+    Criticality ie_criticality = 1;
+    uint32 ie_id = 2;
+    TypeOfError type_of_error = 3;
+}
+
+enum TypeOfError{
+    UNKNOWN_ERROR = 0;
+    NOT_UNDERSTOOD = 1;
+    MISSING = 2;
+}
+
+enum TimeToWait{
+    UNKNOWN_TIMEOUT = 0;
+    V1S = 1;
+    V2S = 2;
+    V5S = 3;
+    V10S = 4;
+    V20S = 5;
+    V60S = 6;
+}
+
+enum TriggeringMessage{
+    UNKNOWN_MESSAGE = 0;
+    INITIATING_MESSAGE = 1;
+    SUCCESSFUL_OUTCOME = 2;
+    UNSUCCESSFUL_OUTCOME = 3;
+}
+
+enum Criticality{
+    UNKNOWN_CRITICALITY = 0;
+    REJECT = 1;
+    IGNORE = 2;
+    NOTIFY = 3;
+}
+

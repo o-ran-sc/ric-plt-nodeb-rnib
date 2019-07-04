@@ -1,0 +1,124 @@
+syntax = "proto3";
+package entities;
+
+message Gnb{
+	repeated ServedNRCell served_nr_cells = 1;
+}
+
+message ServedNRCell{
+	ServedNRCellInformation served_nr_cell_information = 1;
+	repeated NrNeighbourInformation nr_neighbour_infos = 2;
+}
+
+message ServedNRCellInformation{
+	uint32 nr_pci = 1;
+	string cell_id = 2;
+	string stac5g = 3;
+	string configured_stac = 4;
+	repeated string served_plmns= 5;
+	Nr.Mode nr_mode = 6;
+	message ChoiceNRMode{
+		message FddInfo{
+			NrFrequencyInfo ul_freq_info = 1;
+			NrFrequencyInfo dl_freq_info = 2;
+			NrTransmissionBandwidth ul_transmission_bandwidth = 3;
+			NrTransmissionBandwidth dl_transmission_bandwidth = 4;
+		}
+		message TddInfo{
+			NrFrequencyInfo nr_freq_info = 1;
+			NrTransmissionBandwidth transmission_bandwidth = 2;
+		}
+		FddInfo fdd  = 1;
+		TddInfo tdd  = 2;
+	}
+	ChoiceNRMode choice_nr_mode = 7;
+}
+
+message Nr{
+	enum Mode{
+		UNKNOWN = 0;
+		FDD = 1;
+		TDD = 2;
+	}
+}
+
+message NrFrequencyInfo{
+	uint64 nr_ar_fcn = 1;
+	message SulInformation{
+	    uint64 sul_ar_fcn = 1;
+		NrTransmissionBandwidth sul_transmission_bandwidth = 2;
+	}
+	SulInformation sulInformation = 3;
+	repeated FrequencyBandItem frequency_bands = 4;
+}
+
+message FrequencyBandItem{
+	uint32 nr_frequency_band = 1;
+	repeated uint32 supported_sul_bands = 2;
+}
+
+message NrTransmissionBandwidth{
+	Nrscs nrscs = 1;
+	Ncnrb ncnrb= 2;
+}
+
+enum Nrscs {
+	UNKNOWN_NRSCS = 0;
+	SCS15 = 1;
+	SCS30 = 2;
+	SCS60 = 3;
+	SCS120 = 4;
+}
+
+enum Ncnrb{
+	UNKNOWN_NCNRB = 0;
+    NRB11 =1;
+	NRB18 =2;
+	NRB24 =3;
+	NRB25 =4;
+	NRB31 =5;
+	NRB32 =6;
+	NRB38 =7;
+	NRB51 =8;
+	NRB52 =9;
+	NRB65 =10;
+	NRB66 =11;
+	NRB78 =12;
+	NRB79 =13;
+	NRB93 =14;
+	NRB106 =15;
+	NRB107 =16;
+	NRB121 =17;
+	NRB132 =18;
+	NRB133 =19;
+	NRB135 =20;
+	NRB160 =21;
+	NRB162 =22;
+	NRB189 =23;
+	NRB216 =24;
+	NRB217 =25;
+	NRB245 =26;
+	NRB264 =27;
+	NRB270 =28;
+	NRB273 =29;
+}
+
+message NrNeighbourInformation{
+	uint32 nr_pci = 1;
+	string nr_cgi = 2;
+	Nr.Mode nr_mode = 3;
+	message ChoiceNRMode{
+		message FddInfo{
+			NrFrequencyInfo ular_fcn_freq_info = 1;
+			NrFrequencyInfo dlar_fcn_freq_info = 2;
+		}
+		message TddInfo{
+			NrFrequencyInfo ar_fcn_nr_freq_info = 1;
+		}
+		FddInfo fdd  = 1;
+		TddInfo tdd  = 2;
+	}
+	ChoiceNRMode choice_nr_mode = 4;
+	string stac5g = 5;
+	string configured_stac = 6;
+}

@@ -1,0 +1,12 @@
+syntax = "proto3";
+package entities;
+
+message NbIdentity{
+    string inventory_name = 1;
+    GlobalNbId global_nb_id = 2;
+}
+
+message GlobalNbId{
+    string plmn_id = 1;
+    string nb_id = 2;
+}

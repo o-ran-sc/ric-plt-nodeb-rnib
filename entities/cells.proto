@@ -1,0 +1,21 @@
+syntax = "proto3";
+package entities;
+import "cell.proto";
+import "gnb.proto";
+import "enb.proto";
+
+message Cells{
+    Cell.Type type = 1;
+    oneof list{
+        ServedCellInfoList served_cell_infos = 2;
+        ServedNRCellList served_nr_cells = 3;
+    }
+}
+
+message ServedCellInfoList{
+    repeated ServedCellInfo served_cells = 1;
+}
+
+message ServedNRCellList{
+    repeated ServedNRCell served_cells = 1;
+}

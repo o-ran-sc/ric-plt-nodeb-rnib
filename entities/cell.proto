@@ -1,0 +1,17 @@
+syntax = "proto3";
+package entities;
+import "gnb.proto";
+import "enb.proto";
+
+message Cell{
+    enum Type{
+        UNKNOWN_CELL = 0;
+        LTE_CELL = 1;
+        NR_CELL = 2;
+    }
+    Type type = 1;
+    oneof cell{
+        ServedCellInfo served_cell_info = 2;
+        ServedNRCell served_nr_cell = 3;
+    }
+}
