@@ -1,4 +1,4 @@
-module gerrit.o-ran-sc.org/r/a/ric-plt/nodeb-rnib.git/entities
+module gerrit.o-ran-sc.org/r/ric-plt/nodeb-rnib.git/entities
 
 go 1.12
 
