@@ -17,8 +17,8 @@
 package reader
 
 import (
-	"gerrit.ranco-dev-tools.eastus.cloudapp.azure.com/ric-plt/nodeb-rnib.git/entities"
-	"gerrit.ranco-dev-tools.eastus.cloudapp.azure.com/ric-plt/nodeb-rnib.git/common"
+	"gerrit.o-ran-sc.org/r/a/ric-plt/nodeb-rnib.git/entities"
+	"gerrit.o-ran-sc.org/r/a/ric-plt/nodeb-rnib.git/common"
 	"gerrit.o-ran-sc.org/r/ric-plt/sdlgo"
 	"github.com/golang/protobuf/proto"
 	"github.com/pkg/errors"

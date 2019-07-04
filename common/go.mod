@@ -1,4 +1,4 @@
-module gerrit.ranco-dev-tools.eastus.cloudapp.azure.com/ric-plt/nodeb-rnib.git/common
+module gerrit.o-ran-sc.org/r/a/ric-plt/nodeb-rnib.git/common
 
 go 1.12
 
