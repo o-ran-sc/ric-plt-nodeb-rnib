@@ -1,0 +1,157 @@
+syntax = "proto3";
+package entities;
+
+import "google/protobuf/timestamp.proto";
+import "enb.proto";
+
+// 9.1.2.1
+message RanLoadInformation {
+    google.protobuf.Timestamp load_timestamp = 1;
+    repeated CellLoadInformation cell_load_infos = 2;
+}
+
+message CellLoadInformation {
+    string cell_id = 1;
+    repeated UlInterferenceOverloadIndication ul_interference_overload_indications = 2;
+    repeated UlHighInterferenceInformation ul_high_interference_infos = 3;
+    RelativeNarrowbandTxPower relative_narrowband_tx_power = 4;
+    AbsInformation abs_information = 5;
+    InvokeIndication invoke_indication = 6;
+    SubframeAssignment intended_ul_dl_configuration = 7; // TODO: import type
+    ExtendedUlInterferenceOverloadInfo extended_ul_interference_overload_info = 8;
+    CompInformation comp_information = 9;
+    DynamicDlTransmissionInformation dynamic_dl_transmission_information = 10;
+}
+
+// 9.2.17
+enum UlInterferenceOverloadIndication {
+    UNKNOWN_UL_INTERFERENCE_OVERLOAD_INDICATION = 0;
+    HIGH_INTERFERENCE = 1;
+    MEDIUM_INTERFERENCE = 2;
+    LOW_INTERFERENCE = 3;
+}
+
+// 9.2.18
+message UlHighInterferenceInformation {
+    string target_cell_id = 1;
+    string ul_high_interference_indication = 2;
+}
+
+// 9.2.19
+message RelativeNarrowbandTxPower {
+    string rntp_per_prb = 1;
+    RntpThreshold rntp_threshold = 2;
+    NumberOfCellSpecificAntennaPorts number_of_cell_specific_antenna_ports = 3;
+    uint32 p_b = 4;
+    uint32 pdcch_interference_impact = 5;
+    EnhancedRntp enhanced_rntp = 6;
+}
+
+enum RntpThreshold {
+    UNKNOWN_RNTP_THRESHOLD = 0;
+    NEG_INFINITY = 1;
+    NEG_11 = 2;
+    NEG_10 = 3;
+    NEG_9 = 4;
+    NEG_8 = 5;
+    NEG_7 = 6;
+    NEG_6 = 7;
+    NEG_5 = 8;
+    NEG_4 = 9;
+    NEG_3 = 10;
+    NEG_2 = 11;
+    NEG_1 = 12;
+    V0 = 13;
+    V1 = 14;
+    V2 = 15;
+    V3 = 16;
+}
+
+enum NumberOfCellSpecificAntennaPorts {
+    UNKNOWN_NUMBER_OF_CELL_SPECIFIC_ANTENNA_PORTS = 0;
+    V1_ANT_PRT = 1;
+    V2_ANT_PRT = 2;
+    V4_ANT_PRT = 4;
+}
+
+message EnhancedRntp {
+    string enhanced_rntp_bitmap = 1;
+    RntpThreshold rntp_high_power_threshold = 2;
+    repeated StartTime enhanced_rntp_start_times = 3;
+}
+
+message StartTime {
+    int32 start_sfn = 1;
+    int32 start_subframe_number = 2;
+}
+
+enum AbsInformationMode {
+    UNKNOWN_ABS_INFORMATION_MODE = 0;
+    ABS_INFO_FDD = 1;
+    ABS_INFO_TDD = 2;
+    ABS_INACTIVE = 3;
+}
+
+// 9.2.54
+message AbsInformation {
+    AbsInformationMode mode = 1;
+    string abs_pattern_info = 2;
+    NumberOfCellSpecificAntennaPorts number_of_cell_specific_antenna_ports = 3;
+    string measurement_subset = 4;
+}
+
+// 9.2.55
+enum InvokeIndication {
+    UNKNOWN_INVOKE_INDICATION = 0;
+    ABS_INFORMATION = 1;
+    START_NAICS_INFORMATION = 2;
+    STOP_NAICS_INFORMATION = 3;
+}
+
+// 9.2.67
+message ExtendedUlInterferenceOverloadInfo {
+    string associated_subframes = 1;
+    repeated UlInterferenceOverloadIndication extended_ul_interference_overload_indications = 2;
+}
+
+// 9.2.74
+message CompInformation {
+    repeated CompInformationItem comp_information_items = 1;
+    repeated StartTime comp_information_start_time = 2;
+}
+
+message CompInformationItem {
+    repeated CompHypothesisSet comp_hypothesis_sets = 1;
+    int32 benefit_metric = 2;
+}
+
+message CompHypothesisSet {
+    string cell_id = 1;
+    string comp_hypothesis = 2;
+}
+
+enum NaicsState {
+    UNKNOWN_NAICS_STATE = 0;
+    NAICS_ACTIVE = 1;
+    NAICS_INACTIVE = 2;
+}
+
+// 9.2.77
+message DynamicDlTransmissionInformation {
+    NaicsState state = 1;
+    string transmission_modes = 2;
+    uint32 p_b = 3;
+    repeated PA p_a_list = 4;
+}
+
+enum PA {
+    UNKNOWN_PA = 0;
+    DB_NEG_6 = 1;
+    DB_NEG_4_DOT_77 = 2;
+    DB_NEG_3 = 3;
+    DB_NEG_1_DOT_77 = 4;
+    DB_0 = 5;
+    DB_1 = 6;
+    DB_2 = 7;
+    DB_3 = 8;
+}
