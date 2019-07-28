@@ -26,6 +26,8 @@ enum ConnectionStatus{
     NOT_CONNECTED = 2;
     CONNECTED_SETUP_FAILED = 3;
     CONNECTING = 4;
+    SHUTTING_DOWN = 5;
+    SHUT_DOWN = 6;
 }
 
 message Node{
