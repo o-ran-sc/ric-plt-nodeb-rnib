@@ -106,7 +106,7 @@ func (m *MockSdlInstance) RemoveIf(key string, data interface{}) (bool, error) {
 	return a.Bool(0), a.Error(1)
 }
 
-func (m *MockSdlInstance) AddMember(group string, member ...interface{}) error{
+func (m *MockSdlInstance) AddMember(group string, member ...interface{}) error {
 	a := m.Called(group, member)
 	return a.Error(0)
 }
@@ -123,11 +123,11 @@ func (m *MockSdlInstance) GetMembers(group string) ([]string, error) {
 	a := m.Called(group)
 	return a.Get(0).([]string), a.Error(1)
 }
-func (m *MockSdlInstance) IsMember(group string, member interface{}) (bool, error){
+func (m *MockSdlInstance) IsMember(group string, member interface{}) (bool, error) {
 	a := m.Called(group, member)
 	return a.Bool(0), a.Error(1)
 }
-func (m *MockSdlInstance) GroupSize(group string) (int64, error){
-	a := m.Called(group,)
+func (m *MockSdlInstance) GroupSize(group string) (int64, error) {
+	a := m.Called(group, )
 	return int64(a.Int(0)), a.Error(1)
 }

@@ -18,8 +18,8 @@ package reader
 
 import (
 	"errors"
-	"gerrit.ranco-dev-tools.eastus.cloudapp.azure.com/ric-plt/nodeb-rnib.git/common"
-	"gerrit.ranco-dev-tools.eastus.cloudapp.azure.com/ric-plt/nodeb-rnib.git/entities"
+	"gerrit.o-ran-sc.org/r/ric-plt/nodeb-rnib.git/common"
+	"gerrit.o-ran-sc.org/r/ric-plt/nodeb-rnib.git/entities"
 	"github.com/golang/protobuf/proto"
 	"github.com/stretchr/testify/assert"
 	"testing"
@@ -56,8 +56,8 @@ func TestInitPool(t *testing.T) {
 	assert.Equal(t, 0, created, "number of created objects in the readerPool should be 0")
 }
 
-func initSdlInstanceMock(namespace string, poolSize int) * MockSdlInstance {
-	sdlInstanceMock := new( MockSdlInstance)
+func initSdlInstanceMock(namespace string, poolSize int) *MockSdlInstance {
+	sdlInstanceMock := new(MockSdlInstance)
 	initPool(poolSize, func() interface{} {
 		sdlI := common.ISdlInstance(sdlInstanceMock)
 		return &rNibReaderInstance{sdl: &sdlI, namespace: namespace}
@@ -78,15 +78,15 @@ func TestGetNodeB(t *testing.T) {
 	nb.Ip = "localhost"
 	nb.Port = 5656
 	enb := entities.Enb{}
-	cell := entities.ServedCellInfo{Tac:"tac"}
+	cell := entities.ServedCellInfo{Tac: "tac"}
 	enb.ServedCells = []*entities.ServedCellInfo{&cell}
-	nb.Configuration = &entities.NodebInfo_Enb{Enb:&enb}
+	nb.Configuration = &entities.NodebInfo_Enb{Enb: &enb}
 	var e error
 	data, err := proto.Marshal(&nb)
 	if err != nil {
 		t.Errorf("#rNibReader_test.TestGetNb - Failed to marshal ENB instance. Error: %v", err)
 	}
-	ret := map[string]interface{}{"RAN:" + name:string(data)}
+	ret := map[string]interface{}{"RAN:" + name: string(data)}
 	sdlInstanceMock.On("Get", []string{"RAN:" + name}).Return(ret, e)
 	getNb, er := w.GetNodeb(name)
 	assert.Nil(t, er)
@@ -118,8 +118,8 @@ func TestGetNodeBUnmarshalFailure(t *testing.T) {
 	sdlInstanceMock := initSdlInstanceMock(namespace, 1)
 	w := GetRNibReader()
 	var e error
-	ret := make( map[string]interface{}, 1)
-	ret["RAN:" + name] = "data"
+	ret := make(map[string]interface{}, 1)
+	ret["RAN:"+name] = "data"
 	sdlInstanceMock.On("Get", []string{"RAN:" + name}).Return(ret, e)
 	getNb, er := w.GetNodeb(name)
 	assert.NotNil(t, er)
@@ -155,15 +155,15 @@ func TestGetNodeBCellsListEnb(t *testing.T) {
 	nb.Ip = "localhost"
 	nb.Port = 5656
 	enb := entities.Enb{}
-	cell := entities.ServedCellInfo{Tac:"tac"}
+	cell := entities.ServedCellInfo{Tac: "tac"}
 	enb.ServedCells = []*entities.ServedCellInfo{&cell}
-	nb.Configuration = &entities.NodebInfo_Enb{Enb:&enb}
+	nb.Configuration = &entities.NodebInfo_Enb{Enb: &enb}
 	var e error
 	data, err := proto.Marshal(&nb)
 	if err != nil {
 		t.Errorf("#rNibReader_test.GetNodeBCellsList - Failed to marshal ENB instance. Error: %v", err)
 	}
-	ret := map[string]interface{}{"RAN:" + name:string(data)}
+	ret := map[string]interface{}{"RAN:" + name: string(data)}
 	sdlInstanceMock.On("Get", []string{"RAN:" + name}).Return(ret, e)
 	cells, er := w.GetCellList(name)
 	assert.Nil(t, er)
@@ -184,15 +184,15 @@ func TestGetNodeBCellsListGnb(t *testing.T) {
 	nb.Port = 5656
 	nb.NodeType = entities.Node_GNB
 	gnb := entities.Gnb{}
-	cell := entities.ServedNRCell{ServedNrCellInformation:&entities.ServedNRCellInformation{NrPci:10}}
+	cell := entities.ServedNRCell{ServedNrCellInformation: &entities.ServedNRCellInformation{NrPci: 10}}
 	gnb.ServedNrCells = []*entities.ServedNRCell{&cell}
-	nb.Configuration = &entities.NodebInfo_Gnb{Gnb:&gnb}
+	nb.Configuration = &entities.NodebInfo_Gnb{Gnb: &gnb}
 	var e error
 	data, err := proto.Marshal(&nb)
 	if err != nil {
 		t.Errorf("#rNibReader_test.GetNodeBCellsList - Failed to marshal GNB instance. Error: %v", err)
 	}
-	ret := map[string]interface{}{"RAN:" + name:string(data)}
+	ret := map[string]interface{}{"RAN:" + name: string(data)}
 	sdlInstanceMock.On("Get", []string{"RAN:" + name}).Return(ret, e)
 	cells, er := w.GetCellList(name)
 	assert.Nil(t, er)
@@ -208,8 +208,8 @@ func TestGetNodeBCellsListNodeUnmarshalFailure(t *testing.T) {
 	sdlInstanceMock := initSdlInstanceMock(namespace, 1)
 	w := GetRNibReader()
 	var e error
-	ret := make( map[string]interface{}, 1)
-	ret["RAN:" + name] = "data"
+	ret := make(map[string]interface{}, 1)
+	ret["RAN:"+name] = "data"
 	sdlInstanceMock.On("Get", []string{"RAN:" + name}).Return(ret, e)
 	cells, er := w.GetCellList(name)
 	assert.NotNil(t, er)
@@ -243,13 +243,13 @@ func TestGetNodeBCellsListNotFoundFailureEnb(t *testing.T) {
 	nb.Ip = "localhost"
 	nb.Port = 5656
 	enb := entities.Enb{}
-	nb.Configuration = &entities.NodebInfo_Enb{Enb:&enb}
+	nb.Configuration = &entities.NodebInfo_Enb{Enb: &enb}
 	var e error
 	data, err := proto.Marshal(&nb)
 	if err != nil {
 		t.Errorf("#rNibReader_test.TestGetNbCellsListNotFoundFailure - Failed to marshal ENB instance. Error: %v", err)
 	}
-	ret := map[string]interface{}{"RAN:" + name:string(data)}
+	ret := map[string]interface{}{"RAN:" + name: string(data)}
 	sdlInstanceMock.On("Get", []string{"RAN:" + name}).Return(ret, e)
 	_, er := w.GetCellList(name)
 	assert.NotNil(t, er)
@@ -266,13 +266,13 @@ func TestGetNodeBCellsListNotFoundFailureGnb(t *testing.T) {
 	nb.Ip = "localhost"
 	nb.Port = 5656
 	gnb := entities.Gnb{}
-	nb.Configuration = &entities.NodebInfo_Gnb{Gnb:&gnb}
+	nb.Configuration = &entities.NodebInfo_Gnb{Gnb: &gnb}
 	var e error
 	data, err := proto.Marshal(&nb)
 	if err != nil {
 		t.Errorf("#rNibReader_test.TestGetNbCellsListNotFoundFailure - Failed to marshal ENB instance. Error: %v", err)
 	}
-	ret := map[string]interface{}{"RAN:" + name:string(data)}
+	ret := map[string]interface{}{"RAN:" + name: string(data)}
 	sdlInstanceMock.On("Get", []string{"RAN:" + name}).Return(ret, e)
 	_, er := w.GetCellList(name)
 	assert.NotNil(t, er)
@@ -290,7 +290,7 @@ func TestCloseOnClosedPoolFailure(t *testing.T) {
 	var e error
 	instanceMock.On("Close").Return(e)
 	Close()
-	assert.Panics(t, func(){Close()})
+	assert.Panics(t, func() { Close() })
 }
 
 func TestCloseFailure(t *testing.T) {
@@ -335,7 +335,7 @@ func TestGetListGnbIdsSdlgoFailure(t *testing.T) {
 	assert.NotNil(t, er)
 	assert.Nil(t, ids)
 	assert.Equal(t, 2, er.GetCode())
-	assert.EqualValues(t, errMsgExpected,er.Error())
+	assert.EqualValues(t, errMsgExpected, er.Error())
 }
 
 func TestGetListEnbIdsUnmarshalFailure(t *testing.T) {
@@ -358,7 +358,7 @@ func TestGetListEnbIdsOneId(t *testing.T) {
 	readerPool = nil
 	sdlInstanceMock := initSdlInstanceMock(namespace, 1)
 	w := GetRNibReader()
-	nbIdentity := &entities.NbIdentity{InventoryName:name, GlobalNbId:&entities.GlobalNbId{PlmnId:plmnId, NbId:nbId}}
+	nbIdentity := &entities.NbIdentity{InventoryName: name, GlobalNbId: &entities.GlobalNbId{PlmnId: plmnId, NbId: nbId}}
 	var e error
 	data, err := proto.Marshal(nbIdentity)
 	if err != nil {
@@ -394,8 +394,8 @@ func TestGetListEnbIds(t *testing.T) {
 	w := GetRNibReader()
 	idsData := make([]string, listSize)
 	idsEntities := make([]*entities.NbIdentity, listSize)
-	for i:=0; i< listSize ;i++{
-		nbIdentity := &entities.NbIdentity{InventoryName:name, GlobalNbId:&entities.GlobalNbId{PlmnId:string(plmnId + i), NbId:string(nbId + i)}}
+	for i := 0; i < listSize; i++ {
+		nbIdentity := &entities.NbIdentity{InventoryName: name, GlobalNbId: &entities.GlobalNbId{PlmnId: string(plmnId + i), NbId: string(nbId + i)}}
 		data, err := proto.Marshal(nbIdentity)
 		if err != nil {
 			t.Errorf("#rNibReader_test.TestGetListEnbIds - Failed to marshal nodeb identity entity. Error: %v", err)
@@ -408,7 +408,7 @@ func TestGetListEnbIds(t *testing.T) {
 	ids, er := w.GetListEnbIds()
 	assert.Nil(t, er)
 	assert.Len(t, *ids, listSize)
-	for i, id :=range *ids{
+	for i, id := range *ids {
 		assert.Equal(t, id.GetInventoryName(), name)
 		assert.Equal(t, id.GetGlobalNbId().GetPlmnId(), idsEntities[i].GetGlobalNbId().GetPlmnId())
 		assert.Equal(t, id.GetGlobalNbId().GetNbId(), idsEntities[i].GetGlobalNbId().GetNbId())
@@ -422,7 +422,7 @@ func TestGetListGnbIdsOneId(t *testing.T) {
 	readerPool = nil
 	sdlInstanceMock := initSdlInstanceMock(namespace, 1)
 	w := GetRNibReader()
-	nbIdentity := &entities.NbIdentity{InventoryName:name, GlobalNbId:&entities.GlobalNbId{PlmnId:plmnId, NbId:nbId}}
+	nbIdentity := &entities.NbIdentity{InventoryName: name, GlobalNbId: &entities.GlobalNbId{PlmnId: plmnId, NbId: nbId}}
 	var e error
 	data, err := proto.Marshal(nbIdentity)
 	if err != nil {
@@ -458,8 +458,8 @@ func TestGetListGnbIds(t *testing.T) {
 	w := GetRNibReader()
 	idsData := make([]string, listSize)
 	idsEntities := make([]*entities.NbIdentity, listSize)
-	for i:=0; i< listSize ;i++{
-		nbIdentity := &entities.NbIdentity{InventoryName:name, GlobalNbId:&entities.GlobalNbId{PlmnId:string(plmnId + i), NbId:string(nbId + i)}}
+	for i := 0; i < listSize; i++ {
+		nbIdentity := &entities.NbIdentity{InventoryName: name, GlobalNbId: &entities.GlobalNbId{PlmnId: string(plmnId + i), NbId: string(nbId + i)}}
 		data, err := proto.Marshal(nbIdentity)
 		if err != nil {
 			t.Errorf("#rNibReader_test.TestGetListGnbIds - Failed to marshal nodeb identity entity. Error: %v", err)
@@ -472,7 +472,7 @@ func TestGetListGnbIds(t *testing.T) {
 	ids, er := w.GetListGnbIds()
 	assert.Nil(t, er)
 	assert.Len(t, *ids, listSize)
-	for i, id :=range *ids{
+	for i, id := range *ids {
 		assert.Equal(t, id.GetInventoryName(), name)
 		assert.Equal(t, id.GetGlobalNbId().GetPlmnId(), idsEntities[i].GetGlobalNbId().GetPlmnId())
 		assert.Equal(t, id.GetGlobalNbId().GetNbId(), idsEntities[i].GetGlobalNbId().GetNbId())
@@ -502,7 +502,7 @@ func TestGetCountGnbListOneId(t *testing.T) {
 	readerPool = nil
 	sdlInstanceMock := initSdlInstanceMock(namespace, 1)
 	w := GetRNibReader()
-	nbIdentity := &entities.NbIdentity{InventoryName:name, GlobalNbId:&entities.GlobalNbId{PlmnId:plmnId, NbId:nbId}}
+	nbIdentity := &entities.NbIdentity{InventoryName: name, GlobalNbId: &entities.GlobalNbId{PlmnId: plmnId, NbId: nbId}}
 	var e error
 	data, err := proto.Marshal(nbIdentity)
 	if err != nil {
@@ -525,8 +525,8 @@ func TestGetCountGnbList(t *testing.T) {
 	var e error
 	idsData := make([]string, listSize)
 	idsEntities := make([]*entities.NbIdentity, listSize)
-	for i:=0; i< listSize ;i++{
-		nbIdentity := &entities.NbIdentity{InventoryName:name, GlobalNbId:&entities.GlobalNbId{PlmnId:string(plmnId + i), NbId:string(nbId + i)}}
+	for i := 0; i < listSize; i++ {
+		nbIdentity := &entities.NbIdentity{InventoryName: name, GlobalNbId: &entities.GlobalNbId{PlmnId: string(plmnId + i), NbId: string(nbId + i)}}
 		data, err := proto.Marshal(nbIdentity)
 		if err != nil {
 			t.Errorf("#rNibReader_test.TestGetListGnbIds - Failed to marshal nodeb identity entity. Error: %v", err)
@@ -563,7 +563,7 @@ func TestGetCell(t *testing.T) {
 	readerPool = nil
 	sdlInstanceMock := initSdlInstanceMock(namespace, 1)
 	w := GetRNibReader()
-	cellEntity := entities.Cell{Type:entities.Cell_LTE_CELL, Cell:&entities.Cell_ServedCellInfo{ServedCellInfo:&entities.ServedCellInfo{Pci:pci}}}
+	cellEntity := entities.Cell{Type: entities.Cell_LTE_CELL, Cell: &entities.Cell_ServedCellInfo{ServedCellInfo: &entities.ServedCellInfo{Pci: pci}}}
 	cellData, err := proto.Marshal(&cellEntity)
 	if err != nil {
 		t.Errorf("#rNibReader_test.TestGetCell - Failed to marshal Cell entity. Error: %v", err)
@@ -573,7 +573,7 @@ func TestGetCell(t *testing.T) {
 	if rNibErr != nil {
 		t.Errorf("#rNibReader_test.TestGetCell - failed to validate key parameter")
 	}
-	ret := map[string]interface{}{key:string(cellData)}
+	ret := map[string]interface{}{key: string(cellData)}
 	sdlInstanceMock.On("Get", []string{key}).Return(ret, e)
 	cell, er := w.GetCell(name, pci)
 	assert.Nil(t, er)
@@ -610,7 +610,7 @@ func TestGetCellUnmarshalFailure(t *testing.T) {
 	sdlInstanceMock := initSdlInstanceMock(namespace, 1)
 	w := GetRNibReader()
 	var e error
-	ret := make( map[string]interface{}, 1)
+	ret := make(map[string]interface{}, 1)
 	key, rNibErr := common.ValidateAndBuildCellNamePciKey(name, pci)
 	if rNibErr != nil {
 		t.Errorf("#rNibReader_test.TestGetCellUnmarshalFailure - failed to validate key parameter")
@@ -650,14 +650,14 @@ func TestGetNodebById(t *testing.T) {
 	readerPool = nil
 	sdlInstanceMock := initSdlInstanceMock(namespace, 1)
 	w := GetRNibReader()
-	nb := entities.NodebInfo{NodeType:entities.Node_ENB}
+	nb := entities.NodebInfo{NodeType: entities.Node_ENB}
 	nb.ConnectionStatus = 1
 	nb.Ip = "localhost"
 	nb.Port = 5656
 	enb := entities.Enb{}
-	cell := entities.ServedCellInfo{Tac:"tac"}
+	cell := entities.ServedCellInfo{Tac: "tac"}
 	enb.ServedCells = []*entities.ServedCellInfo{&cell}
-	nb.Configuration = &entities.NodebInfo_Enb{Enb:&enb}
+	nb.Configuration = &entities.NodebInfo_Enb{Enb: &enb}
 	var e error
 	data, err := proto.Marshal(&nb)
 	if err != nil {
@@ -667,12 +667,12 @@ func TestGetNodebById(t *testing.T) {
 	plmnId := "02f829"
 	nbId := "4a952a0a"
 	key, rNibErr := common.ValidateAndBuildNodeBIdKey(entities.Node_ENB.String(), plmnId, nbId)
-	if rNibErr != nil{
+	if rNibErr != nil {
 		t.Errorf("Failed to validate nodeb identity, plmnId: %s, nbId: %s", plmnId, nbId)
 	}
-	ret := map[string]interface{}{key:string(data)}
+	ret := map[string]interface{}{key: string(data)}
 	sdlInstanceMock.On("Get", []string{key}).Return(ret, e)
-	globalNbId := &entities.GlobalNbId{PlmnId:plmnId, NbId:nbId}
+	globalNbId := &entities.GlobalNbId{PlmnId: plmnId, NbId: nbId}
 	getNb, er := w.GetNodebByGlobalNbId(entities.Node_ENB, globalNbId)
 	assert.Nil(t, er)
 	assert.Equal(t, getNb.Ip, nb.Ip)
@@ -690,12 +690,12 @@ func TestGetNodebByIdNotFoundFailureEnb(t *testing.T) {
 	w := GetRNibReader()
 	var e error
 	key, rNibErr := common.ValidateAndBuildNodeBIdKey(entities.Node_ENB.String(), plmnId, nbId)
-	if rNibErr != nil{
+	if rNibErr != nil {
 		t.Errorf("Failed to validate nodeb identity, plmnId: %s, nbId: %s", plmnId, nbId)
 	}
 	var ret map[string]interface{}
 	sdlInstanceMock.On("Get", []string{key}).Return(ret, e)
-	globalNbId := &entities.GlobalNbId{PlmnId:plmnId, NbId:nbId}
+	globalNbId := &entities.GlobalNbId{PlmnId: plmnId, NbId: nbId}
 	getNb, er := w.GetNodebByGlobalNbId(entities.Node_ENB, globalNbId)
 	assert.NotNil(t, er)
 	assert.Nil(t, getNb)
@@ -711,12 +711,12 @@ func TestGetNodebByIdNotFoundFailureGnb(t *testing.T) {
 	w := GetRNibReader()
 	var e error
 	key, rNibErr := common.ValidateAndBuildNodeBIdKey(entities.Node_GNB.String(), plmnId, nbId)
-	if rNibErr != nil{
+	if rNibErr != nil {
 		t.Errorf("Failed to validate nodeb identity, plmnId: %s, nbId: %s", plmnId, nbId)
 	}
 	var ret map[string]interface{}
 	sdlInstanceMock.On("Get", []string{key}).Return(ret, e)
-	globalNbId := &entities.GlobalNbId{PlmnId:plmnId, NbId:nbId}
+	globalNbId := &entities.GlobalNbId{PlmnId: plmnId, NbId: nbId}
 	getNb, er := w.GetNodebByGlobalNbId(entities.Node_GNB, globalNbId)
 	assert.NotNil(t, er)
 	assert.Nil(t, getNb)
@@ -731,14 +731,14 @@ func TestGetNodeByIdUnmarshalFailure(t *testing.T) {
 	sdlInstanceMock := initSdlInstanceMock(namespace, 1)
 	w := GetRNibReader()
 	key, rNibErr := common.ValidateAndBuildNodeBIdKey(entities.Node_ENB.String(), plmnId, nbId)
-	if rNibErr != nil{
+	if rNibErr != nil {
 		t.Errorf("Failed to validate nodeb identity, plmnId: %s, nbId: %s", plmnId, nbId)
 	}
 	var e error
-	ret := make( map[string]interface{}, 1)
+	ret := make(map[string]interface{}, 1)
 	ret[key] = "data"
 	sdlInstanceMock.On("Get", []string{key}).Return(ret, e)
-	globalNbId := &entities.GlobalNbId{PlmnId:plmnId, NbId:nbId}
+	globalNbId := &entities.GlobalNbId{PlmnId: plmnId, NbId: nbId}
 	getNb, er := w.GetNodebByGlobalNbId(entities.Node_ENB, globalNbId)
 	assert.NotNil(t, er)
 	assert.Nil(t, getNb)
@@ -755,13 +755,13 @@ func TestGetNodeByIdSdlgoFailure(t *testing.T) {
 	sdlInstanceMock := initSdlInstanceMock(namespace, 1)
 	w := GetRNibReader()
 	key, rNibErr := common.ValidateAndBuildNodeBIdKey(entities.Node_GNB.String(), plmnId, nbId)
-	if rNibErr != nil{
+	if rNibErr != nil {
 		t.Errorf("Failed to validate nodeb identity, plmnId: %s, nbId: %s", plmnId, nbId)
 	}
 	e := errors.New(errMsg)
 	var ret map[string]interface{}
 	sdlInstanceMock.On("Get", []string{key}).Return(ret, e)
-	globalNbId := &entities.GlobalNbId{PlmnId:plmnId, NbId:nbId}
+	globalNbId := &entities.GlobalNbId{PlmnId: plmnId, NbId: nbId}
 	getNb, er := w.GetNodebByGlobalNbId(entities.Node_GNB, globalNbId)
 	assert.NotNil(t, er)
 	assert.Nil(t, getNb)
@@ -776,7 +776,7 @@ func TestGetCellById(t *testing.T) {
 	readerPool = nil
 	sdlInstanceMock := initSdlInstanceMock(namespace, 1)
 	w := GetRNibReader()
-	cellEntity := entities.Cell{Type:entities.Cell_LTE_CELL, Cell:&entities.Cell_ServedCellInfo{ServedCellInfo:&entities.ServedCellInfo{Pci:pci}}}
+	cellEntity := entities.Cell{Type: entities.Cell_LTE_CELL, Cell: &entities.Cell_ServedCellInfo{ServedCellInfo: &entities.ServedCellInfo{Pci: pci}}}
 	cellData, err := proto.Marshal(&cellEntity)
 	if err != nil {
 		t.Errorf("#rNibReader_test.TestGetCellById - Failed to marshal Cell entity. Error: %v", err)
@@ -786,7 +786,7 @@ func TestGetCellById(t *testing.T) {
 	if rNibErr != nil {
 		t.Errorf("#rNibReader_test.TestGetCellById - failed to validate key parameter")
 	}
-	ret := map[string]interface{}{key:string(cellData)}
+	ret := map[string]interface{}{key: string(cellData)}
 	sdlInstanceMock.On("Get", []string{key}).Return(ret, e)
 	cell, er := w.GetCellById(entities.Cell_LTE_CELL, cellId)
 	assert.Nil(t, er)

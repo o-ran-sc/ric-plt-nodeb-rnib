@@ -125,3 +125,24 @@ func TestValidateAndBuildCellNamePciKeySuccess(t *testing.T){
 	assert.Contains(t, key, prefix)
 	assert.Contains(t, key, "270f")
 }
+
+
+func TestValidateAndBuildRanLoadInformationKeySuccess(t *testing.T) {
+	name := "name"
+	prefix := "LOAD"
+	delimiter := ":"
+	key, err := ValidateAndBuildRanLoadInformationKey(name)
+	if err != nil{
+		t.Errorf("#utils_test.TestValidateAndBuildNodeBNameKey - failed to validate key parameter")
+	}
+	assert.Contains(t, key, name)
+	assert.Contains(t, key, delimiter)
+	assert.Contains(t, key, prefix)
+}
+
+func TestValidateAndBuildRanLoadInformationKeyFailure(t *testing.T) {
+	name := ""
+	_, err := ValidateAndBuildRanLoadInformationKey(name)
+	assert.NotNil(t, err)
+	assert.Equal(t, VALIDATION_ERROR, err.GetCode())
+}
