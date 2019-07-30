@@ -133,7 +133,7 @@ func TestValidateAndBuildRanLoadInformationKeySuccess(t *testing.T) {
 	delimiter := ":"
 	key, err := ValidateAndBuildRanLoadInformationKey(name)
 	if err != nil{
-		t.Errorf("#utils_test.TestValidateAndBuildNodeBNameKey - failed to validate key parameter")
+		t.Errorf("#utils_test.TestValidateAndBuildRanLoadInformationKeySuccess - failed to validate key parameter")
 	}
 	assert.Contains(t, key, name)
 	assert.Contains(t, key, delimiter)
