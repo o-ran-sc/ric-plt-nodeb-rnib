@@ -23,7 +23,7 @@ message NodebInfo{
 enum ConnectionStatus{
     UNKNOWN_CONNECTION_STATUS = 0;
     CONNECTED = 1;
-    NOT_CONNECTED = 2;
+    DISCONNECTED = 2;
     CONNECTED_SETUP_FAILED = 3;
     CONNECTING = 4;
     SHUTTING_DOWN = 5;

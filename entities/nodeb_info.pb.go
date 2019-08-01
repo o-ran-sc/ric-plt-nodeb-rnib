@@ -25,7 +25,7 @@ type ConnectionStatus int32
 const (
 	ConnectionStatus_UNKNOWN_CONNECTION_STATUS ConnectionStatus = 0
 	ConnectionStatus_CONNECTED                 ConnectionStatus = 1
-	ConnectionStatus_NOT_CONNECTED             ConnectionStatus = 2
+	ConnectionStatus_DISCONNECTED             ConnectionStatus = 2
 	ConnectionStatus_CONNECTED_SETUP_FAILED    ConnectionStatus = 3
 	ConnectionStatus_CONNECTING                ConnectionStatus = 4
 	ConnectionStatus_SHUTTING_DOWN             ConnectionStatus = 5
@@ -35,7 +35,7 @@ const (
 var ConnectionStatus_name = map[int32]string{
 	0: "UNKNOWN_CONNECTION_STATUS",
 	1: "CONNECTED",
-	2: "NOT_CONNECTED",
+	2: "DISCONNECTED",
 	3: "CONNECTED_SETUP_FAILED",
 	4: "CONNECTING",
 	5: "SHUTTING_DOWN",
@@ -45,7 +45,7 @@ var ConnectionStatus_name = map[int32]string{
 var ConnectionStatus_value = map[string]int32{
 	"UNKNOWN_CONNECTION_STATUS": 0,
 	"CONNECTED":                 1,
-	"NOT_CONNECTED":             2,
+	"DISCONNECTED":              2,
 	"CONNECTED_SETUP_FAILED":    3,
 	"CONNECTING":                4,
 	"SHUTTING_DOWN":             5,
