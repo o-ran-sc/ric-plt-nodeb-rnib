@@ -68,21 +68,23 @@ func validateMaxLimit(size int, iterations int, t *testing.T) {
 	)
 	group := sync.WaitGroup{}
 	for i := 0; i < iterations; i++ {
-		go getPutInstance(group)
+		go func() {
+			group.Add(1)
+			getPutInstance()
+			group.Done()
+		}()
 	}
 	time.Sleep(time.Second)
 	group.Wait()
 	assert.Equal(t, int32(size), max)
 }
 
-func getPutInstance(group sync.WaitGroup) {
-	group.Add(1)
+func getPutInstance() {
 	inst := poolGlob.Get().(instance)
 	inst.up()
 	time.Sleep(time.Millisecond*10)
 	inst.down()
 	poolGlob.Put(inst)
-	group.Done()
 }
 
 func TestNewPool(t *testing.T){

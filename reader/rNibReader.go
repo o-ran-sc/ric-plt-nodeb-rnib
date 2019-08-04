@@ -51,7 +51,14 @@ type RNibReader interface {
 	GetCell(inventoryName string, pci uint32) (*entities.Cell, common.IRNibError)
 	// GetCellById retrieves the cell entity from redis DB by cell type and cell Id
 	GetCellById(cellType entities.Cell_Type, cellId string) (*entities.Cell, common.IRNibError)
+	// GetListNodebIds returns the full list of Nodeb identity entities
+	GetListNodebIds()([]*entities.NbIdentity, common.IRNibError)
 }
+
+const(
+	EnbType = "ENB"
+	GnbType = "GNB"
+)
 
 /*
  Init initializes the infrastructure required for the RNibReader instance
@@ -79,45 +86,21 @@ func GetRNibReader() RNibReader {
 }
 
 func (w *rNibReaderInstance) GetNodeb(inventoryName string) (*entities.NodebInfo, common.IRNibError) {
-	name, rNibErr := common.ValidateAndBuildNodeBNameKey(inventoryName)
+	defer readerPool.Put(w)
+	key, rNibErr := common.ValidateAndBuildNodeBNameKey(inventoryName)
 	if rNibErr != nil {
 		return nil, rNibErr
 	}
-	defer readerPool.Put(w)
-	data, err := (*w.sdl).Get([]string{name})
-	if err != nil {
-		return nil, common.NewInternalError(err)
-	}
-	nb := entities.NodebInfo{}
-	if data != nil && data[name] != nil {
-		err = proto.Unmarshal([]byte(data[name].(string)), &nb)
-		if err != nil {
-			return nil, common.NewInternalError(err)
-		}
-		return &nb, nil
-	}
-	return nil, common.NewResourceNotFoundError(errors.Errorf("#rNibReader.GetNodeb - responding node %s not found", inventoryName))
+	return w.getNodeb(key)
 }
 
 func (w *rNibReaderInstance) GetNodebByGlobalNbId(nodeType entities.Node_Type, globalNbId *entities.GlobalNbId) (*entities.NodebInfo, common.IRNibError) {
+	defer readerPool.Put(w)
 	key, rNibErr := common.ValidateAndBuildNodeBIdKey(nodeType.String(), globalNbId.GetPlmnId(), globalNbId.GetNbId())
 	if rNibErr != nil {
 		return nil, rNibErr
 	}
-	defer readerPool.Put(w)
-	data, err := (*w.sdl).Get([]string{key})
-	if err != nil {
-		return nil, common.NewInternalError(err)
-	}
-	nb := entities.NodebInfo{}
-	if data != nil && data[key] != nil {
-		err = proto.Unmarshal([]byte(data[key].(string)), &nb)
-		if err != nil {
-			return nil, common.NewInternalError(err)
-		}
-		return &nb, nil
-	}
-	return nil, common.NewResourceNotFoundError(errors.Errorf("#rNibReader.GetNodebByGlobalNbId - responding node not found, global nodeb Id: %s", key))
+	return w.getNodeb(key)
 }
 
 func (w *rNibReaderInstance) GetCellList(inventoryName string) (*entities.Cells, common.IRNibError) {
@@ -140,40 +123,34 @@ func (w *rNibReaderInstance) GetCellList(inventoryName string) (*entities.Cells,
 
 func (w *rNibReaderInstance) GetListGnbIds() (*[]*entities.NbIdentity, common.IRNibError) {
 	defer readerPool.Put(w)
-	data, err := (*w.sdl).GetMembers("GNB")
-	if err != nil {
-		return nil, common.NewInternalError(err)
-	}
-	return unmarshalIdentityList(data)
+	return w.getListNodebIdsByType(GnbType)
 }
 
 func (w *rNibReaderInstance) GetListEnbIds() (*[]*entities.NbIdentity, common.IRNibError) {
 	defer readerPool.Put(w)
-	data, err := (*w.sdl).GetMembers("ENB")
-	if err != nil {
-		return nil, common.NewInternalError(err)
-	}
-	return unmarshalIdentityList(data)
+	return w.getListNodebIdsByType(EnbType)
 }
 
 func (w *rNibReaderInstance) GetCountGnbList() (int, common.IRNibError) {
 	defer readerPool.Put(w)
-	data, err := (*w.sdl).GetMembers("GNB")
+	size, err := (*w.sdl).GroupSize(GnbType)
 	if err != nil {
 		return 0, common.NewInternalError(err)
 	}
-	return len(data), nil
+	return int(size), nil
 }
 
 func (w *rNibReaderInstance) GetCell(inventoryName string, pci uint32) (*entities.Cell, common.IRNibError) {
+	defer readerPool.Put(w)
 	key, rNibErr := common.ValidateAndBuildCellNamePciKey(inventoryName, pci)
 	if rNibErr != nil {
 		return nil, rNibErr
 	}
-	return (*w).getCellByKey(key)
+	return w.getCellByKey(key)
 }
 
 func (w *rNibReaderInstance) GetCellById(cellType entities.Cell_Type, cellId string) (*entities.Cell, common.IRNibError) {
+	defer readerPool.Put(w)
 	var key string
 	var rNibErr common.IRNibError
 	if cellType == entities.Cell_LTE_CELL {
@@ -186,11 +163,40 @@ func (w *rNibReaderInstance) GetCellById(cellType entities.Cell_Type, cellId str
 	if rNibErr != nil {
 		return nil, rNibErr
 	}
-	return (*w).getCellByKey(key)
+	return w.getCellByKey(key)
+}
+
+func (w *rNibReaderInstance) GetListNodebIds()([]*entities.NbIdentity, common.IRNibError){
+	defer readerPool.Put(w)
+	dataEnb, err := (*w.sdl).GetMembers(EnbType)
+	if err != nil{
+		return nil, common.NewInternalError(err)
+	}
+	dataGnb, err := (*w.sdl).GetMembers(GnbType)
+	if err != nil{
+		return nil, common.NewInternalError(err)
+	}
+	data, rnibErr := unmarshalIdentityList(append(dataEnb, dataGnb...))
+	return *data, rnibErr
+}
+
+func (w *rNibReaderInstance) getNodeb(key string) (*entities.NodebInfo, common.IRNibError) {
+	data, err := (*w.sdl).Get([]string{key})
+	if err != nil {
+		return nil, common.NewInternalError(err)
+	}
+	nb := entities.NodebInfo{}
+	if data != nil && data[key] != nil {
+		err = proto.Unmarshal([]byte(data[key].(string)), &nb)
+		if err != nil {
+			return nil, common.NewInternalError(err)
+		}
+		return &nb, nil
+	}
+	return nil, common.NewResourceNotFoundError(errors.Errorf("#rNibReader.getNodeb - responding node not found. Key: %s", key))
 }
 
 func (w *rNibReaderInstance) getCellByKey(key string) (*entities.Cell, common.IRNibError) {
-	defer readerPool.Put(w)
 	data, err := (*w.sdl).Get([]string{key})
 	if err != nil {
 		return nil, common.NewInternalError(err)
@@ -204,6 +210,14 @@ func (w *rNibReaderInstance) getCellByKey(key string) (*entities.Cell, common.IR
 		return &cell, nil
 	}
 	return nil, common.NewResourceNotFoundError(errors.Errorf("#rNibReader.getCellByKey - cell not found, key: %s", key))
+}
+
+func (w *rNibReaderInstance) getListNodebIdsByType(nbType string) (*[]*entities.NbIdentity, common.IRNibError) {
+	data, err := (*w.sdl).GetMembers(nbType)
+	if err != nil {
+		return nil, common.NewInternalError(err)
+	}
+	return unmarshalIdentityList(data)
 }
 
 func unmarshalIdentityList(data []string) (*[]*entities.NbIdentity, common.IRNibError) {
