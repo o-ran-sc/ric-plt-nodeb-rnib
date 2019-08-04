@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a5704edb_8ac0b172",
+        "filename": "common/rNibPool_test.go",
+        "patchSetId": 1
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1000045
+      },
+      "writtenOn": "2019-08-04T10:59:17Z",
+      "side": 1,
+      "message": "The intention is to wait for getPutInstance() to complete before calling group.Done().\nThe implementation should be along the following\ngo func() {\n\t\tgroup.Add(1)\n\t\n\t\tgetPutInstance()\n\t\n\t\tgroup.Done()\n}()",
+      "revId": "49df87335b383dff8f9f4053dc0888f1d2954e6e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "40d3d296_a76b133f",
+        "filename": "reader/rNibReader.go",
+        "patchSetId": 1
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1000045
+      },
+      "writtenOn": "2019-08-04T10:59:17Z",
+      "side": 1,
+      "message": "We lost the function specific error message here.",
+      "revId": "49df87335b383dff8f9f4053dc0888f1d2954e6e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3c35c2ce_5bda3ca6",
+        "filename": "reader/rNibReader.go",
+        "patchSetId": 1
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1000045
+      },
+      "writtenOn": "2019-08-04T10:59:17Z",
+      "side": 1,
+      "message": "Why we must have both? Can\u0027t we have just enb nodes or just gnb nodes?",
+      "revId": "49df87335b383dff8f9f4053dc0888f1d2954e6e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "beb8bb63_3196f799",
+        "filename": "reader/rNibReader_test.go",
+        "patchSetId": 1
+      },
+      "lineNbr": 993,
+      "author": {
+        "id": 1000045
+      },
+      "writtenOn": "2019-08-04T10:59:17Z",
+      "side": 1,
+      "message": "Why removed the slice dereference?",
+      "revId": "49df87335b383dff8f9f4053dc0888f1d2954e6e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "20dd952f_accf5e6c",
+        "filename": "reader/rNibReader_test.go",
+        "patchSetId": 1
+      },
+      "lineNbr": 1006,
+      "author": {
+        "id": 1000045
+      },
+      "writtenOn": "2019-08-04T10:59:17Z",
+      "side": 1,
+      "message": "Why removed the slice dereference?",
+      "revId": "49df87335b383dff8f9f4053dc0888f1d2954e6e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
