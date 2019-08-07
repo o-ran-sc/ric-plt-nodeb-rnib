@@ -77,7 +77,7 @@ enum NumberOfCellSpecificAntennaPorts {
 message EnhancedRntp {
     string enhanced_rntp_bitmap = 1;
     RntpThreshold rntp_high_power_threshold = 2;
-    repeated StartTime enhanced_rntp_start_times = 3;
+    StartTime enhanced_rntp_start_time = 3;
 }
 
 message StartTime {
@@ -117,7 +117,7 @@ message ExtendedUlInterferenceOverloadInfo {
 // 9.2.74
 message CompInformation {
     repeated CompInformationItem comp_information_items = 1;
-    repeated StartTime comp_information_start_time = 2;
+    StartTime comp_information_start_time = 2;
 }
 
 message CompInformationItem {
