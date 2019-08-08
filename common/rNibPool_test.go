@@ -68,8 +68,8 @@ func validateMaxLimit(size int, iterations int, t *testing.T) {
 	)
 	group := sync.WaitGroup{}
 	for i := 0; i < iterations; i++ {
+		group.Add(1)
 		go func() {
-			group.Add(1)
 			getPutInstance()
 			group.Done()
 		}()
