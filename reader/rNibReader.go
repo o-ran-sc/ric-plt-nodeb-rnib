@@ -22,6 +22,7 @@ import (
 	"gerrit.o-ran-sc.org/r/ric-plt/sdlgo"
 	"github.com/golang/protobuf/proto"
 	"github.com/pkg/errors"
+	"reflect"
 )
 
 var readerPool *common.Pool
@@ -53,6 +54,8 @@ type RNibReader interface {
 	GetCellById(cellType entities.Cell_Type, cellId string) (*entities.Cell, common.IRNibError)
 	// GetListNodebIds returns the full list of Nodeb identity entities
 	GetListNodebIds()([]*entities.NbIdentity, common.IRNibError)
+	// GetRanLoadInformation retrieves nodeb load information entity from redis DB by nodeb inventory name
+	GetRanLoadInformation(inventoryName string) (*entities.RanLoadInformation, common.IRNibError)
 }
 
 const(
@@ -178,6 +181,34 @@ func (w *rNibReaderInstance) GetListNodebIds()([]*entities.NbIdentity, common.IR
 	}
 	data, rnibErr := unmarshalIdentityList(append(dataEnb, dataGnb...))
 	return *data, rnibErr
+}
+
+func (w *rNibReaderInstance) GetRanLoadInformation(inventoryName string) (*entities.RanLoadInformation, common.IRNibError){
+	key, rNibErr := common.ValidateAndBuildRanLoadInformationKey(inventoryName)
+	if rNibErr != nil {
+		return nil, rNibErr
+	}
+	loadInfo := &entities.RanLoadInformation{}
+	err := w.getByKeyAndUnmarshal(key, loadInfo)
+	if err!= nil{
+		return nil, err
+	}
+	return loadInfo, err
+}
+
+func (w *rNibReaderInstance) getByKeyAndUnmarshal(key string, entity proto.Message)common.IRNibError{
+	data, err := (*w.sdl).Get([]string{key})
+	if err != nil {
+		return common.NewInternalError(err)
+	}
+	if data != nil && data[key] != nil {
+		err = proto.Unmarshal([]byte(data[key].(string)), entity)
+		if err != nil {
+			return common.NewInternalError(err)
+		}
+		return nil
+	}
+	return common.NewResourceNotFoundError(errors.Errorf("#rNibReader.getByKeyAndUnmarshal - entity of type %s not found. Key: %s", reflect.TypeOf(entity).String(), key))
 }
 
 func (w *rNibReaderInstance) getNodeb(key string) (*entities.NodebInfo, common.IRNibError) {

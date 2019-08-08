@@ -17,12 +17,15 @@
 package reader
 
 import (
+	"encoding/json"
 	"errors"
 	"gerrit.o-ran-sc.org/r/ric-plt/nodeb-rnib.git/common"
 	"gerrit.o-ran-sc.org/r/ric-plt/nodeb-rnib.git/entities"
 	"github.com/golang/protobuf/proto"
+	"github.com/golang/protobuf/ptypes/timestamp"
 	"github.com/stretchr/testify/assert"
 	"testing"
+	"time"
 )
 
 var namespace = "namespace"
@@ -927,6 +930,155 @@ func TestGetCellByIdValidationFailureEnb(t *testing.T) {
 	assert.Nil(t, cell)
 	assert.Equal(t, 3, er.GetCode())
 	assert.EqualValues(t, "3 VALIDATION_ERROR - #utils.ValidateAndBuildCellIdKey - an empty cell id received", er.Error())
+}
+
+func TestGetRanLoadInformation(t *testing.T) {
+	name := "name"
+	readerPool = nil
+	sdlInstanceMock := initSdlInstanceMock(namespace, 1)
+	w := GetRNibReader()
+	loadInfo := generateRanLoadInformation()
+	var e error
+	data, err := proto.Marshal(loadInfo)
+	if err != nil {
+		t.Errorf("#rNibReader_test.TestGetRanLoadInformation - Failed to marshal RanLoadInformation entity. Error: %v", err)
+	}
+	ret := map[string]interface{}{"LOAD:" + name: string(data)}
+	sdlInstanceMock.On("Get", []string{"LOAD:" + name}).Return(ret, e)
+	getLoadInfo, er := w.GetRanLoadInformation(name)
+	assert.Nil(t, er)
+	assert.NotNil(t, getLoadInfo)
+	expected, err := json.Marshal(loadInfo)
+	if err != nil {
+		t.Errorf("#rNibReader_test.TestGetRanLoadInformation - Failed to marshal RanLoadInformation entity. Error: %v", err)
+	}
+	actual, err := json.Marshal(getLoadInfo)
+	if err != nil {
+		t.Errorf("#rNibReader_test.TestGetRanLoadInformation - Failed to marshal RanLoadInformation entity. Error: %v", err)
+	}
+	assert.EqualValues(t, expected, actual)
+}
+
+func TestGetRanLoadInformationNotFoundFailure(t *testing.T) {
+	name := "name"
+	readerPool = nil
+	sdlInstanceMock := initSdlInstanceMock(namespace, 1)
+	w := GetRNibReader()
+	var e error
+	var ret map[string]interface{}
+	sdlInstanceMock.On("Get", []string{"LOAD:" + name}).Return(ret, e)
+	getNb, er := w.GetRanLoadInformation(name)
+	assert.NotNil(t, er)
+	assert.Nil(t, getNb)
+	assert.Equal(t, 1, er.GetCode())
+	assert.EqualValues(t, "1 RESOURCE_NOT_FOUND - #rNibReader.getByKeyAndUnmarshal - entity of type *entities.RanLoadInformation not found. Key: LOAD:name", er.Error())
+}
+
+func TestGetRanLoadInformationUnmarshalFailure(t *testing.T) {
+	name := "name"
+	readerPool = nil
+	sdlInstanceMock := initSdlInstanceMock(namespace, 1)
+	w := GetRNibReader()
+	var e error
+	ret := make(map[string]interface{}, 1)
+	ret["LOAD:"+name] = "data"
+	sdlInstanceMock.On("Get", []string{"LOAD:" + name}).Return(ret, e)
+	getNb, er := w.GetRanLoadInformation(name)
+	assert.NotNil(t, er)
+	assert.Nil(t, getNb)
+	assert.Equal(t, 2, er.GetCode())
+	assert.EqualValues(t, "2 INTERNAL_ERROR - proto: can't skip unknown wire type 4", er.Error())
+}
+
+func TestGetRanLoadInformationSdlgoFailure(t *testing.T) {
+	name := "name"
+	errMsg := "expected Sdlgo error"
+	errMsgExpected := "2 INTERNAL_ERROR - expected Sdlgo error"
+	readerPool = nil
+	sdlInstanceMock := initSdlInstanceMock(namespace, 1)
+	w := GetRNibReader()
+	e := errors.New(errMsg)
+	var ret map[string]interface{}
+	sdlInstanceMock.On("Get", []string{"LOAD:" + name}).Return(ret, e)
+	getNb, er := w.GetRanLoadInformation(name)
+	assert.NotNil(t, er)
+	assert.Nil(t, getNb)
+	assert.Equal(t, 2, er.GetCode())
+	assert.EqualValues(t, errMsgExpected, er.Error())
+}
+
+func generateCellLoadInformation() *entities.CellLoadInformation {
+	cellLoadInformation := entities.CellLoadInformation{}
+
+	cellLoadInformation.CellId = "123"
+
+	ulInterferenceOverloadIndication := entities.UlInterferenceOverloadIndication_HIGH_INTERFERENCE
+	cellLoadInformation.UlInterferenceOverloadIndications = []entities.UlInterferenceOverloadIndication{ulInterferenceOverloadIndication}
+
+	ulHighInterferenceInformation := entities.UlHighInterferenceInformation{
+		TargetCellId:"456",
+		UlHighInterferenceIndication:"xxx",
+	}
+
+	cellLoadInformation.UlHighInterferenceInfos = []*entities.UlHighInterferenceInformation{&ulHighInterferenceInformation }
+
+	cellLoadInformation.RelativeNarrowbandTxPower = &entities.RelativeNarrowbandTxPower{
+		RntpPerPrb:"xxx",
+		RntpThreshold:entities.RntpThreshold_NEG_4,
+		NumberOfCellSpecificAntennaPorts: entities.NumberOfCellSpecificAntennaPorts_V1_ANT_PRT,
+		PB: 1,
+		PdcchInterferenceImpact:2,
+		EnhancedRntp: &entities.EnhancedRntp{
+			EnhancedRntpBitmap:"xxx",
+			RntpHighPowerThreshold:entities.RntpThreshold_NEG_2,
+			EnhancedRntpStartTimes: []*entities.StartTime{&entities.StartTime{StartSfn:500,StartSubframeNumber:5}},
+		},
+	}
+
+	cellLoadInformation.AbsInformation = &entities.AbsInformation{
+		Mode: entities.AbsInformationMode_ABS_INFO_FDD,
+		AbsPatternInfo:"xxx",
+		NumberOfCellSpecificAntennaPorts:entities.NumberOfCellSpecificAntennaPorts_V2_ANT_PRT,
+		MeasurementSubset:"xxx",
+	}
+
+	cellLoadInformation.InvokeIndication = entities.InvokeIndication_ABS_INFORMATION
+
+	cellLoadInformation.ExtendedUlInterferenceOverloadInfo = &entities.ExtendedUlInterferenceOverloadInfo{
+		AssociatedSubframes:"xxx",
+		ExtendedUlInterferenceOverloadIndications:cellLoadInformation.UlInterferenceOverloadIndications,
+	}
+
+	compInformationItem := &entities.CompInformationItem{
+		CompHypothesisSets: []*entities.CompHypothesisSet{&entities.CompHypothesisSet{CellId: "789", CompHypothesis:"xxx"}},
+		BenefitMetric:50,
+	}
+
+	cellLoadInformation.CompInformation = &entities.CompInformation{
+		CompInformationItems:[]*entities.CompInformationItem{compInformationItem},
+		CompInformationStartTime:[]*entities.StartTime{&entities.StartTime{StartSfn:123,StartSubframeNumber:456}},
+	}
+
+	cellLoadInformation.DynamicDlTransmissionInformation = &entities.DynamicDlTransmissionInformation{
+		State: entities.NaicsState_NAICS_ACTIVE,
+		TransmissionModes:"xxx",
+		PB: 2,
+		PAList:[]entities.PA{entities.PA_DB_NEG_3},
+	}
+
+	return &cellLoadInformation
+}
+
+func generateRanLoadInformation() *entities.RanLoadInformation {
+	ranLoadInformation := entities.RanLoadInformation{}
+
+	ranLoadInformation.LoadTimestamp = &timestamp.Timestamp{Seconds:time.Now().Unix(),Nanos: int32(time.Now().UnixNano())}
+
+
+	cellLoadInformation := generateCellLoadInformation()
+	ranLoadInformation.CellLoadInfos = []*entities.CellLoadInformation{cellLoadInformation}
+
+	return &ranLoadInformation
 }
 
 //integration tests
