@@ -1,12 +1,11 @@
 syntax = "proto3";
 package entities;
 
-import "google/protobuf/timestamp.proto";
 import "enb.proto";
 
 // 9.1.2.1
 message RanLoadInformation {
-    google.protobuf.Timestamp load_timestamp = 1;
+    uint64 load_timestamp = 1;
     repeated CellLoadInformation cell_load_infos = 2;
 }
 
