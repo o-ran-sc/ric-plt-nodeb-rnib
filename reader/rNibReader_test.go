@@ -19,6 +19,7 @@ package reader
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"gerrit.o-ran-sc.org/r/ric-plt/nodeb-rnib.git/common"
 	"gerrit.o-ran-sc.org/r/ric-plt/nodeb-rnib.git/entities"
 	"github.com/golang/protobuf/proto"
@@ -356,7 +357,7 @@ func TestGetListGnbIdsUnmarshalFailure(t *testing.T) {
 	sdlInstanceMock := initSdlInstanceMock(namespace, 1)
 	w := GetRNibReader()
 	var e error
-	sdlInstanceMock.On("GetMembers", GnbType).Return([]string{"data"}, e)
+	sdlInstanceMock.On("GetMembers", entities.Node_Type_name[int32(entities.Node_GNB)]).Return([]string{"data"}, e)
 	ids, er := w.GetListGnbIds()
 	assert.NotNil(t, er)
 	assert.Nil(t, ids)
@@ -372,7 +373,7 @@ func TestGetListGnbIdsSdlgoFailure(t *testing.T) {
 	w := GetRNibReader()
 	e := errors.New(errMsg)
 	var data []string
-	sdlInstanceMock.On("GetMembers", GnbType).Return(data, e)
+	sdlInstanceMock.On("GetMembers", entities.Node_Type_name[int32(entities.Node_GNB)]).Return(data, e)
 	ids, er := w.GetListGnbIds()
 	assert.NotNil(t, er)
 	assert.Nil(t, ids)
@@ -395,13 +396,13 @@ func TestGetListNodesIdsGnbSdlgoFailure(t *testing.T) {
 	if err != nil {
 		t.Errorf("#rNibReader_test.TestGetListNodesIdsGnbSdlgoFailure - Failed to marshal nodeb identity entity. Error: %v", err)
 	}
-	sdlInstanceMock.On("GetMembers", EnbType).Return([]string{string(data)}, nilError)
+	sdlInstanceMock.On("GetMembers", entities.Node_Type_name[int32(entities.Node_ENB)]).Return([]string{string(data)}, nilError)
 
 	errMsg := "expected Sdlgo error"
 	errMsgExpected := "2 INTERNAL_ERROR - expected Sdlgo error"
 	expectedError := errors.New(errMsg)
 	var nilData []string
-	sdlInstanceMock.On("GetMembers", GnbType).Return(nilData, expectedError)
+	sdlInstanceMock.On("GetMembers", entities.Node_Type_name[int32(entities.Node_GNB)]).Return(nilData, expectedError)
 
 	ids, er := w.GetListNodebIds()
 	assert.NotNil(t, er)
@@ -425,13 +426,13 @@ func TestGetListNodesIdsEnbSdlgoFailure(t *testing.T) {
 	if err != nil {
 		t.Errorf("#rNibReader_test.TestGetListNodesIdsEnbSdlgoFailure - Failed to marshal nodeb identity entity. Error: %v", err)
 	}
-	sdlInstanceMock.On("GetMembers", GnbType).Return([]string{string(data)}, nilError)
+	sdlInstanceMock.On("GetMembers", entities.Node_Type_name[int32(entities.Node_GNB)]).Return([]string{string(data)}, nilError)
 
 	errMsg := "expected Sdlgo error"
 	errMsgExpected := "2 INTERNAL_ERROR - expected Sdlgo error"
 	expectedError := errors.New(errMsg)
 	var nilData []string
-	sdlInstanceMock.On("GetMembers", EnbType).Return(nilData, expectedError)
+	sdlInstanceMock.On("GetMembers", entities.Node_Type_name[int32(entities.Node_ENB)]).Return(nilData, expectedError)
 
 	ids, er := w.GetListNodebIds()
 	assert.NotNil(t, er)
@@ -440,28 +441,46 @@ func TestGetListNodesIdsEnbSdlgoFailure(t *testing.T) {
 	assert.EqualValues(t, errMsgExpected, er.Error())
 }
 
-func TestGetListNodesIdsEnbSdlgoSuccess(t *testing.T) {
+func TestGetListNodesIdsSuccess(t *testing.T) {
 
 	readerPool = nil
 	sdlInstanceMock := initSdlInstanceMock(namespace, 1)
 	w := GetRNibReader()
+	var nilError error
 
 	name := "name"
 	plmnId := "02f829"
 	nbId := "4a952a0a"
 	nbIdentity := &entities.NbIdentity{InventoryName: name, GlobalNbId: &entities.GlobalNbId{PlmnId: plmnId, NbId: nbId}}
-	var nilError error
 	data, err := proto.Marshal(nbIdentity)
 	if err != nil {
-		t.Errorf("#rNibReader_test.TestGetListNodesIdsEnbSdlgoFailure - Failed to marshal nodeb identity entity. Error: %v", err)
+		t.Errorf("#rNibReader_test.TestGetListNodesIdsSuccess - Failed to marshal nodeb identity entity. Error: %v", err)
 	}
-	sdlInstanceMock.On("GetMembers", GnbType).Return([]string{string(data)}, nilError)
-	sdlInstanceMock.On("GetMembers", EnbType).Return([]string{string(data)}, nilError)
+
+	name1 := "name1"
+	plmnId1 := "02f845"
+	nbId1 := "4a952a75"
+	nbIdentity1 := &entities.NbIdentity{InventoryName: name1, GlobalNbId: &entities.GlobalNbId{PlmnId: plmnId1, NbId: nbId1}}
+	data1, err := proto.Marshal(nbIdentity1)
+	if err != nil {
+		t.Errorf("#rNibReader_test.TestGetListNodesIdsSuccess - Failed to marshal nodeb identity entity. Error: %v", err)
+	}
+
+	name2 := "name2"
+	nbIdentity2 := &entities.NbIdentity{InventoryName: name2}
+	data2, err := proto.Marshal(nbIdentity2)
+	if err != nil {
+		t.Errorf("#rNibReader_test.TestGetListNodesIdsSuccess - Failed to marshal nodeb identity entity. Error: %v", err)
+	}
+
+	sdlInstanceMock.On("GetMembers", entities.Node_Type_name[int32(entities.Node_GNB)]).Return([]string{string(data)}, nilError)
+	sdlInstanceMock.On("GetMembers", entities.Node_Type_name[int32(entities.Node_ENB)]).Return([]string{string(data1)}, nilError)
+	sdlInstanceMock.On("GetMembers", entities.Node_Type_name[int32(entities.Node_UNKNOWN)]).Return([]string{string(data2)}, nilError)
 
 	ids, er := w.GetListNodebIds()
 	assert.Nil(t, er)
 	assert.NotNil(t, ids)
-	assert.Len(t, ids, 2)
+	assert.Len(t, ids, 3)
 }
 
 func TestGetListEnbIdsUnmarshalFailure(t *testing.T) {
@@ -469,7 +488,7 @@ func TestGetListEnbIdsUnmarshalFailure(t *testing.T) {
 	sdlInstanceMock := initSdlInstanceMock(namespace, 1)
 	w := GetRNibReader()
 	var e error
-	sdlInstanceMock.On("GetMembers", EnbType).Return([]string{"data"}, e)
+	sdlInstanceMock.On("GetMembers", entities.Node_Type_name[int32(entities.Node_ENB)]).Return([]string{"data"}, e)
 	ids, er := w.GetListEnbIds()
 	assert.NotNil(t, er)
 	assert.Nil(t, ids)
@@ -490,7 +509,7 @@ func TestGetListEnbIdsOneId(t *testing.T) {
 	if err != nil {
 		t.Errorf("#rNibReader_test.TestGetListEnbIds - Failed to marshal nodeb identity entity. Error: %v", err)
 	}
-	sdlInstanceMock.On("GetMembers", EnbType).Return([]string{string(data)}, e)
+	sdlInstanceMock.On("GetMembers", entities.Node_Type_name[int32(entities.Node_ENB)]).Return([]string{string(data)}, e)
 	ids, er := w.GetListEnbIds()
 	assert.Nil(t, er)
 	assert.Len(t, *ids, 1)
@@ -504,7 +523,7 @@ func TestGetListEnbIdsNoIds(t *testing.T) {
 	sdlInstanceMock := initSdlInstanceMock(namespace, 1)
 	w := GetRNibReader()
 	var e error
-	sdlInstanceMock.On("GetMembers", EnbType).Return([]string{}, e)
+	sdlInstanceMock.On("GetMembers", entities.Node_Type_name[int32(entities.Node_ENB)]).Return([]string{}, e)
 	ids, er := w.GetListEnbIds()
 	assert.Nil(t, er)
 	assert.Len(t, *ids, 0)
@@ -530,7 +549,7 @@ func TestGetListEnbIds(t *testing.T) {
 		idsEntities[i] = nbIdentity
 	}
 	var e error
-	sdlInstanceMock.On("GetMembers", EnbType).Return(idsData, e)
+	sdlInstanceMock.On("GetMembers", entities.Node_Type_name[int32(entities.Node_ENB)]).Return(idsData, e)
 	ids, er := w.GetListEnbIds()
 	assert.Nil(t, er)
 	assert.Len(t, *ids, listSize)
@@ -554,7 +573,7 @@ func TestGetListGnbIdsOneId(t *testing.T) {
 	if err != nil {
 		t.Errorf("#rNibReader_test.TestGetListGnbIds - Failed to marshal nodeb identity entity. Error: %v", err)
 	}
-	sdlInstanceMock.On("GetMembers", GnbType).Return([]string{string(data)}, e)
+	sdlInstanceMock.On("GetMembers", entities.Node_Type_name[int32(entities.Node_GNB)]).Return([]string{string(data)}, e)
 	ids, er := w.GetListGnbIds()
 	assert.Nil(t, er)
 	assert.Len(t, *ids, 1)
@@ -568,7 +587,7 @@ func TestGetListGnbIdsNoIds(t *testing.T) {
 	sdlInstanceMock := initSdlInstanceMock(namespace, 1)
 	w := GetRNibReader()
 	var e error
-	sdlInstanceMock.On("GetMembers", GnbType).Return([]string{}, e)
+	sdlInstanceMock.On("GetMembers", entities.Node_Type_name[int32(entities.Node_GNB)]).Return([]string{}, e)
 	ids, er := w.GetListGnbIds()
 	assert.Nil(t, er)
 	assert.Len(t, *ids, 0)
@@ -594,7 +613,7 @@ func TestGetListGnbIds(t *testing.T) {
 		idsEntities[i] = nbIdentity
 	}
 	var e error
-	sdlInstanceMock.On("GetMembers", GnbType).Return(idsData, e)
+	sdlInstanceMock.On("GetMembers", entities.Node_Type_name[int32(entities.Node_GNB)]).Return(idsData, e)
 	ids, er := w.GetListGnbIds()
 	assert.Nil(t, er)
 	assert.Len(t, *ids, listSize)
@@ -613,7 +632,7 @@ func TestGetListEnbIdsSdlgoFailure(t *testing.T) {
 	w := GetRNibReader()
 	e := errors.New(errMsg)
 	var data []string
-	sdlInstanceMock.On("GetMembers", EnbType).Return(data, e)
+	sdlInstanceMock.On("GetMembers", entities.Node_Type_name[int32(entities.Node_ENB)]).Return(data, e)
 	ids, er := w.GetListEnbIds()
 	assert.NotNil(t, er)
 	assert.Nil(t, ids)
@@ -626,7 +645,7 @@ func TestGetCountGnbListOneId(t *testing.T) {
 	sdlInstanceMock := initSdlInstanceMock(namespace, 1)
 	w := GetRNibReader()
 	var e error
-	sdlInstanceMock.On("GroupSize", GnbType).Return(1, e)
+	sdlInstanceMock.On("GroupSize", entities.Node_Type_name[int32(entities.Node_GNB)]).Return(1, e)
 	count, er := w.GetCountGnbList()
 	assert.Nil(t, er)
 	assert.Equal(t, count, 1)
@@ -637,7 +656,7 @@ func TestGetCountGnbList(t *testing.T) {
 	sdlInstanceMock := initSdlInstanceMock(namespace, 1)
 	w := GetRNibReader()
 	var e error
-	sdlInstanceMock.On("GroupSize", GnbType).Return(3, e)
+	sdlInstanceMock.On("GroupSize", entities.Node_Type_name[int32(entities.Node_GNB)]).Return(3, e)
 	count, er := w.GetCountGnbList()
 	assert.Nil(t, er)
 	assert.Equal(t, count, 3)
@@ -651,7 +670,7 @@ func TestGetCountGnbListSdlgoFailure(t *testing.T) {
 	w := GetRNibReader()
 	e := errors.New(errMsg)
 	var count int
-	sdlInstanceMock.On("GroupSize", GnbType).Return(count, e)
+	sdlInstanceMock.On("GroupSize", entities.Node_Type_name[int32(entities.Node_GNB)]).Return(count, e)
 	count, er := w.GetCountGnbList()
 	assert.NotNil(t, er)
 	assert.Equal(t, 0, count)
@@ -1262,3 +1281,27 @@ func generateRanLoadInformation() *entities.RanLoadInformation {
 //		fmt.Printf("responding node type NR Cell: %v\n", cell.GetServedNrCell())
 //	}
 //}
+
+func TestGetListNbIdsInteg(t *testing.T) {
+	Init("e2Manager", 1)
+	w := GetRNibReader()
+	ids, err := w.GetListNodebIds()
+	if err != nil{
+		fmt.Println(err)
+	} else {
+		for _, id := range ids{
+			fmt.Printf("#TestGetListGnbIdsInteg - GNB ID: %s\n", id)
+		}
+	}
+}
+
+func TestGetRanLoadInformationInteg(t *testing.T){
+	Init("e2Manager", 1)
+	w := GetRNibReader()
+	ranLoadInformation, err := w.GetRanLoadInformation("ran_integ")
+	if err != nil{
+		t.Errorf("#rNibReader_test.TestGetRanLoadInformationInteg - Failed to save RanLoadInformation entity. Error: %v", err)
+	}
+	assert.NotNil(t, ranLoadInformation)
+	fmt.Printf("#rNibReader_test.TestGetRanLoadInformationInteg - GNB ID: %s\n", ranLoadInformation)
+}

@@ -58,11 +58,6 @@ type RNibReader interface {
 	GetRanLoadInformation(inventoryName string) (*entities.RanLoadInformation, common.IRNibError)
 }
 
-const(
-	EnbType = "ENB"
-	GnbType = "GNB"
-)
-
 /*
  Init initializes the infrastructure required for the RNibReader instance
 */
@@ -126,17 +121,17 @@ func (w *rNibReaderInstance) GetCellList(inventoryName string) (*entities.Cells,
 
 func (w *rNibReaderInstance) GetListGnbIds() (*[]*entities.NbIdentity, common.IRNibError) {
 	defer readerPool.Put(w)
-	return w.getListNodebIdsByType(GnbType)
+	return w.getListNodebIdsByType(entities.Node_Type_name[int32(entities.Node_GNB)])
 }
 
 func (w *rNibReaderInstance) GetListEnbIds() (*[]*entities.NbIdentity, common.IRNibError) {
 	defer readerPool.Put(w)
-	return w.getListNodebIdsByType(EnbType)
+	return w.getListNodebIdsByType(entities.Node_Type_name[int32(entities.Node_ENB)])
 }
 
 func (w *rNibReaderInstance) GetCountGnbList() (int, common.IRNibError) {
 	defer readerPool.Put(w)
-	size, err := (*w.sdl).GroupSize(GnbType)
+	size, err := (*w.sdl).GroupSize(entities.Node_Type_name[int32(entities.Node_GNB)])
 	if err != nil {
 		return 0, common.NewInternalError(err)
 	}
@@ -171,15 +166,21 @@ func (w *rNibReaderInstance) GetCellById(cellType entities.Cell_Type, cellId str
 
 func (w *rNibReaderInstance) GetListNodebIds()([]*entities.NbIdentity, common.IRNibError){
 	defer readerPool.Put(w)
-	dataEnb, err := (*w.sdl).GetMembers(EnbType)
+	dataEnb, err := (*w.sdl).GetMembers(entities.Node_Type_name[int32(entities.Node_ENB)])
 	if err != nil{
 		return nil, common.NewInternalError(err)
 	}
-	dataGnb, err := (*w.sdl).GetMembers(GnbType)
+	dataGnb, err := (*w.sdl).GetMembers(entities.Node_Type_name[int32(entities.Node_GNB)])
 	if err != nil{
 		return nil, common.NewInternalError(err)
 	}
-	data, rnibErr := unmarshalIdentityList(append(dataEnb, dataGnb...))
+	dataUnknown, err := (*w.sdl).GetMembers(entities.Node_Type_name[int32(entities.Node_UNKNOWN)])
+	if err != nil{
+		return nil, common.NewInternalError(err)
+	}
+	allIds := append(dataEnb, dataGnb...)
+	allIds = append(allIds, dataUnknown...)
+	data, rnibErr := unmarshalIdentityList(allIds)
 	return *data, rnibErr
 }
 
