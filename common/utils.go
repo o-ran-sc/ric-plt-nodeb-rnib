@@ -24,7 +24,7 @@ import (
 /*
 ValidateAndBuildCellIdKey builds key according to the specified format returns the resulting string
 */
-func ValidateAndBuildCellIdKey(cellId string) (string, IRNibError) {
+func ValidateAndBuildCellIdKey(cellId string) (string, error) {
 	if cellId == "" {
 		e := errors.New("#utils.ValidateAndBuildCellIdKey - an empty cell id received")
 		return "", NewValidationError(e)
@@ -35,7 +35,7 @@ func ValidateAndBuildCellIdKey(cellId string) (string, IRNibError) {
 /*
 ValidateAndBuildNrCellIdKey builds key according to the specified format returns the resulting string
 */
-func ValidateAndBuildNrCellIdKey(cellId string) (string, IRNibError) {
+func ValidateAndBuildNrCellIdKey(cellId string) (string, error) {
 	if cellId == "" {
 		e := errors.New("#utils.ValidateAndBuildNrCellIdKey - an empty cell id received")
 		return "", NewValidationError(e)
@@ -46,7 +46,7 @@ func ValidateAndBuildNrCellIdKey(cellId string) (string, IRNibError) {
 /*
 ValidateAndBuildNodeBNameKey builds key according to the specified format returns the resulting string
 */
-func ValidateAndBuildNodeBNameKey(inventoryName string) (string, IRNibError) {
+func ValidateAndBuildNodeBNameKey(inventoryName string) (string, error) {
 	if inventoryName == "" {
 		e := errors.New("#utils.ValidateAndBuildNodeBNameKey - an empty inventory name received")
 		return "", NewValidationError(e)
@@ -57,7 +57,7 @@ func ValidateAndBuildNodeBNameKey(inventoryName string) (string, IRNibError) {
 /*
 ValidateAndBuildNodeBIdKey builds key according to the specified format returns the resulting string
 */
-func ValidateAndBuildNodeBIdKey(nodeType string, plmnId string, nbId string) (string, IRNibError) {
+func ValidateAndBuildNodeBIdKey(nodeType string, plmnId string, nbId string) (string, error) {
 	if nodeType == "" {
 		e := errors.New("#utils.ValidateAndBuildNodeBIdKey - an empty node type received")
 		return "", NewValidationError(e)
@@ -76,7 +76,7 @@ func ValidateAndBuildNodeBIdKey(nodeType string, plmnId string, nbId string) (st
 /*
 ValidateAndBuildCellNamePciKey builds key according to the specified format returns the resulting string
 */
-func ValidateAndBuildCellNamePciKey(inventoryName string, pci uint32) (string, IRNibError) {
+func ValidateAndBuildCellNamePciKey(inventoryName string, pci uint32) (string, error) {
 	if inventoryName == "" {
 		e := errors.New("#utils.ValidateAndBuildCellNamePciKey - an empty inventory name received")
 		return "", NewValidationError(e)
@@ -84,7 +84,7 @@ func ValidateAndBuildCellNamePciKey(inventoryName string, pci uint32) (string, I
 	return fmt.Sprintf("PCI:%s:%02x", inventoryName, pci), nil
 }
 
-func ValidateAndBuildRanLoadInformationKey(inventoryName string) (string, IRNibError) {
+func ValidateAndBuildRanLoadInformationKey(inventoryName string) (string, error) {
 
 	if inventoryName == "" {
 		e := errors.New("#utils.ValidateAndBuildRanLoadInformationKey - an empty inventory name received")

@@ -17,51 +17,38 @@
 
 package common
 
-import "fmt"
-
-const(
-	RESOURCE_NOT_FOUND int = 1
-	INTERNAL_ERROR int = 2
-	VALIDATION_ERROR int = 3
-)
-
-var rNibError_names = map[int]string{
-	RESOURCE_NOT_FOUND:"RESOURCE_NOT_FOUND",
-	INTERNAL_ERROR:"INTERNAL_ERROR",
-	VALIDATION_ERROR:"VALIDATION_ERROR",
-}
-
-type IRNibError interface{
-	error
-	GetCode() int
-	GetError() error
-}
-
-type RNibError struct{
+type ResourceNotFoundError struct{
 	err error
-	errorCode int
 }
 
-func NewResourceNotFoundError(error error) IRNibError {
-	return IRNibError(&RNibError{err:error, errorCode:RESOURCE_NOT_FOUND})
+type InternalError struct{
+	err error
 }
 
-func NewInternalError(error error) IRNibError {
-	return IRNibError(&RNibError{err:error, errorCode:INTERNAL_ERROR})
+type ValidationError struct{
+	err error
 }
 
-func NewValidationError(error error) IRNibError {
-	return IRNibError(&RNibError{err:error, errorCode:VALIDATION_ERROR})
+func NewResourceNotFoundError(error error) error {
+	return &ResourceNotFoundError{err:error}
 }
 
-func (e RNibError) GetError() error {
-	return e.err
+func NewInternalError(error error) error {
+	return &InternalError{err:error}
 }
 
-func (e RNibError) GetCode() int {
-	return e.errorCode
+func NewValidationError(error error) error {
+	return &ValidationError{err:error}
 }
 
-func (e RNibError) Error() string {
-	return fmt.Sprintf("%d %s - %s", e.errorCode, rNibError_names[e.errorCode], e.err)
+func (e ResourceNotFoundError) Error() string {
+	return e.err.Error()
+}
+
+func (e InternalError) Error() string {
+	return e.err.Error()
+}
+
+func (e ValidationError) Error() string {
+	return e.err.Error()
 }
