@@ -23,7 +23,7 @@ message NodebInfo {
 }
 
 enum E2ApplicationProtocol {
-    UNKNOWN_ASN1_MESSAGE_TYPE = 0;
+    UNKNOWN_E2_APPLICATION_PROTOCOL = 0;
     X2_SETUP_REQUEST = 1;
     ENDC_X2_SETUP_REQUEST = 2;
 }
