@@ -5,22 +5,30 @@ import "enb.proto";
 import "x2_setup_failure_response.proto";
 import "nb_identity.proto";
 
-message NodebInfo{
+message NodebInfo {
     string ran_name = 1;
     string ip = 2;
     uint32 port = 3;
-    ConnectionStatus connection_status = 4;
-    GlobalNbId global_nb_id = 5;
-    Node.Type node_type = 6;
-    oneof configuration{
-        Enb enb = 7;
-        Gnb gnb = 8;
+    E2ApplicationProtocol e2_application_protocol = 4;
+    ConnectionStatus connection_status = 5;
+    uint32 connection_attempts = 6;
+    GlobalNbId global_nb_id = 7;
+    Node.Type node_type = 8;
+    oneof configuration {
+        Enb enb = 9;
+        Gnb gnb = 10;
     }
-    Failure.Type failure_type = 9;
-    SetupFailure setup_failure = 10;
+    Failure.Type failure_type = 11;
+    SetupFailure setup_failure = 12;
 }
 
-enum ConnectionStatus{
+enum E2ApplicationProtocol {
+    UNKNOWN_ASN1_MESSAGE_TYPE = 0;
+    X2_SETUP_REQUEST = 1;
+    ENDC_X2_SETUP_REQUEST = 2;
+}
+
+enum ConnectionStatus {
     UNKNOWN_CONNECTION_STATUS = 0;
     CONNECTED = 1;
     DISCONNECTED = 2;
@@ -30,16 +38,16 @@ enum ConnectionStatus{
     SHUT_DOWN = 6;
 }
 
-message Node{
-    enum Type{
+message Node {
+    enum Type {
         UNKNOWN = 0;
         ENB = 1;
         GNB = 2;
     }
 }
 
-message Failure{
-    enum Type{
+message Failure {
+    enum Type {
         UNKNOWN_TYPE = 0;
         X2_SETUP_FAILURE = 1;
         ENDC_X2_SETUP_FAILURE = 2;
