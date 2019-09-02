@@ -66,22 +66,22 @@ func TestValidateAndBuildCellNamePciKeyNameValidationFailure(t *testing.T){
 	pci := 9999
 	_, err := ValidateAndBuildCellNamePciKey("", uint32(pci))
 	assert.NotNil(t, err)
-	assert.Equal(t, VALIDATION_ERROR, err.GetCode())
-	assert.Equal(t, "3 VALIDATION_ERROR - #utils.ValidateAndBuildCellNamePciKey - an empty inventory name received", err.Error())
+	assert.IsType(t, &ValidationError{}, err)
+	assert.Equal(t, "#utils.ValidateAndBuildCellNamePciKey - an empty inventory name received", err.Error())
 }
 
 func TestValidateAndBuildCellKeyCellidValidationFailure(t *testing.T) {
 	_, err := ValidateAndBuildCellIdKey("")
 	assert.NotNil(t, err)
-	assert.Equal(t, VALIDATION_ERROR, err.GetCode())
-	assert.Equal(t, "3 VALIDATION_ERROR - #utils.ValidateAndBuildCellIdKey - an empty cell id received", err.Error())
+	assert.IsType(t, &ValidationError{}, err)
+	assert.Equal(t, "#utils.ValidateAndBuildCellIdKey - an empty cell id received", err.Error())
 }
 
 func TestValidateAndBuildNodeBNameKeyNameValidationFailure(t *testing.T) {
 	_, err := ValidateAndBuildNodeBNameKey("")
 	assert.NotNil(t, err)
-	assert.Equal(t, VALIDATION_ERROR, err.GetCode())
-	assert.Equal(t, "3 VALIDATION_ERROR - #utils.ValidateAndBuildNodeBNameKey - an empty inventory name received", err.Error())
+	assert.IsType(t, &ValidationError{}, err)
+	assert.Equal(t, "#utils.ValidateAndBuildNodeBNameKey - an empty inventory name received", err.Error())
 }
 
 func TestValidateAndBuildNodeBIdKeyNodeTypeValidationFailure(t *testing.T) {
@@ -89,8 +89,8 @@ func TestValidateAndBuildNodeBIdKeyNodeTypeValidationFailure(t *testing.T) {
 	nbId := "eeee"
 	_, err := ValidateAndBuildNodeBIdKey("", plmnId, nbId)
 	assert.NotNil(t, err)
-	assert.Equal(t, VALIDATION_ERROR, err.GetCode())
-	assert.Equal(t, "3 VALIDATION_ERROR - #utils.ValidateAndBuildNodeBIdKey - an empty node type received", err.Error())
+	assert.IsType(t, &ValidationError{}, err)
+	assert.Equal(t, "#utils.ValidateAndBuildNodeBIdKey - an empty node type received", err.Error())
 }
 
 func TestValidateAndBuildNodeBIdKeyPlmnIdValidationFailure(t *testing.T) {
@@ -98,8 +98,8 @@ func TestValidateAndBuildNodeBIdKeyPlmnIdValidationFailure(t *testing.T) {
 	nbId := "aaaa"
 	_, err := ValidateAndBuildNodeBIdKey(nodeType, "", nbId)
 	assert.NotNil(t, err)
-	assert.Equal(t, VALIDATION_ERROR, err.GetCode())
-	assert.Equal(t, "3 VALIDATION_ERROR - #utils.ValidateAndBuildNodeBIdKey - an empty plmnId received", err.Error())
+	assert.IsType(t, &ValidationError{}, err)
+	assert.Equal(t, "#utils.ValidateAndBuildNodeBIdKey - an empty plmnId received", err.Error())
 }
 
 func TestValidateAndBuildNodeBIdKeyNbIdValidationFailure(t *testing.T) {
@@ -107,8 +107,8 @@ func TestValidateAndBuildNodeBIdKeyNbIdValidationFailure(t *testing.T) {
 	plmnId := "cccc"
 	_, err := ValidateAndBuildNodeBIdKey(nodeType, plmnId, "")
 	assert.NotNil(t, err)
-	assert.Equal(t, VALIDATION_ERROR, err.GetCode())
-	assert.Equal(t, "3 VALIDATION_ERROR - #utils.ValidateAndBuildNodeBIdKey - an empty nbId received", err.Error())
+	assert.IsType(t, &ValidationError{}, err)
+	assert.Equal(t, "#utils.ValidateAndBuildNodeBIdKey - an empty nbId received", err.Error())
 }
 
 func TestValidateAndBuildCellNamePciKeySuccess(t *testing.T){
@@ -144,5 +144,5 @@ func TestValidateAndBuildRanLoadInformationKeyFailure(t *testing.T) {
 	name := ""
 	_, err := ValidateAndBuildRanLoadInformationKey(name)
 	assert.NotNil(t, err)
-	assert.Equal(t, VALIDATION_ERROR, err.GetCode())
+	assert.IsType(t, &ValidationError{}, err)
 }
