@@ -78,6 +78,14 @@ func initPool(poolSize int, newObj func() interface{}, destroyObj func(interface
 	readerPool = common.NewPool(poolSize, newObj, destroyObj)
 }
 
+/*
+GetRNibReader returns reference to RNibReader
+*/
+func GetRNibReader() RNibReader {
+	return &rNibReaderInstance{}
+}
+
+
 func (*rNibReaderInstance) GetNodeb(inventoryName string) (*entities.NodebInfo, error) {
 	w := readerPool.Get().(*rNibReaderInstance)
 	defer readerPool.Put(w)
