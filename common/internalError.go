@@ -18,13 +18,13 @@
 package common
 
 type InternalError struct{
-	err error
+	Err error
 }
 
 func NewInternalError(error error) error {
-	return &InternalError{err:error}
+	return &InternalError{Err:error}
 }
 
 func (e InternalError) Error() string {
-	return e.err.Error()
+	return e.Err.Error()
 }
