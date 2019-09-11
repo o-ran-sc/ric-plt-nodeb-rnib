@@ -132,7 +132,7 @@ func (w *rNibReaderInstance) GetCellList(inventoryName string) (*entities.Cells,
 		cells.List = &entities.Cells_ServedNrCells{ServedNrCells: &entities.ServedNRCellList{ServedCells: nb.GetGnb().GetServedNrCells()}}
 		return cells, nil
 	}
-	return nil, common.NewResourceNotFoundErrorf("#rNibReader.GetCellList - served cells not found. Responding node RAN name: %s.", inventoryName)
+	return nil, common.NewResourceNotFoundErrorf("#rNibReader.GetCellList - served cells not found. Responding node RAN name: %s .", inventoryName)
 }
 
 func (*rNibReaderInstance) GetListGnbIds() ([]*entities.NbIdentity, error) {
