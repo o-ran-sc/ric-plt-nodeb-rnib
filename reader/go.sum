@@ -3,6 +3,8 @@ gerrit.o-ran-sc.org/r/ric-plt/sdlgo.git v0.2.0/go.mod h1:2Y8gw2jqj9urI8VFqFQn7BX
 gerrit.o-ran-sc.org/r/ric-plt/sdlgo.git v0.3.0/go.mod h1:y2WhrCvdLkAKdH+ySdHSOSehACJkTMyZghCGVcqoZzc=
 gerrit.o-ran-sc.org/r/ric-plt/sdlgo.git v0.3.1 h1:ZIhABs0WLMn8lp1Y3719315/3jbV+yLcovOGScL03eM=
 gerrit.o-ran-sc.org/r/ric-plt/sdlgo.git v0.3.1/go.mod h1:y2WhrCvdLkAKdH+ySdHSOSehACJkTMyZghCGVcqoZzc=
+gerrit.o-ran-sc.org/r/ric-plt/sdlgo.git v0.5.0 h1:+P3XuWKSaMbzh5PNtrW9gkZlCN0hKrZq+Cn8JetwBys=
+gerrit.o-ran-sc.org/r/ric-plt/sdlgo.git v0.5.0/go.mod h1:y2WhrCvdLkAKdH+ySdHSOSehACJkTMyZghCGVcqoZzc=
 github.com/davecgh/go-spew v1.1.0 h1:ZDRjVQ15GmhC3fiQ8ni8+OwkZQO4DARzQgrnXU1Liz8=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/fsnotify/fsnotify v1.4.7/go.mod h1:jwhsz4b93w/PPRr/qN1Yymfu8t87LnFCMoQvtojpjFo=
