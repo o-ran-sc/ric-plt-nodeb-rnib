@@ -19,16 +19,12 @@ package reader
 import (
 	"gerrit.o-ran-sc.org/r/ric-plt/nodeb-rnib.git/common"
 	"gerrit.o-ran-sc.org/r/ric-plt/nodeb-rnib.git/entities"
-	"gerrit.o-ran-sc.org/r/ric-plt/sdlgo"
 	"github.com/golang/protobuf/proto"
 	"reflect"
 )
 
-var readerPool *common.Pool
-
 type rNibReaderInstance struct {
-	sdl       *common.ISdlInstance
-	namespace string
+	sdl common.ISdlInstance
 }
 
 /*
@@ -52,65 +48,39 @@ type RNibReader interface {
 	// GetCellById retrieves the cell entity from redis DB by cell type and cell Id
 	GetCellById(cellType entities.Cell_Type, cellId string) (*entities.Cell, error)
 	// GetListNodebIds returns the full list of Nodeb identity entities
-	GetListNodebIds()([]*entities.NbIdentity, error)
+	GetListNodebIds() ([]*entities.NbIdentity, error)
 	// GetRanLoadInformation retrieves nodeb load information entity from redis DB by nodeb inventory name
 	GetRanLoadInformation(inventoryName string) (*entities.RanLoadInformation, error)
 }
 
 /*
- Init initializes the infrastructure required for the RNibReader instance
-*/
-func Init(namespace string, poolSize int) {
-	initPool(poolSize,
-		func() interface{} {
-			var sdlI common.ISdlInstance = sdlgo.NewSdlInstance(namespace, sdlgo.NewDatabase())
-			return &rNibReaderInstance{sdl: &sdlI, namespace: namespace}
-		},
-		func(obj interface{}) {
-			i, ok := obj.(*rNibReaderInstance)
-			if ok{
-				(*i.sdl).Close()
-			}
-		})
-}
-
-func initPool(poolSize int, newObj func() interface{}, destroyObj func(interface{})) {
-	readerPool = common.NewPool(poolSize, newObj, destroyObj)
-}
-
-/*
 GetRNibReader returns reference to RNibReader
 */
-func GetRNibReader() RNibReader {
-	return &rNibReaderInstance{}
+func GetRNibReader(sdl common.ISdlInstance) RNibReader {
+	return &rNibReaderInstance{sdl: sdl}
 }
 
-
-func (*rNibReaderInstance) GetNodeb(inventoryName string) (*entities.NodebInfo, error) {
-	w := readerPool.Get().(*rNibReaderInstance)
-	defer readerPool.Put(w)
+func (w *rNibReaderInstance) GetNodeb(inventoryName string) (*entities.NodebInfo, error) {
 	key, rNibErr := common.ValidateAndBuildNodeBNameKey(inventoryName)
 	if rNibErr != nil {
 		return nil, rNibErr
 	}
 	nbInfo := &entities.NodebInfo{}
 	err := w.getByKeyAndUnmarshal(key, nbInfo)
-	if err!= nil{
+	if err != nil {
 		return nil, err
 	}
 	return nbInfo, nil
 }
 
-func (*rNibReaderInstance) GetNodebByGlobalNbId(nodeType entities.Node_Type, globalNbId *entities.GlobalNbId) (*entities.NodebInfo, error) {
-	w := readerPool.Get().(*rNibReaderInstance)
-	defer readerPool.Put(w)
+func (w *rNibReaderInstance) GetNodebByGlobalNbId(nodeType entities.Node_Type, globalNbId *entities.GlobalNbId) (*entities.NodebInfo, error) {
 	key, rNibErr := common.ValidateAndBuildNodeBIdKey(nodeType.String(), globalNbId.GetPlmnId(), globalNbId.GetNbId())
 	if rNibErr != nil {
 		return nil, rNibErr
 	}
 	nbInfo := &entities.NodebInfo{}
 	err := w.getByKeyAndUnmarshal(key, nbInfo)
-	if err!= nil{
+	if err != nil {
 		return nil, err
 	}
 	return nbInfo, nil
@@ -132,49 +102,39 @@ func (w *rNibReaderInstance) GetCellList(inventoryName string) (*entities.Cells,
 		cells.List = &entities.Cells_ServedNrCells{ServedNrCells: &entities.ServedNRCellList{ServedCells: nb.GetGnb().GetServedNrCells()}}
 		return cells, nil
 	}
-	return nil, common.NewResourceNotFoundErrorf("#rNibReader.GetCellList - served cells not found. Responding node RAN name: %s .", inventoryName)
+	return nil, common.NewResourceNotFoundErrorf("#rNibReader.GetCellList - served cells not found. Responding node RAN name: %s.", inventoryName)
 }
 
-func (*rNibReaderInstance) GetListGnbIds() ([]*entities.NbIdentity, error) {
-	w := readerPool.Get().(*rNibReaderInstance)
-	defer readerPool.Put(w)
+func (w *rNibReaderInstance) GetListGnbIds() ([]*entities.NbIdentity, error) {
 	return w.getListNodebIdsByType(entities.Node_GNB.String())
 }
 
-func (*rNibReaderInstance) GetListEnbIds() ([]*entities.NbIdentity, error) {
-	w := readerPool.Get().(*rNibReaderInstance)
-	defer readerPool.Put(w)
+func (w *rNibReaderInstance) GetListEnbIds() ([]*entities.NbIdentity, error) {
 	return w.getListNodebIdsByType(entities.Node_ENB.String())
 }
 
-func (*rNibReaderInstance) GetCountGnbList() (int, error) {
-	w := readerPool.Get().(*rNibReaderInstance)
-	defer readerPool.Put(w)
-	size, err := (*w.sdl).GroupSize(entities.Node_GNB.String())
+func (w *rNibReaderInstance) GetCountGnbList() (int, error) {
+	size, err := w.sdl.GroupSize(entities.Node_GNB.String())
 	if err != nil {
 		return 0, common.NewInternalError(err)
 	}
 	return int(size), nil
 }
 
-func (*rNibReaderInstance) GetCell(inventoryName string, pci uint32) (*entities.Cell, error) {
-	w := readerPool.Get().(*rNibReaderInstance)
-	defer readerPool.Put(w)
+func (w *rNibReaderInstance) GetCell(inventoryName string, pci uint32) (*entities.Cell, error) {
 	key, rNibErr := common.ValidateAndBuildCellNamePciKey(inventoryName, pci)
 	if rNibErr != nil {
 		return nil, rNibErr
 	}
 	cell := &entities.Cell{}
 	err := w.getByKeyAndUnmarshal(key, cell)
-	if err!= nil{
+	if err != nil {
 		return nil, err
 	}
 	return cell, err
 }
 
-func (*rNibReaderInstance) GetCellById(cellType entities.Cell_Type, cellId string) (*entities.Cell, error) {
-	w := readerPool.Get().(*rNibReaderInstance)
-	defer readerPool.Put(w)
+func (w *rNibReaderInstance) GetCellById(cellType entities.Cell_Type, cellId string) (*entities.Cell, error) {
 	var key string
 	var rNibErr error
 	if cellType == entities.Cell_LTE_CELL {
@@ -189,25 +149,23 @@ func (*rNibReaderInstance) GetCellById(cellType entities.Cell_Type, cellId strin
 	}
 	cell := &entities.Cell{}
 	err := w.getByKeyAndUnmarshal(key, cell)
-	if err!= nil{
+	if err != nil {
 		return nil, err
 	}
 	return cell, err
 }
 
-func (*rNibReaderInstance) GetListNodebIds()([]*entities.NbIdentity, error){
-	w := readerPool.Get().(*rNibReaderInstance)
-	defer readerPool.Put(w)
-	dataEnb, err := (*w.sdl).GetMembers(entities.Node_ENB.String())
-	if err != nil{
+func (w *rNibReaderInstance) GetListNodebIds() ([]*entities.NbIdentity, error) {
+	dataEnb, err := w.sdl.GetMembers(entities.Node_ENB.String())
+	if err != nil {
 		return nil, common.NewInternalError(err)
 	}
-	dataGnb, err := (*w.sdl).GetMembers(entities.Node_GNB.String())
-	if err != nil{
+	dataGnb, err := w.sdl.GetMembers(entities.Node_GNB.String())
+	if err != nil {
 		return nil, common.NewInternalError(err)
 	}
-	dataUnknown, err := (*w.sdl).GetMembers(entities.Node_UNKNOWN.String())
-	if err != nil{
+	dataUnknown, err := w.sdl.GetMembers(entities.Node_UNKNOWN.String())
+	if err != nil {
 		return nil, common.NewInternalError(err)
 	}
 	allIds := append(dataEnb, dataGnb...)
@@ -216,22 +174,21 @@ func (*rNibReaderInstance) GetListNodebIds()([]*entities.NbIdentity, error){
 	return data, rnibErr
 }
 
-func (*rNibReaderInstance) GetRanLoadInformation(inventoryName string) (*entities.RanLoadInformation, error){
-	w := readerPool.Get().(*rNibReaderInstance)
+func (w *rNibReaderInstance) GetRanLoadInformation(inventoryName string) (*entities.RanLoadInformation, error) {
 	key, rNibErr := common.ValidateAndBuildRanLoadInformationKey(inventoryName)
 	if rNibErr != nil {
 		return nil, rNibErr
 	}
 	loadInfo := &entities.RanLoadInformation{}
 	err := w.getByKeyAndUnmarshal(key, loadInfo)
-	if err!= nil{
+	if err != nil {
 		return nil, err
 	}
 	return loadInfo, err
 }
 
-func (w *rNibReaderInstance) getByKeyAndUnmarshal(key string, entity proto.Message)error{
-	data, err := (*w.sdl).Get([]string{key})
+func (w *rNibReaderInstance) getByKeyAndUnmarshal(key string, entity proto.Message) error {
+	data, err := w.sdl.Get([]string{key})
 	if err != nil {
 		return common.NewInternalError(err)
 	}
@@ -246,7 +203,7 @@ func (w *rNibReaderInstance) getByKeyAndUnmarshal(key string, entity proto.Messa
 }
 
 func (w *rNibReaderInstance) getListNodebIdsByType(nbType string) ([]*entities.NbIdentity, error) {
-	data, err := (*w.sdl).GetMembers(nbType)
+	data, err := w.sdl.GetMembers(nbType)
 	if err != nil {
 		return nil, common.NewInternalError(err)
 	}
@@ -266,6 +223,7 @@ func (w *rNibReaderInstance) unmarshalIdentityList(data []string) ([]*entities.N
 	return members, nil
 }
 
+//Close the reader
 func Close() {
-	readerPool.Close()
+	// Nothing to do
 }
