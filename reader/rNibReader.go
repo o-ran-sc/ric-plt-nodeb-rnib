@@ -17,11 +17,14 @@
 package reader
 
 import (
+	"encoding/json"
 	"gerrit.o-ran-sc.org/r/ric-plt/nodeb-rnib.git/common"
 	"gerrit.o-ran-sc.org/r/ric-plt/nodeb-rnib.git/entities"
 	"github.com/golang/protobuf/proto"
 	"reflect"
 )
+
+const E2TInfoListKey = "E2TInfoList"
 
 type rNibReaderInstance struct {
 	sdl common.ISdlInstance
@@ -51,6 +54,11 @@ type RNibReader interface {
 	GetListNodebIds() ([]*entities.NbIdentity, error)
 	// GetRanLoadInformation retrieves nodeb load information entity from redis DB by nodeb inventory name
 	GetRanLoadInformation(inventoryName string) (*entities.RanLoadInformation, error)
+
+	GetE2TInstance(address string) (*entities.E2TInstance, error)
+
+	GetE2TInfoList() ([]*entities.E2TInstanceInfo, error)
+
 }
 
 /*
@@ -185,6 +193,45 @@ func (w *rNibReaderInstance) GetRanLoadInformation(inventoryName string) (*entit
 		return nil, err
 	}
 	return loadInfo, err
+}
+
+func (w *rNibReaderInstance) GetE2TInstance(address string) (*entities.E2TInstance, error) {
+	key, rNibErr := common.ValidateAndBuildE2TInstanceKey(address)
+	if rNibErr != nil {
+		return nil, rNibErr
+	}
+	e2tInstance := &entities.E2TInstance{}
+	err := w.getByKeyAndUnmarshalJson(key, e2tInstance)
+	if err != nil {
+		return nil, err
+	}
+	return e2tInstance, err
+}
+
+func (w *rNibReaderInstance) GetE2TInfoList() ([]*entities.E2TInstanceInfo, error) {
+	e2tInfoList := []*entities.E2TInstanceInfo{}
+	err := w.getByKeyAndUnmarshalJson(E2TInfoListKey, &e2tInfoList)
+	if err != nil {
+		return nil, err
+	}
+	return e2tInfoList, err
+}
+
+func (w *rNibReaderInstance) getByKeyAndUnmarshalJson(key string, entity interface{}) error {
+	data, err := w.sdl.Get([]string{key})
+
+	if err != nil {
+		return common.NewInternalError(err)
+	}
+
+	if data != nil && data[key] != nil {
+		err = json.Unmarshal([]byte(data[key].(string)), entity)
+		if err != nil {
+			return common.NewInternalError(err)
+		}
+		return nil
+	}
+	return common.NewResourceNotFoundErrorf("#rNibReader.getByKeyAndUnmarshalJson - entity of type %s not found. Key: %s", reflect.TypeOf(entity).String(), key)
 }
 
 func (w *rNibReaderInstance) getByKeyAndUnmarshal(key string, entity proto.Message) error {

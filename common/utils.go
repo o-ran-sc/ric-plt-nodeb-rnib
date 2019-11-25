@@ -84,3 +84,12 @@ func ValidateAndBuildRanLoadInformationKey(inventoryName string) (string, error)
 
 	return fmt.Sprintf("LOAD:%s", inventoryName), nil
 }
+
+func ValidateAndBuildE2TInstanceKey(address string) (string, error) {
+
+	if address == "" {
+		return "", NewValidationError("#utils.ValidateAndBuildRanLoadInformationKey - an empty inventory name received")
+	}
+
+	return fmt.Sprintf("E2TInstance:%s", address), nil
+}

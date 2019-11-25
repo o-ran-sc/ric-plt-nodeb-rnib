@@ -37,6 +37,7 @@ message NodebInfo {
     }
     Failure.Type failure_type = 11;
     SetupFailure setup_failure = 12;
+    string associated_e2t_instance_address = 13;
 }
 
 enum E2ApplicationProtocol {
