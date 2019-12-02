@@ -1008,6 +1008,98 @@ func generateRanLoadInformation() *entities.RanLoadInformation {
 	return &ranLoadInformation
 }
 
+func TestGetE2TInstanceSuccess(t *testing.T) {
+	address := "10.10.2.15:9800"
+	redisKey, validationErr := common.ValidateAndBuildE2TInstanceKey(address)
+
+	if validationErr != nil {
+		t.Errorf("#rNibReader_test.TestGetE2TInstanceSuccess - Failed to build E2T Instance key. Error: %v", validationErr)
+	}
+
+	w, sdlInstanceMock := initSdlInstanceMock(namespace)
+
+	e2tInstance := generateE2tInstance(address)
+	data, err := json.Marshal(e2tInstance)
+
+	if err != nil {
+		t.Errorf("#rNibReader_test.TestGetE2TInstanceSuccess - Failed to marshal E2tInstance entity. Error: %v", err)
+	}
+
+	var e error
+	ret := map[string]interface{}{redisKey: string(data)}
+	sdlInstanceMock.On("Get", []string{redisKey}).Return(ret, e)
+
+	res, rNibErr := w.GetE2TInstance(address)
+	assert.Nil(t, rNibErr)
+	assert.Equal(t, e2tInstance, res)
+}
+
+func TestGetE2TInstanceEmptyAddressFailure(t *testing.T) {
+	w, _ := initSdlInstanceMock(namespace)
+	res, err := w.GetE2TInstance("")
+	assert.NotNil(t, err)
+	assert.IsType(t, &common.ValidationError{}, err)
+	assert.Nil(t, res)
+}
+
+func TestGetE2TInstanceSdlError(t *testing.T) {
+	address := "10.10.2.15:9800"
+	redisKey, validationErr := common.ValidateAndBuildE2TInstanceKey(address)
+
+	if validationErr != nil {
+		t.Errorf("#rNibReader_test.TestGetE2TInstanceSuccess - Failed to build E2T Instance key. Error: %v", validationErr)
+	}
+
+	w, sdlInstanceMock := initSdlInstanceMock(namespace)
+
+	expectedErr := errors.New("expected error")
+	var ret map[string]interface{}
+	sdlInstanceMock.On("Get", []string{redisKey}).Return(ret, expectedErr)
+
+	res, rNibErr := w.GetE2TInstance(address)
+	assert.NotNil(t, rNibErr)
+	assert.Nil(t, res)
+}
+
+func generateE2tInstance(address string) *entities.E2TInstance {
+	e2tInstance := entities.NewE2TInstance(address)
+	e2tInstance.AssociatedRanList = []string{"test1", "test2"}
+	return e2tInstance
+}
+
+func TestGetE2TInfoListSuccess(t *testing.T) {
+	address := "10.10.2.15:9800"
+	w, sdlInstanceMock := initSdlInstanceMock(namespace)
+
+	e2tInfo := entities.NewE2TInstanceInfo(address)
+	e2tInfoList := []*entities.E2TInstanceInfo{e2tInfo}
+	data, err := json.Marshal(e2tInfoList)
+
+	if err != nil {
+		t.Errorf("#rNibReader_test.TestGetE2TInfoListSuccess - Failed to marshal E2TInfoList. Error: %v", err)
+	}
+
+	var e error
+	ret := map[string]interface{}{E2TInfoListKey: string(data)}
+	sdlInstanceMock.On("Get", []string{E2TInfoListKey}).Return(ret, e)
+
+	res, rNibErr := w.GetE2TInfoList()
+	assert.Nil(t, rNibErr)
+	assert.Equal(t, e2tInfoList, res)
+}
+
+func TestGetE2TInfoListSdlError(t *testing.T) {
+	w, sdlInstanceMock := initSdlInstanceMock(namespace)
+
+	expectedErr := errors.New("expected error")
+	var ret map[string]interface{}
+	sdlInstanceMock.On("Get", []string{E2TInfoListKey}).Return(ret, expectedErr)
+
+	res, rNibErr := w.GetE2TInfoList()
+	assert.NotNil(t, rNibErr)
+	assert.Nil(t, res)
+}
+
 //integration tests
 //
 //func TestGetEnbInteg(t *testing.T){
