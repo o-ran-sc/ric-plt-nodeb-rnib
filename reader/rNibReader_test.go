@@ -32,7 +32,7 @@ import (
 
 var namespace = "namespace"
 
-func initSdlInstanceMock(namespace string) (w RNibReader, sdlInstanceMock *MockSdlInstance) {
+func initSdlInstanceMock() (w RNibReader, sdlInstanceMock *MockSdlInstance) {
 	sdlInstanceMock = new(MockSdlInstance)
 	w = GetRNibReader(sdlInstanceMock)
 	return
@@ -40,7 +40,7 @@ func initSdlInstanceMock(namespace string) (w RNibReader, sdlInstanceMock *MockS
 
 func TestGetNodeB(t *testing.T) {
 	name := "name"
-	w, sdlInstanceMock := initSdlInstanceMock(namespace)
+	w, sdlInstanceMock := initSdlInstanceMock()
 	nb := entities.NodebInfo{}
 	nb.ConnectionStatus = 1
 	nb.Ip = "localhost"
@@ -71,7 +71,7 @@ func TestGetNodeB(t *testing.T) {
 
 func TestGetNodeBNotFoundFailure(t *testing.T) {
 	name := "name"
-	w, sdlInstanceMock := initSdlInstanceMock(namespace)
+	w, sdlInstanceMock := initSdlInstanceMock()
 	var e error
 	var ret map[string]interface{}
 	redisKey, rNibErr := common.ValidateAndBuildNodeBNameKey(name)
@@ -88,7 +88,7 @@ func TestGetNodeBNotFoundFailure(t *testing.T) {
 
 func TestGetNodeBUnmarshalFailure(t *testing.T) {
 	name := "name"
-	w, sdlInstanceMock := initSdlInstanceMock(namespace)
+	w, sdlInstanceMock := initSdlInstanceMock()
 	var e error
 	ret := make(map[string]interface{}, 1)
 	redisKey, rNibErr := common.ValidateAndBuildNodeBNameKey(name)
@@ -108,7 +108,7 @@ func TestGetNodeBSdlgoFailure(t *testing.T) {
 	name := "name"
 	errMsg := "expected Sdlgo error"
 	errMsgExpected := "expected Sdlgo error"
-	w, sdlInstanceMock := initSdlInstanceMock(namespace)
+	w, sdlInstanceMock := initSdlInstanceMock()
 	e := errors.New(errMsg)
 	var ret map[string]interface{}
 	redisKey, rNibErr := common.ValidateAndBuildNodeBNameKey(name)
@@ -125,7 +125,7 @@ func TestGetNodeBSdlgoFailure(t *testing.T) {
 
 func TestGetNodeBCellsListEnb(t *testing.T) {
 	name := "name"
-	w, sdlInstanceMock := initSdlInstanceMock(namespace)
+	w, sdlInstanceMock := initSdlInstanceMock()
 	nb := entities.NodebInfo{}
 	nb.ConnectionStatus = 1
 	nb.Ip = "localhost"
@@ -155,7 +155,7 @@ func TestGetNodeBCellsListEnb(t *testing.T) {
 
 func TestGetNodeBCellsListGnb(t *testing.T) {
 	name := "name"
-	w, sdlInstanceMock := initSdlInstanceMock(namespace)
+	w, sdlInstanceMock := initSdlInstanceMock()
 	nb := entities.NodebInfo{}
 	nb.ConnectionStatus = 1
 	nb.Ip = "localhost"
@@ -186,7 +186,7 @@ func TestGetNodeBCellsListGnb(t *testing.T) {
 
 func TestGetNodeBCellsListNodeUnmarshalFailure(t *testing.T) {
 	name := "name"
-	w, sdlInstanceMock := initSdlInstanceMock(namespace)
+	w, sdlInstanceMock := initSdlInstanceMock()
 	var e error
 	ret := make(map[string]interface{}, 1)
 	redisKey, rNibErr := common.ValidateAndBuildNodeBNameKey(name)
@@ -204,7 +204,7 @@ func TestGetNodeBCellsListNodeUnmarshalFailure(t *testing.T) {
 
 func TestGetNodeBCellsListNodeNotFoundFailure(t *testing.T) {
 	name := "name"
-	w, sdlInstanceMock := initSdlInstanceMock(namespace)
+	w, sdlInstanceMock := initSdlInstanceMock()
 	var e error
 	var ret map[string]interface{}
 	redisKey, rNibErr := common.ValidateAndBuildNodeBNameKey(name)
@@ -221,7 +221,7 @@ func TestGetNodeBCellsListNodeNotFoundFailure(t *testing.T) {
 
 func TestGetNodeBCellsListNotFoundFailureEnb(t *testing.T) {
 	name := "name"
-	w, sdlInstanceMock := initSdlInstanceMock(namespace)
+	w, sdlInstanceMock := initSdlInstanceMock()
 	nb := entities.NodebInfo{}
 	nb.ConnectionStatus = 1
 	nb.Ip = "localhost"
@@ -246,7 +246,7 @@ func TestGetNodeBCellsListNotFoundFailureEnb(t *testing.T) {
 
 func TestGetNodeBCellsListNotFoundFailureGnb(t *testing.T) {
 	name := "name"
-	w, sdlInstanceMock := initSdlInstanceMock(namespace)
+	w, sdlInstanceMock := initSdlInstanceMock()
 	nb := entities.NodebInfo{}
 	nb.ConnectionStatus = 1
 	nb.Ip = "localhost"
@@ -270,7 +270,7 @@ func TestGetNodeBCellsListNotFoundFailureGnb(t *testing.T) {
 }
 
 func TestGetListGnbIdsUnmarshalFailure(t *testing.T) {
-	w, sdlInstanceMock := initSdlInstanceMock(namespace)
+	w, sdlInstanceMock := initSdlInstanceMock()
 	var e error
 	sdlInstanceMock.On("GetMembers", entities.Node_GNB.String()).Return([]string{"data"}, e)
 	ids, er := w.GetListGnbIds()
@@ -283,7 +283,7 @@ func TestGetListGnbIdsUnmarshalFailure(t *testing.T) {
 func TestGetListGnbIdsSdlgoFailure(t *testing.T) {
 	errMsg := "expected Sdlgo error"
 	errMsgExpected := "expected Sdlgo error"
-	w, sdlInstanceMock := initSdlInstanceMock(namespace)
+	w, sdlInstanceMock := initSdlInstanceMock()
 	e := errors.New(errMsg)
 	var data []string
 	sdlInstanceMock.On("GetMembers", entities.Node_GNB.String()).Return(data, e)
@@ -295,7 +295,7 @@ func TestGetListGnbIdsSdlgoFailure(t *testing.T) {
 }
 
 func TestGetListNodesIdsGnbSdlgoFailure(t *testing.T) {
-	w, sdlInstanceMock := initSdlInstanceMock(namespace)
+	w, sdlInstanceMock := initSdlInstanceMock()
 
 	name := "name"
 	plmnId := "02f829"
@@ -322,7 +322,7 @@ func TestGetListNodesIdsGnbSdlgoFailure(t *testing.T) {
 }
 
 func TestGetListNodesIdsEnbSdlgoFailure(t *testing.T) {
-	w, sdlInstanceMock := initSdlInstanceMock(namespace)
+	w, sdlInstanceMock := initSdlInstanceMock()
 
 	name := "name"
 	plmnId := "02f829"
@@ -349,7 +349,7 @@ func TestGetListNodesIdsEnbSdlgoFailure(t *testing.T) {
 }
 
 func TestGetListNodesIdsSuccess(t *testing.T) {
-	w, sdlInstanceMock := initSdlInstanceMock(namespace)
+	w, sdlInstanceMock := initSdlInstanceMock()
 	var nilError error
 
 	name := "name"
@@ -388,7 +388,7 @@ func TestGetListNodesIdsSuccess(t *testing.T) {
 }
 
 func TestGetListEnbIdsUnmarshalFailure(t *testing.T) {
-	w, sdlInstanceMock := initSdlInstanceMock(namespace)
+	w, sdlInstanceMock := initSdlInstanceMock()
 	var e error
 	sdlInstanceMock.On("GetMembers", entities.Node_ENB.String()).Return([]string{"data"}, e)
 	ids, er := w.GetListEnbIds()
@@ -402,7 +402,7 @@ func TestGetListEnbIdsOneId(t *testing.T) {
 	name := "name"
 	plmnId := "02f829"
 	nbId := "4a952a0a"
-	w, sdlInstanceMock := initSdlInstanceMock(namespace)
+	w, sdlInstanceMock := initSdlInstanceMock()
 	nbIdentity := &entities.NbIdentity{InventoryName: name, GlobalNbId: &entities.GlobalNbId{PlmnId: plmnId, NbId: nbId}}
 	var e error
 	data, err := proto.Marshal(nbIdentity)
@@ -419,7 +419,7 @@ func TestGetListEnbIdsOneId(t *testing.T) {
 }
 
 func TestGetListEnbIdsNoIds(t *testing.T) {
-	w, sdlInstanceMock := initSdlInstanceMock(namespace)
+	w, sdlInstanceMock := initSdlInstanceMock()
 	var e error
 	sdlInstanceMock.On("GetMembers", entities.Node_ENB.String()).Return([]string{}, e)
 	ids, er := w.GetListEnbIds()
@@ -432,7 +432,7 @@ func TestGetListEnbIds(t *testing.T) {
 	plmnId := 0x02f829
 	nbId := 0x4a952a0a
 	listSize := 3
-	w, sdlInstanceMock := initSdlInstanceMock(namespace)
+	w, sdlInstanceMock := initSdlInstanceMock()
 	idsData := make([]string, listSize)
 	idsEntities := make([]*entities.NbIdentity, listSize)
 	for i := 0; i < listSize; i++ {
@@ -460,7 +460,7 @@ func TestGetListGnbIdsOneId(t *testing.T) {
 	name := "name"
 	plmnId := "02f829"
 	nbId := "4a952a0a"
-	w, sdlInstanceMock := initSdlInstanceMock(namespace)
+	w, sdlInstanceMock := initSdlInstanceMock()
 	nbIdentity := &entities.NbIdentity{InventoryName: name, GlobalNbId: &entities.GlobalNbId{PlmnId: plmnId, NbId: nbId}}
 	var e error
 	data, err := proto.Marshal(nbIdentity)
@@ -477,7 +477,7 @@ func TestGetListGnbIdsOneId(t *testing.T) {
 }
 
 func TestGetListGnbIdsNoIds(t *testing.T) {
-	w, sdlInstanceMock := initSdlInstanceMock(namespace)
+	w, sdlInstanceMock := initSdlInstanceMock()
 	var e error
 	sdlInstanceMock.On("GetMembers", entities.Node_GNB.String()).Return([]string{}, e)
 	ids, er := w.GetListGnbIds()
@@ -490,7 +490,7 @@ func TestGetListGnbIds(t *testing.T) {
 	plmnId := 0x02f829
 	nbId := 0x4a952a0a
 	listSize := 3
-	w, sdlInstanceMock := initSdlInstanceMock(namespace)
+	w, sdlInstanceMock := initSdlInstanceMock()
 	idsData := make([]string, listSize)
 	idsEntities := make([]*entities.NbIdentity, listSize)
 	for i := 0; i < listSize; i++ {
@@ -517,7 +517,7 @@ func TestGetListGnbIds(t *testing.T) {
 func TestGetListEnbIdsSdlgoFailure(t *testing.T) {
 	errMsg := "expected Sdlgo error"
 	errMsgExpected := "expected Sdlgo error"
-	w, sdlInstanceMock := initSdlInstanceMock(namespace)
+	w, sdlInstanceMock := initSdlInstanceMock()
 	e := errors.New(errMsg)
 	var data []string
 	sdlInstanceMock.On("GetMembers", entities.Node_ENB.String()).Return(data, e)
@@ -529,7 +529,7 @@ func TestGetListEnbIdsSdlgoFailure(t *testing.T) {
 }
 
 func TestGetCountGnbListOneId(t *testing.T) {
-	w, sdlInstanceMock := initSdlInstanceMock(namespace)
+	w, sdlInstanceMock := initSdlInstanceMock()
 	var e error
 	sdlInstanceMock.On("GroupSize", entities.Node_GNB.String()).Return(1, e)
 	count, er := w.GetCountGnbList()
@@ -538,7 +538,7 @@ func TestGetCountGnbListOneId(t *testing.T) {
 }
 
 func TestGetCountGnbList(t *testing.T) {
-	w, sdlInstanceMock := initSdlInstanceMock(namespace)
+	w, sdlInstanceMock := initSdlInstanceMock()
 	var e error
 	sdlInstanceMock.On("GroupSize", entities.Node_GNB.String()).Return(3, e)
 	count, er := w.GetCountGnbList()
@@ -549,7 +549,7 @@ func TestGetCountGnbList(t *testing.T) {
 func TestGetCountGnbListSdlgoFailure(t *testing.T) {
 	errMsg := "expected Sdlgo error"
 	errMsgExpected := "expected Sdlgo error"
-	w, sdlInstanceMock := initSdlInstanceMock(namespace)
+	w, sdlInstanceMock := initSdlInstanceMock()
 	e := errors.New(errMsg)
 	var count int
 	sdlInstanceMock.On("GroupSize", entities.Node_GNB.String()).Return(count, e)
@@ -563,7 +563,7 @@ func TestGetCountGnbListSdlgoFailure(t *testing.T) {
 func TestGetCell(t *testing.T) {
 	name := "name"
 	var pci uint32 = 10
-	w, sdlInstanceMock := initSdlInstanceMock(namespace)
+	w, sdlInstanceMock := initSdlInstanceMock()
 	cellEntity := entities.Cell{Type: entities.Cell_LTE_CELL, Cell: &entities.Cell_ServedCellInfo{ServedCellInfo: &entities.ServedCellInfo{Pci: pci}}}
 	cellData, err := proto.Marshal(&cellEntity)
 	if err != nil {
@@ -587,7 +587,7 @@ func TestGetCell(t *testing.T) {
 func TestGetCellNotFoundFailure(t *testing.T) {
 	name := "name"
 	var pci uint32
-	w, sdlInstanceMock := initSdlInstanceMock(namespace)
+	w, sdlInstanceMock := initSdlInstanceMock()
 	var e error
 	var ret map[string]interface{}
 	key, rNibErr := common.ValidateAndBuildCellNamePciKey(name, pci)
@@ -605,7 +605,7 @@ func TestGetCellNotFoundFailure(t *testing.T) {
 func TestGetCellUnmarshalFailure(t *testing.T) {
 	name := "name"
 	var pci uint32
-	w, sdlInstanceMock := initSdlInstanceMock(namespace)
+	w, sdlInstanceMock := initSdlInstanceMock()
 	var e error
 	ret := make(map[string]interface{}, 1)
 	key, rNibErr := common.ValidateAndBuildCellNamePciKey(name, pci)
@@ -626,7 +626,7 @@ func TestGetCellSdlgoFailure(t *testing.T) {
 	var pci uint32
 	errMsg := "expected Sdlgo error"
 	errMsgExpected := "expected Sdlgo error"
-	w, sdlInstanceMock := initSdlInstanceMock(namespace)
+	w, sdlInstanceMock := initSdlInstanceMock()
 	e := errors.New(errMsg)
 	var ret map[string]interface{}
 	key, rNibErr := common.ValidateAndBuildCellNamePciKey(name, pci)
@@ -642,7 +642,7 @@ func TestGetCellSdlgoFailure(t *testing.T) {
 }
 
 func TestGetNodebById(t *testing.T) {
-	w, sdlInstanceMock := initSdlInstanceMock(namespace)
+	w, sdlInstanceMock := initSdlInstanceMock()
 	nb := entities.NodebInfo{NodeType: entities.Node_ENB}
 	nb.ConnectionStatus = 1
 	nb.Ip = "localhost"
@@ -678,7 +678,7 @@ func TestGetNodebById(t *testing.T) {
 func TestGetNodebByIdNotFoundFailureEnb(t *testing.T) {
 	plmnId := "02f829"
 	nbId := "4a952a0a"
-	w, sdlInstanceMock := initSdlInstanceMock(namespace)
+	w, sdlInstanceMock := initSdlInstanceMock()
 	var e error
 	key, rNibErr := common.ValidateAndBuildNodeBIdKey(entities.Node_ENB.String(), plmnId, nbId)
 	if rNibErr != nil {
@@ -697,7 +697,7 @@ func TestGetNodebByIdNotFoundFailureEnb(t *testing.T) {
 func TestGetNodebByIdNotFoundFailureGnb(t *testing.T) {
 	plmnId := "02f829"
 	nbId := "4a952a0a"
-	w, sdlInstanceMock := initSdlInstanceMock(namespace)
+	w, sdlInstanceMock := initSdlInstanceMock()
 	var e error
 	key, rNibErr := common.ValidateAndBuildNodeBIdKey(entities.Node_GNB.String(), plmnId, nbId)
 	if rNibErr != nil {
@@ -716,7 +716,7 @@ func TestGetNodebByIdNotFoundFailureGnb(t *testing.T) {
 func TestGetNodeByIdUnmarshalFailure(t *testing.T) {
 	plmnId := "02f829"
 	nbId := "4a952a0a"
-	w, sdlInstanceMock := initSdlInstanceMock(namespace)
+	w, sdlInstanceMock := initSdlInstanceMock()
 	key, rNibErr := common.ValidateAndBuildNodeBIdKey(entities.Node_ENB.String(), plmnId, nbId)
 	if rNibErr != nil {
 		t.Errorf("Failed to validate nodeb identity, plmnId: %s, nbId: %s", plmnId, nbId)
@@ -738,7 +738,7 @@ func TestGetNodeByIdSdlgoFailure(t *testing.T) {
 	nbId := "4a952a0a"
 	errMsg := "expected Sdlgo error"
 	errMsgExpected := "expected Sdlgo error"
-	w, sdlInstanceMock := initSdlInstanceMock(namespace)
+	w, sdlInstanceMock := initSdlInstanceMock()
 	key, rNibErr := common.ValidateAndBuildNodeBIdKey(entities.Node_GNB.String(), plmnId, nbId)
 	if rNibErr != nil {
 		t.Errorf("Failed to validate nodeb identity, plmnId: %s, nbId: %s", plmnId, nbId)
@@ -757,7 +757,7 @@ func TestGetNodeByIdSdlgoFailure(t *testing.T) {
 func TestGetCellById(t *testing.T) {
 	cellId := "aaaa"
 	var pci uint32 = 10
-	w, sdlInstanceMock := initSdlInstanceMock(namespace)
+	w, sdlInstanceMock := initSdlInstanceMock()
 	cellEntity := entities.Cell{Type: entities.Cell_LTE_CELL, Cell: &entities.Cell_ServedCellInfo{ServedCellInfo: &entities.ServedCellInfo{Pci: pci}}}
 	cellData, err := proto.Marshal(&cellEntity)
 	if err != nil {
@@ -780,7 +780,7 @@ func TestGetCellById(t *testing.T) {
 
 func TestGetCellByIdNotFoundFailureEnb(t *testing.T) {
 	cellId := "bbbb"
-	w, sdlInstanceMock := initSdlInstanceMock(namespace)
+	w, sdlInstanceMock := initSdlInstanceMock()
 	var e error
 	var ret map[string]interface{}
 	key, rNibErr := common.ValidateAndBuildCellIdKey(cellId)
@@ -797,7 +797,7 @@ func TestGetCellByIdNotFoundFailureEnb(t *testing.T) {
 
 func TestGetCellByIdNotFoundFailureGnb(t *testing.T) {
 	cellId := "bbbb"
-	w, sdlInstanceMock := initSdlInstanceMock(namespace)
+	w, sdlInstanceMock := initSdlInstanceMock()
 	var e error
 	var ret map[string]interface{}
 	key, rNibErr := common.ValidateAndBuildNrCellIdKey(cellId)
@@ -814,7 +814,7 @@ func TestGetCellByIdNotFoundFailureGnb(t *testing.T) {
 
 func TestGetCellByIdTypeValidationFailure(t *testing.T) {
 	cellId := "dddd"
-	w, _ := initSdlInstanceMock(namespace)
+	w, _ := initSdlInstanceMock()
 	cell, er := w.GetCellById(5, cellId)
 	assert.NotNil(t, er)
 	assert.Nil(t, cell)
@@ -824,7 +824,7 @@ func TestGetCellByIdTypeValidationFailure(t *testing.T) {
 
 func TestGetCellByIdValidationFailureGnb(t *testing.T) {
 	cellId := ""
-	w, _ := initSdlInstanceMock(namespace)
+	w, _ := initSdlInstanceMock()
 	cell, er := w.GetCellById(entities.Cell_NR_CELL, cellId)
 	assert.NotNil(t, er)
 	assert.Nil(t, cell)
@@ -834,7 +834,7 @@ func TestGetCellByIdValidationFailureGnb(t *testing.T) {
 
 func TestGetCellByIdValidationFailureEnb(t *testing.T) {
 	cellId := ""
-	w, _ := initSdlInstanceMock(namespace)
+	w, _ := initSdlInstanceMock()
 	cell, er := w.GetCellById(entities.Cell_LTE_CELL, cellId)
 	assert.NotNil(t, er)
 	assert.Nil(t, cell)
@@ -844,7 +844,7 @@ func TestGetCellByIdValidationFailureEnb(t *testing.T) {
 
 func TestGetRanLoadInformation(t *testing.T) {
 	name := "name"
-	w, sdlInstanceMock := initSdlInstanceMock(namespace)
+	w, sdlInstanceMock := initSdlInstanceMock()
 	loadInfo := generateRanLoadInformation()
 	var e error
 	data, err := proto.Marshal(loadInfo)
@@ -873,7 +873,7 @@ func TestGetRanLoadInformation(t *testing.T) {
 
 func TestGetRanLoadInformationValidationFailure(t *testing.T) {
 	name := ""
-	w, _ := initSdlInstanceMock(namespace)
+	w, _ := initSdlInstanceMock()
 	getNb, er := w.GetRanLoadInformation(name)
 	assert.NotNil(t, er)
 	assert.Nil(t, getNb)
@@ -883,7 +883,7 @@ func TestGetRanLoadInformationValidationFailure(t *testing.T) {
 
 func TestGetRanLoadInformationNotFoundFailure(t *testing.T) {
 	name := "name"
-	w, sdlInstanceMock := initSdlInstanceMock(namespace)
+	w, sdlInstanceMock := initSdlInstanceMock()
 	var e error
 	var ret map[string]interface{}
 	redisKey, rNibErr := common.ValidateAndBuildRanLoadInformationKey(name)
@@ -900,7 +900,7 @@ func TestGetRanLoadInformationNotFoundFailure(t *testing.T) {
 
 func TestGetRanLoadInformationUnmarshalFailure(t *testing.T) {
 	name := "name"
-	w, sdlInstanceMock := initSdlInstanceMock(namespace)
+	w, sdlInstanceMock := initSdlInstanceMock()
 	var e error
 	ret := make(map[string]interface{}, 1)
 	redisKey, rNibErr := common.ValidateAndBuildRanLoadInformationKey(name)
@@ -920,7 +920,7 @@ func TestGetRanLoadInformationSdlgoFailure(t *testing.T) {
 	name := "name"
 	errMsg := "expected Sdlgo error"
 	errMsgExpected := "expected Sdlgo error"
-	w, sdlInstanceMock := initSdlInstanceMock(namespace)
+	w, sdlInstanceMock := initSdlInstanceMock()
 	e := errors.New(errMsg)
 	var ret map[string]interface{}
 	redisKey, rNibErr := common.ValidateAndBuildRanLoadInformationKey(name)
@@ -1016,7 +1016,7 @@ func TestGetE2TInstanceSuccess(t *testing.T) {
 		t.Errorf("#rNibReader_test.TestGetE2TInstanceSuccess - Failed to build E2T Instance key. Error: %v", validationErr)
 	}
 
-	w, sdlInstanceMock := initSdlInstanceMock(namespace)
+	w, sdlInstanceMock := initSdlInstanceMock()
 
 	e2tInstance := generateE2tInstance(address)
 	data, err := json.Marshal(e2tInstance)
@@ -1034,8 +1034,18 @@ func TestGetE2TInstanceSuccess(t *testing.T) {
 	assert.Equal(t, e2tInstance, res)
 }
 
+func TestUnmarshal(t *testing.T) {
+	e2tInstance := generateE2tInstance("10.0.2.15:5555")
+	marshaled, _ := json.Marshal(e2tInstance)
+	m := map[string]interface{}{
+		"whatever": string(marshaled),
+	}
+	var entity *entities.E2TInstance
+	_ = json.Unmarshal([]byte(m["whatever"].(string)), entity)
+}
+
 func TestGetE2TInstanceEmptyAddressFailure(t *testing.T) {
-	w, _ := initSdlInstanceMock(namespace)
+	w, _ := initSdlInstanceMock()
 	res, err := w.GetE2TInstance("")
 	assert.NotNil(t, err)
 	assert.IsType(t, &common.ValidationError{}, err)
@@ -1050,7 +1060,7 @@ func TestGetE2TInstanceSdlError(t *testing.T) {
 		t.Errorf("#rNibReader_test.TestGetE2TInstanceSuccess - Failed to build E2T Instance key. Error: %v", validationErr)
 	}
 
-	w, sdlInstanceMock := initSdlInstanceMock(namespace)
+	w, sdlInstanceMock := initSdlInstanceMock()
 
 	expectedErr := errors.New("expected error")
 	var ret map[string]interface{}
@@ -1067,35 +1077,57 @@ func generateE2tInstance(address string) *entities.E2TInstance {
 	return e2tInstance
 }
 
-func TestGetE2TInfoListSuccess(t *testing.T) {
+func TestGetE2TAddressesSuccess(t *testing.T) {
 	address := "10.10.2.15:9800"
-	w, sdlInstanceMock := initSdlInstanceMock(namespace)
+	w, sdlInstanceMock := initSdlInstanceMock()
 
-	e2tInfo := entities.NewE2TInstanceInfo(address)
-	e2tInfoList := []*entities.E2TInstanceInfo{e2tInfo}
-	data, err := json.Marshal(e2tInfoList)
+	e2tAddresses := []string{address}
+	data, err := json.Marshal(e2tAddresses)
 
 	if err != nil {
 		t.Errorf("#rNibReader_test.TestGetE2TInfoListSuccess - Failed to marshal E2TInfoList. Error: %v", err)
 	}
 
 	var e error
-	ret := map[string]interface{}{E2TInfoListKey: string(data)}
-	sdlInstanceMock.On("Get", []string{E2TInfoListKey}).Return(ret, e)
+	ret := map[string]interface{}{E2TAddressesKey: string(data)}
+	sdlInstanceMock.On("Get", []string{E2TAddressesKey}).Return(ret, e)
 
-	res, rNibErr := w.GetE2TInfoList()
+	res, rNibErr := w.GetE2TAddresses()
 	assert.Nil(t, rNibErr)
-	assert.Equal(t, e2tInfoList, res)
+	assert.Equal(t, e2tAddresses, res)
+}
+
+func TestGetE2TInstancesSuccess(t *testing.T) {
+	address := "10.10.2.15:9800"
+	address2 := "10.10.2.16:9800"
+	redisKey, _ := common.ValidateAndBuildE2TInstanceKey(address)
+	redisKey2, _ := common.ValidateAndBuildE2TInstanceKey(address2)
+
+	w, sdlInstanceMock := initSdlInstanceMock()
+
+	e2tInstance1 := generateE2tInstance(address)
+	e2tInstance2 := generateE2tInstance(address2)
+
+	data1, _ := json.Marshal(e2tInstance1)
+	data2, _ := json.Marshal(e2tInstance2)
+
+	var e error
+	ret := map[string]interface{}{redisKey: string(data1), redisKey2: string(data2)}
+	sdlInstanceMock.On("Get", []string{redisKey, redisKey2}).Return(ret, e)
+
+	res, err := w.GetE2TInstances([]string{address, address2})
+	assert.Nil(t, err)
+	assert.Equal(t, []*entities.E2TInstance{e2tInstance1, e2tInstance2}, res)
 }
 
 func TestGetE2TInfoListSdlError(t *testing.T) {
-	w, sdlInstanceMock := initSdlInstanceMock(namespace)
+	w, sdlInstanceMock := initSdlInstanceMock()
 
 	expectedErr := errors.New("expected error")
 	var ret map[string]interface{}
-	sdlInstanceMock.On("Get", []string{E2TInfoListKey}).Return(ret, expectedErr)
+	sdlInstanceMock.On("Get", []string{E2TAddressesKey}).Return(ret, expectedErr)
 
-	res, rNibErr := w.GetE2TInfoList()
+	res, rNibErr := w.GetE2TAddresses()
 	assert.NotNil(t, rNibErr)
 	assert.Nil(t, res)
 }

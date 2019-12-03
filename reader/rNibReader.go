@@ -27,7 +27,7 @@ import (
 	"reflect"
 )
 
-const E2TInfoListKey = "E2TInfoList"
+const E2TAddressesKey = "E2TAddresses"
 
 type rNibReaderInstance struct {
 	sdl common.ISdlInstance
@@ -60,8 +60,9 @@ type RNibReader interface {
 
 	GetE2TInstance(address string) (*entities.E2TInstance, error)
 
-	GetE2TInfoList() ([]*entities.E2TInstanceInfo, error)
+	GetE2TInstances(addresses []string) ([]*entities.E2TInstance, error)
 
+	GetE2TAddresses() ([]string, error)
 }
 
 /*
@@ -211,13 +212,44 @@ func (w *rNibReaderInstance) GetE2TInstance(address string) (*entities.E2TInstan
 	return e2tInstance, err
 }
 
-func (w *rNibReaderInstance) GetE2TInfoList() ([]*entities.E2TInstanceInfo, error) {
-	e2tInfoList := []*entities.E2TInstanceInfo{}
-	err := w.getByKeyAndUnmarshalJson(E2TInfoListKey, &e2tInfoList)
+func (w *rNibReaderInstance) GetE2TInstances(addresses []string) ([]*entities.E2TInstance, error) {
+	keys := common.MapE2TAddressesToKeys(addresses)
+
+	e2tInstances := []*entities.E2TInstance{}
+
+	data, err := w.sdl.Get(keys)
+
+	if err != nil {
+		return []*entities.E2TInstance{}, common.NewInternalError(err)
+	}
+
+	if len(data) == 0 {
+		return []*entities.E2TInstance{}, common.NewResourceNotFoundErrorf("#rNibReader.GetE2TInstances - e2t instances not found")
+	}
+
+	for _, v := range keys {
+
+		if data[v] != nil {
+			var e2tInstance entities.E2TInstance
+			err = json.Unmarshal([]byte(data[v].(string)), &e2tInstance)
+			if err != nil {
+				continue
+			}
+
+			e2tInstances = append(e2tInstances, &e2tInstance)
+		}
+	}
+
+	return e2tInstances, nil
+}
+
+func (w *rNibReaderInstance) GetE2TAddresses() ([]string, error) {
+	var e2tAddresses []string
+	err := w.getByKeyAndUnmarshalJson(E2TAddressesKey, &e2tAddresses)
 	if err != nil {
 		return nil, err
 	}
-	return e2tInfoList, err
+	return e2tAddresses, err
 }
 
 func (w *rNibReaderInstance) getByKeyAndUnmarshalJson(key string, entity interface{}) error {
