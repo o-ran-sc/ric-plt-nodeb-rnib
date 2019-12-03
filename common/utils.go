@@ -91,8 +91,20 @@ func ValidateAndBuildRanLoadInformationKey(inventoryName string) (string, error)
 func ValidateAndBuildE2TInstanceKey(address string) (string, error) {
 
 	if address == "" {
-		return "", NewValidationError("#utils.ValidateAndBuildRanLoadInformationKey - an empty inventory name received")
+		return "", NewValidationError("#utils.ValidateAndBuildE2TInstanceKey - an empty E2T address received")
 	}
 
 	return fmt.Sprintf("E2TInstance:%s", address), nil
+}
+
+func MapE2TAddressesToKeys(addresses []string) []string {
+
+	keys := []string{}
+	for _, v := range addresses {
+		if len(v) != 0 {
+			keys = append(keys, fmt.Sprintf("E2TInstance:%s", v))
+		}
+	}
+
+	return keys
 }
