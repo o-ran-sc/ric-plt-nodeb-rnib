@@ -21,6 +21,7 @@ package reader
 
 import (
 	"encoding/json"
+	"fmt"
 	"gerrit.o-ran-sc.org/r/ric-plt/nodeb-rnib.git/common"
 	"gerrit.o-ran-sc.org/r/ric-plt/nodeb-rnib.git/entities"
 	"github.com/golang/protobuf/proto"
@@ -29,8 +30,6 @@ import (
 	"testing"
 	"time"
 )
-
-var namespace = "namespace"
 
 func initSdlInstanceMock() (w RNibReader, sdlInstanceMock *MockSdlInstance) {
 	sdlInstanceMock = new(MockSdlInstance)
@@ -1120,6 +1119,52 @@ func TestGetE2TInstancesSuccess(t *testing.T) {
 	assert.Equal(t, []*entities.E2TInstance{e2tInstance1, e2tInstance2}, res)
 }
 
+func TestGetE2TInstancesUnmarhalPartialSuccess(t *testing.T) {
+	address := "10.10.2.15:9800"
+	address2 := "10.10.2.16:9800"
+	redisKey, _ := common.ValidateAndBuildE2TInstanceKey(address)
+	redisKey2, _ := common.ValidateAndBuildE2TInstanceKey(address2)
+
+	w, sdlInstanceMock := initSdlInstanceMock()
+
+	e2tInstance1 := generateE2tInstance(address)
+	data1, _ := json.Marshal(e2tInstance1)
+
+	var e error
+	ret := map[string]interface{}{redisKey: string(data1), redisKey2: "abc"}
+	sdlInstanceMock.On("Get", []string{redisKey, redisKey2}).Return(ret, e)
+
+	res, err := w.GetE2TInstances([]string{address, address2})
+	assert.Nil(t, err)
+	assert.Equal(t, []*entities.E2TInstance{e2tInstance1}, res)
+}
+
+func TestGetE2TInstancesSdlFailure(t *testing.T) {
+	address := "10.10.2.15:9800"
+	address2 := "10.10.2.16:9800"
+	redisKey, _ := common.ValidateAndBuildE2TInstanceKey(address)
+	redisKey2, _ := common.ValidateAndBuildE2TInstanceKey(address2)
+
+	w, sdlInstanceMock := initSdlInstanceMock()
+
+	sdlInstanceMock.On("Get", []string{redisKey, redisKey2}).Return(map[string]interface{}{}, fmt.Errorf(""))
+	_, err := w.GetE2TInstances([]string{address, address2})
+	assert.IsType(t, &common.InternalError{}, err)
+}
+
+func TestGetE2TInstancesEmptyData(t *testing.T) {
+	address := "10.10.2.15:9800"
+	address2 := "10.10.2.16:9800"
+	redisKey, _ := common.ValidateAndBuildE2TInstanceKey(address)
+	redisKey2, _ := common.ValidateAndBuildE2TInstanceKey(address2)
+
+	w, sdlInstanceMock := initSdlInstanceMock()
+
+	sdlInstanceMock.On("Get", []string{redisKey, redisKey2}).Return(map[string]interface{}{}, nil)
+	_, err := w.GetE2TInstances([]string{address, address2})
+	assert.IsType(t, &common.ResourceNotFoundError{}, err)
+}
+
 func TestGetE2TInfoListSdlError(t *testing.T) {
 	w, sdlInstanceMock := initSdlInstanceMock()
 
@@ -1282,4 +1327,12 @@ func TestGetE2TInfoListSdlError(t *testing.T) {
 //	}
 //	assert.NotNil(t, ranLoadInformation)
 //	fmt.Printf("#rNibReader_test.TestGetRanLoadInformationInteg - GNB ID: %s\n", ranLoadInformation)
+//}
+
+//func TestGetE2TInstancesInteg(t *testing.T) {
+//	db := sdlgo.NewDatabase()
+//	sdl := sdlgo.NewSdlInstance("e2Manager", db)
+//	rnibReader := GetRNibReader(sdl)
+//	e2tInstances, _ := rnibReader.GetE2TInstances([]string{"e2t.att.com:38000","whatever"})
+//	assert.Len(t, e2tInstances, 1)
 //}
