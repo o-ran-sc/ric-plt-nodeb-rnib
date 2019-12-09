@@ -1033,16 +1033,6 @@ func TestGetE2TInstanceSuccess(t *testing.T) {
 	assert.Equal(t, e2tInstance, res)
 }
 
-func TestUnmarshal(t *testing.T) {
-	e2tInstance := generateE2tInstance("10.0.2.15:5555")
-	marshaled, _ := json.Marshal(e2tInstance)
-	m := map[string]interface{}{
-		"whatever": string(marshaled),
-	}
-	var entity *entities.E2TInstance
-	_ = json.Unmarshal([]byte(m["whatever"].(string)), entity)
-}
-
 func TestGetE2TInstanceEmptyAddressFailure(t *testing.T) {
 	w, _ := initSdlInstanceMock()
 	res, err := w.GetE2TInstance("")
@@ -1074,6 +1064,18 @@ func generateE2tInstance(address string) *entities.E2TInstance {
 	e2tInstance := entities.NewE2TInstance(address)
 	e2tInstance.AssociatedRanList = []string{"test1", "test2"}
 	return e2tInstance
+}
+
+func TestGetE2TAddressesSdlError(t *testing.T) {
+	w, sdlInstanceMock := initSdlInstanceMock()
+
+	expectedErr := errors.New("expected error")
+	var ret map[string]interface{}
+	sdlInstanceMock.On("Get", []string{E2TAddressesKey}).Return(ret, expectedErr)
+
+	res, rNibErr := w.GetE2TAddresses()
+	assert.NotNil(t, rNibErr)
+	assert.Nil(t, res)
 }
 
 func TestGetE2TAddressesSuccess(t *testing.T) {
@@ -1165,17 +1167,6 @@ func TestGetE2TInstancesEmptyData(t *testing.T) {
 	assert.IsType(t, &common.ResourceNotFoundError{}, err)
 }
 
-func TestGetE2TInfoListSdlError(t *testing.T) {
-	w, sdlInstanceMock := initSdlInstanceMock()
-
-	expectedErr := errors.New("expected error")
-	var ret map[string]interface{}
-	sdlInstanceMock.On("Get", []string{E2TAddressesKey}).Return(ret, expectedErr)
-
-	res, rNibErr := w.GetE2TAddresses()
-	assert.NotNil(t, rNibErr)
-	assert.Nil(t, res)
-}
 
 //integration tests
 //
