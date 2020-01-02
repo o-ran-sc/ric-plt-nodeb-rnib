@@ -26,6 +26,7 @@ type E2TInstance struct {
 	AssociatedRanList  []string         `json:"associatedRanList"`
 	KeepAliveTimestamp int64            `json:"keepAliveTimestamp"`
 	State              E2TInstanceState `json:"state"`
+	DeletionTimestamp  int64			`json:"deletionTimeStamp"`
 }
 
 func NewE2TInstance(address string) *E2TInstance {

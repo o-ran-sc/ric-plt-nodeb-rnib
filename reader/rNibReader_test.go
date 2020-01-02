@@ -1033,6 +1033,17 @@ func TestGetE2TInstanceSuccess(t *testing.T) {
 	assert.Equal(t, e2tInstance, res)
 }
 
+func TestUnmarshal(t *testing.T) {
+	e2tInstance := generateE2tInstance("10.0.2.15:5555")
+	marshaled, _ := json.Marshal(e2tInstance)
+	m := map[string]interface{}{
+		"whatever": string(marshaled),
+	}
+	var entity entities.E2TInstance
+	err := json.Unmarshal([]byte(m["whatever"].(string)), &entity)
+	assert.Nil(t, err)
+}
+
 func TestGetE2TInstanceEmptyAddressFailure(t *testing.T) {
 	w, _ := initSdlInstanceMock()
 	res, err := w.GetE2TInstance("")
@@ -1063,6 +1074,7 @@ func TestGetE2TInstanceSdlError(t *testing.T) {
 func generateE2tInstance(address string) *entities.E2TInstance {
 	e2tInstance := entities.NewE2TInstance(address)
 	e2tInstance.AssociatedRanList = []string{"test1", "test2"}
+	e2tInstance.DeletionTimestamp = time.Now().UnixNano()
 	return e2tInstance
 }
 
