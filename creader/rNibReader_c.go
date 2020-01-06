@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"gerrit.o-ran-sc.org/r/ric-plt/nodeb-rnib.git/common"
+	"gerrit.o-ran-sc.org/r/ric-plt/nodeb-rnib.git/entities"
 	"gerrit.o-ran-sc.org/r/ric-plt/nodeb-rnib.git/reader"
 	"gerrit.o-ran-sc.org/r/ric-plt/sdlgo"
 	"unsafe"
@@ -15,8 +16,8 @@ var sdl common.ISdlInstance
 var instance reader.RNibReader
 
 type response struct {
-	GnbList  []string `json:"gnb_list"`
-	ErrorMsg string   `json:"error_msg,omitempty"`
+	GnbList  []*entities.NbIdentity `json:"gnb_list"`
+	ErrorMsg string                 `json:"error_msg,omitempty"`
 }
 
 //export open
@@ -33,9 +34,7 @@ func close() {
 //export getListGnbIds
 func getListGnbIds() unsafe.Pointer {
 	listGnbIds, err := instance.GetListGnbIds()
-	res := &response{
-		GnbList: []string{},
-	}
+	res := &response{}
 
 	if err != nil {
 		res.ErrorMsg = err.Error()
@@ -43,8 +42,8 @@ func getListGnbIds() unsafe.Pointer {
 		return createCBytesResponse(res)
 	}
 
-	for _, value := range listGnbIds {
-		res.GnbList = append(res.GnbList, value.InventoryName)
+	if listGnbIds != nil {
+		res.GnbList = listGnbIds
 	}
 
 	return createCBytesResponse(res)
@@ -59,6 +58,4 @@ func createCBytesResponse(res *response) unsafe.Pointer {
 	return C.CBytes(byteResponse)
 }
 
-func main() {
-
-}
+func main() {}
