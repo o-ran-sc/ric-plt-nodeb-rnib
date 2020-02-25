@@ -23,5 +23,4 @@ type E2TInstanceState string
 const (
 	Active                E2TInstanceState = "ACTIVE"
 	ToBeDeleted           E2TInstanceState = "TO_BE_DELETED"
-	RoutingManagerFailure E2TInstanceState = "ROUTING_MANAGER_FAILURE"
 )
