@@ -25,7 +25,8 @@ syntax = "proto3";
 package entities;
 
 message Gnb{
-	repeated ServedNRCell served_nr_cells = 1;
+	string bts_type = 1;
+	repeated ServedNRCell served_nr_cells = 2;
 }
 
 message ServedNRCell{
