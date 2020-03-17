@@ -26,6 +26,13 @@ package entities;
 
 message Gnb{
 	repeated ServedNRCell served_nr_cells = 1;
+	repeated RanFunction ran_functions = 2;
+}
+
+message RanFunction{
+	uint32 ranFunctionID = 1;
+	string ranFunctionDefinition = 2;
+	uint32 ranFunctionRevision = 3;
 }
 
 message ServedNRCell{
