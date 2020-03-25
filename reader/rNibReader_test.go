@@ -1179,7 +1179,43 @@ func TestGetE2TInstancesEmptyData(t *testing.T) {
 	assert.IsType(t, &common.ResourceNotFoundError{}, err)
 }
 
-
+func TestGetNodeBGnbWithFunctions(t *testing.T) {
+	name := "name"
+	w, sdlInstanceMock := initSdlInstanceMock()
+	nb := entities.NodebInfo{}
+	nb.ConnectionStatus = 1
+	nb.Ip = "localhost"
+	nb.Port = 5656
+	nb.NodeType = entities.Node_GNB
+	gnb := entities.Gnb{}
+	function1 := &entities.RanFunction{RanFunctionDefinition:"1234567890", RanFunctionId:1, RanFunctionRevision:1}
+	function2 := &entities.RanFunction{RanFunctionDefinition:"0987654321", RanFunctionId:2, RanFunctionRevision:2}
+	gnb.RanFunctions = []*entities.RanFunction{function1, function2}
+	nb.Configuration = &entities.NodebInfo_Gnb{Gnb: &gnb}
+	var e error
+	data, err := proto.Marshal(&nb)
+	if err != nil {
+		t.Errorf("#rNibReader_test.GetNodeBCellsList - Failed to marshal GNB instance. Error: %v", err)
+	}
+	redisKey, rNibErr := common.ValidateAndBuildNodeBNameKey(name)
+	if rNibErr != nil {
+		t.Errorf("#rNibReader_test.TestGetNodeBCellsListGnb - failed to validate key parameter")
+	}
+	ret := map[string]interface{}{redisKey: string(data)}
+	sdlInstanceMock.On("Get", []string{redisKey}).Return(ret, e)
+	getNb, er := w.GetNodeb(name)
+	assert.Nil(t, er)
+	assert.Nil(t, er)
+	assert.NotNil(t, getNb)
+	assert.NotNil(t, getNb.GetGnb().GetRanFunctions())
+	assert.Len(t, getNb.GetGnb().GetRanFunctions(), 2)
+	assert.Equal(t, getNb.GetGnb().GetRanFunctions()[0].RanFunctionRevision, uint32(1))
+	assert.Equal(t, getNb.GetGnb().GetRanFunctions()[0].RanFunctionId, uint32(1))
+	assert.Equal(t, getNb.GetGnb().GetRanFunctions()[0].RanFunctionDefinition, "1234567890")
+	assert.Equal(t, getNb.GetGnb().GetRanFunctions()[1].RanFunctionRevision, uint32(2))
+	assert.Equal(t, getNb.GetGnb().GetRanFunctions()[1].RanFunctionId, uint32(2))
+	assert.Equal(t, getNb.GetGnb().GetRanFunctions()[1].RanFunctionDefinition, "0987654321")
+}
 //integration tests
 //
 //func TestGetEnbInteg(t *testing.T){
