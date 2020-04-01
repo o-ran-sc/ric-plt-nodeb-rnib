@@ -20,14 +20,14 @@ type response struct {
 	ErrorMsg string                 `json:"error_msg,omitempty"`
 }
 
-//export open
-func open() {
+//export openSdl
+func openSdl() {
 	sdl = sdlgo.NewSdlInstance("e2Manager", sdlgo.NewDatabase())
 	instance = reader.GetRNibReader(sdl)
 }
 
-//export close
-func close() {
+//export closeSdl
+func closeSdl() {
 	_ = sdl.Close()
 }
 
