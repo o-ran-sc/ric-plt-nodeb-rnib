@@ -23,17 +23,19 @@ import "time"
 
 type E2TInstance struct {
 	Address            string           `json:"address"`
+	PodName            string           `json:"podName"`
 	AssociatedRanList  []string         `json:"associatedRanList"`
 	KeepAliveTimestamp int64            `json:"keepAliveTimestamp"`
 	State              E2TInstanceState `json:"state"`
-	DeletionTimestamp  int64			`json:"deletionTimeStamp"`
+	DeletionTimestamp  int64            `json:"deletionTimeStamp"`
 }
 
-func NewE2TInstance(address string) *E2TInstance {
-	return &E2TInstance{
+func NewE2TInstance(address string, podName string) *E2TInstance {
+		return &E2TInstance{
 		Address:            address,
 		KeepAliveTimestamp: time.Now().UnixNano(),
 		State:              Active,
 		AssociatedRanList:  []string{},
+		PodName:            podName,
 	}
 }
