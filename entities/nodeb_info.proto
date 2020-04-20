@@ -34,16 +34,15 @@ message NodebInfo {
     uint32 port = 3;
     E2ApplicationProtocol e2_application_protocol = 4;
     ConnectionStatus connection_status = 5;
-    uint32 connection_attempts = 6;
-    GlobalNbId global_nb_id = 7;
-    Node.Type node_type = 8;
+    GlobalNbId global_nb_id = 6;
+    Node.Type node_type = 7;
     oneof configuration {
-        Enb enb = 9;
-        Gnb gnb = 10;
+        Enb enb = 8;
+        Gnb gnb = 9;
     }
-    Failure.Type failure_type = 11;
-    SetupFailure setup_failure = 12;
-    string associated_e2t_instance_address = 13;
+    Failure.Type failure_type = 10;
+    SetupFailure setup_failure = 11;
+    string associated_e2t_instance_address = 12;
 }
 
 enum E2ApplicationProtocol {

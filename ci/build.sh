@@ -24,9 +24,9 @@ then
 fi
     rm -f ./$target_dir/*.*
     mkdir -p $target_dir/DEBIAN
-    mkdir -p $target_dir/user/local/include/$project_name/
-    echo "cp -f -r .$output_dir/* $target_dir/user/local/include/$project_name"
-    cp -f -r  .$output_dir/* $target_dir/user/local/include/$project_name
+    mkdir -p $target_dir/usr/local/include/$project_name/
+    echo "cp -f -r ./creader/$output_dir/* $target_dir/usr/local/include/$project_name"
+    cp -f -r ./creader/$output_dir/* $target_dir/usr/local/include/$project_name
     cp ./ci/control $target_dir/DEBIAN
     
      ver=$(cat ./ci/package-tag.yaml | grep tag: |awk '{split($0,ver,":"); print ver[2]}'| tr -d " \t\n\r")
