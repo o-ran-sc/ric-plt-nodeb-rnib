@@ -14,24 +14,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# CI to verify the RMR library and build run-time and dev packages
-# Inherits C toolchain from buildpack-deps:stretch
-# Adds cmake ksh and alien for RMR
-
-FROM buildpack-deps:stretch
+FROM nexus3.o-ran-sc.org:10004/bldr-ubuntu16-c-go:3-u16.04-nng as ubuntu
 RUN apt-get update && apt-get -q -y install cmake ksh alien
 ADD . /tmp
 WORKDIR /tmp
 
-# build RMr, run unit tests, and generate packages and package lists
+# build rnib and generate package
 RUN sh ci/build.sh
 
 # Executing the container "as a binary" will cause the CI publish
 # script to execute.  This will take the simple package list generated
 # by the ci_build script and copy the list of packages to the target
 # directory.  The target directory is /export by default, but can be
-# overridden from the docker run command line. In either case, the 
+# overridden from the docker run command line. In either case, the
 # assumption is that the target directory is mounted as a volume.
 #
 ENTRYPOINT [ "ci/publish.sh" ]
-
