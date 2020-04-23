@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1da7159b_54a52a89",
+        "filename": "Dockerfile",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000014
+      },
+      "writtenOn": "2020-04-23T10:08:22Z",
+      "side": 1,
+      "message": "Please stop using ubuntu 16.  This is the wrong build base image.  Please upgrade to:\n\n    Repository: nexus3.o-ran-sc.org:10004/o-ran-sc/bldr-ubuntu18-c-go\n    Tag: 8-u18.04",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 1
+      },
+      "revId": "6c7e3a2453dcb88661229ba8d83f6d633a8f0e27",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
