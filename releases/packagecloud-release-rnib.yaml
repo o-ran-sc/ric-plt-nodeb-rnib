@@ -1,0 +1,5 @@
+---
+package_name: rnib
+distribution_type: packagecloud
+packages:
+- name: rnib_3.0.4.4.deb
