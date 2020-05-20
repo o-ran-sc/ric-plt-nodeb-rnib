@@ -4,12 +4,14 @@ gerrit.o-ran-sc.org/r/ric-plt/nodeb-rnib.git/common v1.0.28 h1:Rewapfbc30ZkBaYB/
 gerrit.o-ran-sc.org/r/ric-plt/nodeb-rnib.git/common v1.0.28/go.mod h1:QJ1uPPZosGbhxUWpUpeM5fLqFHdnWTrVnvW2DgyOCes=
 gerrit.o-ran-sc.org/r/ric-plt/nodeb-rnib.git/common v1.0.29 h1:T0ydbEy2pmP2n8A/eyx5iF5PNm0XYa3A5G5HmXsN0Wo=
 gerrit.o-ran-sc.org/r/ric-plt/nodeb-rnib.git/common v1.0.29/go.mod h1:QJ1uPPZosGbhxUWpUpeM5fLqFHdnWTrVnvW2DgyOCes=
+gerrit.o-ran-sc.org/r/ric-plt/nodeb-rnib.git/common v1.0.35/go.mod h1:QJ1uPPZosGbhxUWpUpeM5fLqFHdnWTrVnvW2DgyOCes=
 gerrit.o-ran-sc.org/r/ric-plt/nodeb-rnib.git/entities v1.0.27 h1:nvZDzuB/SYKDuF1It7M4/Y/iVlVrCZ0Ob8AITAyppKo=
 gerrit.o-ran-sc.org/r/ric-plt/nodeb-rnib.git/entities v1.0.27/go.mod h1:Fh23KkroYw5CRBh39WzZzxpKSkpQWL3scdzGnMngLo8=
 gerrit.o-ran-sc.org/r/ric-plt/nodeb-rnib.git/entities v1.0.28 h1:+8Nn+Jn/AvhwBI1LtLsNS1PtOGAOYUHdicOrMn/8mmU=
 gerrit.o-ran-sc.org/r/ric-plt/nodeb-rnib.git/entities v1.0.28/go.mod h1:Fh23KkroYw5CRBh39WzZzxpKSkpQWL3scdzGnMngLo8=
 gerrit.o-ran-sc.org/r/ric-plt/nodeb-rnib.git/entities v1.0.29 h1:H/6CeGFUwS4S1DJ2OVwjt/qKmm/VTdgcgHcxBJfrQt4=
 gerrit.o-ran-sc.org/r/ric-plt/nodeb-rnib.git/entities v1.0.29/go.mod h1:Fh23KkroYw5CRBh39WzZzxpKSkpQWL3scdzGnMngLo8=
+gerrit.o-ran-sc.org/r/ric-plt/nodeb-rnib.git/entities v1.0.35/go.mod h1:G+4sUBMbLfQ+RrGS65U15tKmbnP+/1b5oLTPmMfyfT4=
 gerrit.o-ran-sc.org/r/ric-plt/nodeb-rnib.git/reader v1.0.23 h1:TYV3HE2UNwGOWiA4C226/WhB94crwjuHKIFTgDDvo8I=
 gerrit.o-ran-sc.org/r/ric-plt/nodeb-rnib.git/reader v1.0.23/go.mod h1:uZVjwZjfWV4JJzyQVO/O48Ykph57zfpfMB7nK+WGKX8=
 gerrit.o-ran-sc.org/r/ric-plt/nodeb-rnib.git/reader v1.0.24 h1:Wwp36IoHwp091lXVCYLtFK6AMhoGAR4NYEgW1C42h6k=
@@ -20,6 +22,7 @@ gerrit.o-ran-sc.org/r/ric-plt/nodeb-rnib.git/reader v1.0.28 h1:AaYvK59fxDXQUV9NC
 gerrit.o-ran-sc.org/r/ric-plt/nodeb-rnib.git/reader v1.0.28/go.mod h1:vZ/335+rRSQW82wcbc80fNNICSK3TiCqIxmkqeC2Pfo=
 gerrit.o-ran-sc.org/r/ric-plt/nodeb-rnib.git/reader v1.0.29 h1:eke+zU8y2gQmEBxAQryBXwBWwvXSHeu+pC11t8luQBQ=
 gerrit.o-ran-sc.org/r/ric-plt/nodeb-rnib.git/reader v1.0.29/go.mod h1:EPOJ7YGXDS5F+IK1pa9cv2JYlj73PYOXVvgolhhCSfM=
+gerrit.o-ran-sc.org/r/ric-plt/nodeb-rnib.git/reader v1.0.35/go.mod h1:2bSaXTpECbZieB8bMnubTqMwF3n+mMBxlTaAXvcduNg=
 gerrit.o-ran-sc.org/r/ric-plt/sdlgo.git v0.5.0 h1:+P3XuWKSaMbzh5PNtrW9gkZlCN0hKrZq+Cn8JetwBys=
 gerrit.o-ran-sc.org/r/ric-plt/sdlgo.git v0.5.0/go.mod h1:y2WhrCvdLkAKdH+ySdHSOSehACJkTMyZghCGVcqoZzc=
 github.com/davecgh/go-spew v1.1.0 h1:ZDRjVQ15GmhC3fiQ8ni8+OwkZQO4DARzQgrnXU1Liz8=
@@ -32,6 +35,7 @@ github.com/golang/protobuf v1.3.1 h1:YF8+flBXS5eO826T4nzqPrxfhQThhXl0YzfuUPu4SBg
 github.com/golang/protobuf v1.3.1/go.mod h1:6lQm79b+lXiMfvg/cZm0SGofjICqVBUtrP5yJMmIC1U=
 github.com/golang/protobuf v1.3.2 h1:6nsPYzhq5kReh6QImI3k5qWzO4PEbvbIW2cwSfR/6xs=
 github.com/golang/protobuf v1.3.2/go.mod h1:6lQm79b+lXiMfvg/cZm0SGofjICqVBUtrP5yJMmIC1U=
+github.com/golang/protobuf v1.3.4/go.mod h1:vzj43D7+SQXF/4pzW/hwtAqwc6iTitCiVSaWz5lYuqw=
 github.com/hpcloud/tail v1.0.0/go.mod h1:ab1qPbhIpdTxEkNHXyeSf5vhxWSCs/tWer42PpOxQnU=
 github.com/onsi/ginkgo v1.6.0/go.mod h1:lLunBs/Ym6LB5Z9jYTR76FiuTmxDTDusOGeTQH+WWjE=
 github.com/onsi/ginkgo v1.8.0/go.mod h1:lLunBs/Ym6LB5Z9jYTR76FiuTmxDTDusOGeTQH+WWjE=

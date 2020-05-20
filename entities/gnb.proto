@@ -23,16 +23,12 @@
 
 syntax = "proto3";
 package entities;
+import "ran_function.proto";
+
 
 message Gnb{
 	repeated ServedNRCell served_nr_cells = 1;
 	repeated RanFunction ran_functions = 2;
-}
-
-message RanFunction{
-	uint32 ran_function_id = 1;
-	string ran_function_definition = 2;
-	uint32 ran_function_revision = 3;
 }
 
 message ServedNRCell{
@@ -152,3 +148,4 @@ message NrNeighbourInformation{
 	string stac5g = 5;
 	string configured_stac = 6;
 }
+

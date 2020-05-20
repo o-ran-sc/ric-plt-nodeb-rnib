@@ -100,7 +100,7 @@ func TestGetNodeBUnmarshalFailure(t *testing.T) {
 	assert.NotNil(t, er)
 	assert.Nil(t, getNb)
 	assert.IsType(t, &common.InternalError{}, er)
-	assert.EqualValues(t, "proto: can't skip unknown wire type 4", er.Error())
+	assert.Contains(t,  er.Error(), "proto:")
 }
 
 func TestGetNodeBSdlgoFailure(t *testing.T) {
@@ -198,7 +198,7 @@ func TestGetNodeBCellsListNodeUnmarshalFailure(t *testing.T) {
 	assert.NotNil(t, er)
 	assert.Nil(t, cells)
 	assert.IsType(t, &common.InternalError{}, er)
-	assert.EqualValues(t, "proto: can't skip unknown wire type 4", er.Error())
+	assert.Contains(t,  er.Error(), "proto:")
 }
 
 func TestGetNodeBCellsListNodeNotFoundFailure(t *testing.T) {
@@ -276,7 +276,7 @@ func TestGetListGnbIdsUnmarshalFailure(t *testing.T) {
 	assert.NotNil(t, er)
 	assert.Nil(t, ids)
 	assert.IsType(t, &common.InternalError{}, er)
-	assert.Equal(t, "proto: can't skip unknown wire type 4", er.Error())
+	assert.Contains(t,  er.Error(), "proto:")
 }
 
 func TestGetListGnbIdsSdlgoFailure(t *testing.T) {
@@ -394,7 +394,7 @@ func TestGetListEnbIdsUnmarshalFailure(t *testing.T) {
 	assert.NotNil(t, er)
 	assert.Nil(t, ids)
 	assert.IsType(t, &common.InternalError{}, er)
-	assert.Equal(t, "proto: can't skip unknown wire type 4", er.Error())
+	assert.Contains(t,  er.Error(), "proto:")
 }
 
 func TestGetListEnbIdsOneId(t *testing.T) {
@@ -617,7 +617,7 @@ func TestGetCellUnmarshalFailure(t *testing.T) {
 	assert.NotNil(t, er)
 	assert.Nil(t, cell)
 	assert.IsType(t, &common.InternalError{}, er)
-	assert.EqualValues(t, "proto: can't skip unknown wire type 4", er.Error())
+	assert.Contains(t,  er.Error(), "proto:")
 }
 
 func TestGetCellSdlgoFailure(t *testing.T) {
@@ -729,7 +729,7 @@ func TestGetNodeByIdUnmarshalFailure(t *testing.T) {
 	assert.NotNil(t, er)
 	assert.Nil(t, getNb)
 	assert.IsType(t, &common.InternalError{}, er)
-	assert.EqualValues(t, "proto: can't skip unknown wire type 4", er.Error())
+	assert.Contains(t,  er.Error(), "proto:")
 }
 
 func TestGetNodeByIdSdlgoFailure(t *testing.T) {
@@ -912,7 +912,7 @@ func TestGetRanLoadInformationUnmarshalFailure(t *testing.T) {
 	assert.NotNil(t, er)
 	assert.Nil(t, getNb)
 	assert.IsType(t, &common.InternalError{}, er)
-	assert.EqualValues(t, "proto: can't skip unknown wire type 4", er.Error())
+	assert.Contains(t,  er.Error(), "proto:")
 }
 
 func TestGetRanLoadInformationSdlgoFailure(t *testing.T) {
@@ -1072,7 +1072,7 @@ func TestGetE2TInstanceSdlError(t *testing.T) {
 }
 
 func generateE2tInstance(address string) *entities.E2TInstance {
-	e2tInstance := entities.NewE2TInstance(address)
+	e2tInstance := entities.NewE2TInstance(address,"")
 	e2tInstance.AssociatedRanList = []string{"test1", "test2"}
 	e2tInstance.DeletionTimestamp = time.Now().UnixNano()
 	return e2tInstance
