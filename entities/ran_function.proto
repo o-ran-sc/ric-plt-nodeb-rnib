@@ -40,6 +40,7 @@ message E2smGnbNrtRanFunctionDefinition {
     repeated RicReportStyle ric_report_styles = 3;
     repeated RicInsertStyle ric_insert_styles = 4;
     repeated RicControlStyle ric_control_styles = 5;
+    repeated RicPolicyStyle ric_policy_styles = 6;
 }
 
 message RanFunctionName {
@@ -97,4 +98,11 @@ message RicControlStyle {
     uint32 ric_control_header_format_type = 3;
     uint32 ric_control_message_format_type = 4;
     uint32 ric_call_process_id_format_type = 5;
+}
+
+message RicPolicyStyle {
+    uint32 ric_policy_style_type = 1;
+    string ric_policy_style_name = 2;
+    uint32 ric_policy_action_format_type = 3;
+    repeated RanParameterDef ric_policy_ran_parameter_defs = 4;
 }
