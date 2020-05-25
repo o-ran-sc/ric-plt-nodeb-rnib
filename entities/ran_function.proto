@@ -47,7 +47,9 @@ message RanFunctionName {
     string ran_function_short_name = 1;
     string ran_function_e2sm_oid = 2;
     string ran_function_description = 3;
-    uint32 ran_function_instance = 4;
+    oneof optional_ran_function_instance {
+        uint32 ran_function_instance = 4;
+    }
 }
 
 message RicEventTriggerStyle {
