@@ -1179,6 +1179,59 @@ func TestGetE2TInstancesEmptyData(t *testing.T) {
 	assert.IsType(t, &common.ResourceNotFoundError{}, err)
 }
 
+func TestGetGeneralConfiguration(t *testing.T) {
+
+	key := common.BuildGeneralConfigurationKey()
+	w, sdlInstanceMock := initSdlInstanceMock()
+
+	configurationData := "{\"enableRic\":true}"
+	sdlInstanceMock.On("Get", []string{key}).Return(map[string]interface{}{key: configurationData}, nil)
+
+	res, rNibErr := w.GetGeneralConfiguration()
+	assert.Nil(t, rNibErr)
+	assert.Equal(t, true, res.EnableRic)
+}
+
+func TestGetGeneralConfigurationNotFound(t *testing.T) {
+
+	key := common.BuildGeneralConfigurationKey()
+	w, sdlInstanceMock := initSdlInstanceMock()
+
+	sdlInstanceMock.On("Get", []string{key}).Return(map[string]interface{}{}, nil)
+
+	_, rNibErr := w.GetGeneralConfiguration()
+
+	assert.NotNil(t, rNibErr)
+	assert.Equal(t, "#rNibReader.getByKeyAndUnmarshalJson - entity of type *entities.GeneralConfiguration not found. Key: GENERAL", rNibErr.Error())
+}
+
+func TestGetGeneralConfigurationSdlFailure(t *testing.T) {
+
+	key := common.BuildGeneralConfigurationKey()
+	w, sdlInstanceMock := initSdlInstanceMock()
+
+	sdlInstanceMock.On("Get", []string{key}).Return(map[string]interface{}{}, fmt.Errorf("sdl error"))
+
+	_, rNibErr := w.GetGeneralConfiguration()
+
+	assert.NotNil(t, rNibErr)
+
+	assert.Equal(t, "sdl error", rNibErr.Error())
+}
+
+func TestGetGeneralConfigurationUnmarshalError(t *testing.T) {
+
+	key := common.BuildGeneralConfigurationKey()
+	w, sdlInstanceMock := initSdlInstanceMock()
+
+	configurationData := "{\"enableRic :true}"
+	sdlInstanceMock.On("Get", []string{key}).Return(map[string]interface{}{key: configurationData}, nil)
+
+	_, rNibErr := w.GetGeneralConfiguration()
+
+	assert.NotNil(t, rNibErr)
+	assert.Equal(t, rNibErr.Error(), "unexpected end of JSON input")
+}
 
 //integration tests
 //

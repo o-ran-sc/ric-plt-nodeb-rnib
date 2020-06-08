@@ -63,6 +63,8 @@ type RNibReader interface {
 	GetE2TInstances(addresses []string) ([]*entities.E2TInstance, error)
 
 	GetE2TAddresses() ([]string, error)
+
+	GetGeneralConfiguration() (*entities.GeneralConfiguration, error)
 }
 
 /*
@@ -250,6 +252,15 @@ func (w *rNibReaderInstance) GetE2TAddresses() ([]string, error) {
 		return nil, err
 	}
 	return e2tAddresses, err
+}
+
+func (w *rNibReaderInstance) GetGeneralConfiguration() (*entities.GeneralConfiguration, error) {
+	config := &entities.GeneralConfiguration{}
+	key := common.BuildGeneralConfigurationKey()
+
+	err := w.getByKeyAndUnmarshalJson(key, config)
+
+	return config, err
 }
 
 func (w *rNibReaderInstance) getByKeyAndUnmarshalJson(key string, entity interface{}) error {

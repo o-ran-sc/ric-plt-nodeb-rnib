@@ -97,6 +97,10 @@ func ValidateAndBuildE2TInstanceKey(address string) (string, error) {
 	return fmt.Sprintf("E2TInstance:%s", address), nil
 }
 
+func BuildGeneralConfigurationKey() string {
+	return "GENERAL"
+}
+
 func MapE2TAddressesToKeys(addresses []string) []string {
 
 	keys := []string{}
