@@ -1,0 +1,9 @@
+Verified+1: ORAN Jobbuilder <releng+oran-jobbuilder@linuxfoundation.org>
+Verified+1: Shuky Har-Noy <shuky.har-noy@intl.att.com>
+Code-Review+1: Idan Shalom <idan.shalom@intl.att.com>
+Code-Review+2: Shuky Har-Noy <shuky.har-noy@intl.att.com>
+Submitted-by: Shuky Har-Noy <shuky.har-noy@intl.att.com>
+Submitted-at: Tue, 09 Jun 2020 07:52:45 +0000
+Reviewed-on: https://gerrit.o-ran-sc.org/r/c/ric-plt/nodeb-rnib/+/4027
+Project: ric-plt/nodeb-rnib
+Branch: refs/heads/master
