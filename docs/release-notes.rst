@@ -20,159 +20,53 @@
 
 nodeb-rnib Release Notes 
 ========================
-The following is a list of release highlights for nodeb-rnib:
+This document provides the release notes for the Bronze release of nodeb-rnib:
 
 Version history
 ---------------
 
-+--------------------+--------------------+--------------------+--------------------+
-| **Date**           | **Ver.**           | **Author**         | **Comment**        |
-|                    |                    |                    |                    |
-+--------------------+--------------------+--------------------+--------------------+
-| 20XX-XX-XX         | 0.1.0              |                    | First draft        |
-|                    |                    |                    |                    |
-+--------------------+--------------------+--------------------+--------------------+
-|                    | 0.1.1              |                    |                    |
-|                    |                    |                    |                    |
-+--------------------+--------------------+--------------------+--------------------+
-|                    | 1.0                |                    |                    |
-|                    |                    |                    |                    |
-+--------------------+--------------------+--------------------+--------------------+
++--------------------+---------------------+--------------------+--------------------+
+| **Date**           | **Ver.**            | **Author**         | **Comment**        |
+|                    |                     |                    |                    |
++--------------------+---------------------+--------------------+--------------------+
+| 2019-06-06         | 0.1.0               |  Shuky Har-Noy     | First draft        |
+|                    |                     |                    |                    |
++--------------------+---------------------+--------------------+--------------------+
+|                    | Go modules: 1.0.35  |                    |                    |
+| 2020-06-16         | C package: 1.0.3_all|  Shuky Har-Noy     | Bronze release      |
++--------------------+---------------------+--------------------+--------------------+
+
 
 
 Summary
 =======
 
-<SUMMARIZE THE RELEASE - THE CONTENT - AND OTHER IMPORTANT HIGH LEVEL PROPERTIES>
-
+In order to work with go modules add the following to go.mod:
+ gerrit.o-ran-sc.org/r/ric-plt/nodeb-rnib.git/common v1.0.35
+ gerrit.o-ran-sc.org/r/ric-plt/nodeb-rnib.git/entities v1.0.35
+ gerrit.o-ran-sc.org/r/ric-plt/nodeb-rnib.git/reader v1.0.35
+ 
+The C package can be downloaded from:
+https://packagecloud.io/o-ran-sc/release/packages/debian/stretch/rnib_1.0.3_all.deb
 
 
 
 Release Data
 ============
-<STATE RELEVANT RELEASE DATA/RECORDS>
-
-<EXAMPLE>:
 
 +--------------------------------------+--------------------------------------+
-| **Project**                          | E.g. Arno/genesis/fuel@opnfv         |
+| **Project**                          | RAN Intelligent Controller  	      |
 |                                      |                                      |
 +--------------------------------------+--------------------------------------+
-| **Repo/commit-ID**                   | E.g. genesis/adf634a0d4.....         |
+| **Repo/commit-ID**                   | ric-plt/nodeb-rnib                   |
 |                                      |                                      |
 +--------------------------------------+--------------------------------------+
-| **Release designation**              | E.g. Arno RC2                        |
+| **Release designation**              | Bronze                               |
 |                                      |                                      |
 +--------------------------------------+--------------------------------------+
-| **Release date**                     | E.g. 2015-04-16                      |
+| **Release date**                     | 2020-06-15                           |
 |                                      |                                      |
 +--------------------------------------+--------------------------------------+
-| **Purpose of the delivery**          | E.g. OPNFV Internal quality assurance|
+| **Purpose of the delivery**          | open-source nodeb-rnib     	      |
 |                                      |                                      |
 +--------------------------------------+--------------------------------------+
-
-
-
-
-Feature additions
------------------
-<STATE ADDED FEATURES BY REFERENCE TO JIRA>
-
-<EXAMPLE>:
-
-**JIRA BACK-LOG:**
-
-+--------------------------------------+--------------------------------------+
-| **JIRA REFERENCE**                   | **SLOGAN**                           |
-|                                      |                                      |
-+--------------------------------------+--------------------------------------+
-| 		                       | 				      |
-|                                      | 				      |
-|                                      |                                      |
-+--------------------------------------+--------------------------------------+
-| 	                               |  				      |
-|                                      |  				      |
-|                                      |                                      |
-+--------------------------------------+--------------------------------------+
-
-Bug corrections
----------------
-
-**JIRA TICKETS:**
-
-+--------------------------------------+--------------------------------------+
-| **JIRA REFERENCE**                   | **SLOGAN**                           |
-|                                      |                                      |
-+--------------------------------------+--------------------------------------+
-| 		                       | 				      |
-|                                      | 				      |
-|                                      |                                      |
-+--------------------------------------+--------------------------------------+
-| 	                               |  				      |
-|                                      |  				      |
-|                                      |                                      |
-+--------------------------------------+--------------------------------------+
-
-Deliverables
-------------
-
-Software deliverables
----------------------
-
-<STATE WHAT SOFTWARE DELIVERABLES THAT ARE RELATED TO THIS VERSION, AND WHERE THOSE CAN BE RETRIEVED>
-
-<EXAMPLE>:
-
-Documentation deliverables
---------------------------
-
-<STATE WHAT DOCUMENTATION DELIVERABLES THAT ARE RELATED TO THIS VERSION, AND WHERE THOSE CAN BE RETRIEVED>
-
-<EXAMPLE>:
-
-
-Known Limitations, Issues and Workarounds
-=========================================
-
-System Limitations
-------------------
-<STATE ALL RELEVANT SYSTEM LIMITATIONS, IF THERE IS ANY>
-
-
-
-Known issues
-------------
-<STATE ALL KNOWN ISSUES WITH JIRA REFERENCE>
-
-<EXAMPLE>:
-
-**JIRA TICKETS:**
-
-+--------------------------------------+--------------------------------------+
-| **JIRA REFERENCE**                   | **SLOGAN**                           |
-|                                      |                                      |
-+--------------------------------------+--------------------------------------+
-| 		                       | 				      |
-|                                      | 				      |
-|                                      |                                      |
-+--------------------------------------+--------------------------------------+
-| 	                               |  				      |
-|                                      |  				      |
-|                                      |                                      |
-+--------------------------------------+--------------------------------------+
-
-Workarounds
------------
-
-<STATE ALL KNOWN WORKAROUNDS TO THE ISSUES STATED ABOVE, IF THERE IS ANY>
-
-
-
-
-References
-==========
-<STATE RELEVANT REFERENCES FOR THIS RELEASE/VERSION>
-
-
-
-
