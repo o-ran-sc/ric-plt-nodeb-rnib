@@ -23,89 +23,9 @@
 
 syntax = "proto3";
 package entities;
-import "google/protobuf/wrappers.proto";
 
 message RanFunction {
-    google.protobuf.UInt32Value ran_function_id = 1;
-    RanFunctionDefinition ran_function_definition = 2;
-    google.protobuf.UInt32Value ran_function_revision = 3;
-}
-
-message RanFunctionDefinition {
-    E2smGnbNrtRanFunctionDefinition e2sm_gnb_nrt_ran_function_definition = 1;
-}
-
-message E2smGnbNrtRanFunctionDefinition {
-    RanFunctionName ran_function_name = 1;
-    repeated RicEventTriggerStyle ric_event_trigger_styles = 2;
-    repeated RicReportStyle ric_report_styles = 3;
-    repeated RicInsertStyle ric_insert_styles = 4;
-    repeated RicControlStyle ric_control_styles = 5;
-    repeated RicPolicyStyle ric_policy_styles = 6;
-}
-
-message RanFunctionName {
-    google.protobuf.StringValue ran_function_short_name = 1;
-    google.protobuf.StringValue ran_function_e2sm_oid = 2;
-    google.protobuf.StringValue ran_function_description = 3;
-    oneof optional_ran_function_instance {
-        uint32 ran_function_instance = 4;
-    }
-}
-
-message RicEventTriggerStyle {
-    google.protobuf.UInt32Value ric_event_trigger_style_type = 1;
-    google.protobuf.StringValue ric_event_trigger_style_name = 2;
-    google.protobuf.UInt32Value ric_event_trigger_format_type = 3;
-}
-
-enum RanParameterType {
-    UNKNOWN_RAN_PARAMETER_TYPE = 0;
-    INTEGER = 1;
-    ENUMERATED = 2;
-    BOOLEAN = 3;
-    BIT_STRING = 4;
-    OCTET_STRING = 5;
-    PRINTABLE_STRING = 6;
-}
-
-message RanParameterDef {
-    google.protobuf.UInt32Value ran_parameter_id = 1;
-    google.protobuf.StringValue ran_parameter_name = 2;
-    RanParameterType ran_parameter_type = 3;
-}
-
-message RicReportStyle {
-    google.protobuf.UInt32Value ric_report_style_type = 1;
-    google.protobuf.StringValue ric_report_style_name = 2;
-    google.protobuf.UInt32Value ric_report_action_format_type = 3;
-    repeated RanParameterDef ric_report_ran_parameter_defs = 4;
-    google.protobuf.UInt32Value ric_indication_header_format_type = 5;
-    google.protobuf.UInt32Value ric_indication_message_format_type = 6;
-}
-
-
-message RicInsertStyle {
-    google.protobuf.UInt32Value ric_insert_style_type = 1;
-    google.protobuf.StringValue ric_insert_style_name = 2;
-    google.protobuf.UInt32Value ric_insert_action_format_type = 3;
-    repeated RanParameterDef ric_insert_ran_parameter_defs = 4;
-    google.protobuf.UInt32Value ric_indication_header_format_type = 5;
-    google.protobuf.UInt32Value ric_indication_message_format_type = 6;
-    google.protobuf.UInt32Value ric_call_process_id_format_type = 7;
-}
-
-message RicControlStyle {
-    google.protobuf.UInt32Value ric_control_style_type = 1;
-    google.protobuf.StringValue ric_control_style_name = 2;
-    google.protobuf.UInt32Value ric_control_header_format_type = 3;
-    google.protobuf.UInt32Value ric_control_message_format_type = 4;
-    google.protobuf.UInt32Value ric_call_process_id_format_type = 5;
-}
-
-message RicPolicyStyle {
-    google.protobuf.UInt32Value ric_policy_style_type = 1;
-    google.protobuf.StringValue ric_policy_style_name = 2;
-    google.protobuf.UInt32Value ric_policy_action_format_type = 3;
-    repeated RanParameterDef ric_policy_ran_parameter_defs = 4;
+    uint32 ran_function_id = 1;
+    string ran_function_definition = 2;
+    uint32 ran_function_revision = 3;
 }
