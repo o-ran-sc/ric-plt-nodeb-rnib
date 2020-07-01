@@ -24,6 +24,8 @@
 syntax = "proto3";
 package entities;
 
+import "additional_cell_information.proto";
+
 message Enb{
 	EnbType enb_type = 1;
 	repeated ServedCellInfo served_cells = 2;
@@ -46,6 +48,7 @@ message ServedCellInfo{
 	FreqBandIndicatorPriority freq_band_indicator_priority = 13;
 	BandwidthReducedSI bandwidth_reduced_si = 14;
 	repeated NeighbourInformation neighbour_infos = 15;
+	AdditionalCellInformation additional_cell_information = 16;
 }
 
 message ChoiceEUTRAMode{

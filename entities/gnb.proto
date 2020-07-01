@@ -24,6 +24,7 @@
 syntax = "proto3";
 package entities;
 import "ran_function.proto";
+import "additional_cell_information.proto";
 
 
 message Gnb{
@@ -58,6 +59,7 @@ message ServedNRCellInformation{
 		TddInfo tdd  = 2;
 	}
 	ChoiceNRMode choice_nr_mode = 7;
+	AdditionalCellInformation additional_cell_information = 8;
 }
 
 message Nr{
