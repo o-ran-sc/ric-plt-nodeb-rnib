@@ -24,12 +24,23 @@
 syntax = "proto3";
 package entities;
 
-message NbIdentity{
-    string inventory_name = 1;
-    GlobalNbId global_nb_id = 2;
+enum ConnectionStatus {
+  UNKNOWN_CONNECTION_STATUS = 0;
+  CONNECTED = 1;
+  DISCONNECTED = 2;
+  CONNECTED_SETUP_FAILED = 3;
+  CONNECTING = 4;
+  SHUTTING_DOWN = 5;
+  SHUT_DOWN = 6;
 }
 
 message GlobalNbId{
-    string plmn_id = 1;
-    string nb_id = 2;
+  string plmn_id = 1;
+  string nb_id = 2;
+}
+
+message NbIdentity{
+  string inventory_name = 1;
+  GlobalNbId global_nb_id = 2;
+  ConnectionStatus connection_status = 3;
 }

@@ -94,67 +94,6 @@ func (E2ApplicationProtocol) EnumDescriptor() ([]byte, []int) {
 	return file_nodeb_info_proto_rawDescGZIP(), []int{0}
 }
 
-type ConnectionStatus int32
-
-const (
-	ConnectionStatus_UNKNOWN_CONNECTION_STATUS ConnectionStatus = 0
-	ConnectionStatus_CONNECTED                 ConnectionStatus = 1
-	ConnectionStatus_DISCONNECTED              ConnectionStatus = 2
-	ConnectionStatus_CONNECTED_SETUP_FAILED    ConnectionStatus = 3
-	ConnectionStatus_CONNECTING                ConnectionStatus = 4
-	ConnectionStatus_SHUTTING_DOWN             ConnectionStatus = 5
-	ConnectionStatus_SHUT_DOWN                 ConnectionStatus = 6
-)
-
-// Enum value maps for ConnectionStatus.
-var (
-	ConnectionStatus_name = map[int32]string{
-		0: "UNKNOWN_CONNECTION_STATUS",
-		1: "CONNECTED",
-		2: "DISCONNECTED",
-		3: "CONNECTED_SETUP_FAILED",
-		4: "CONNECTING",
-		5: "SHUTTING_DOWN",
-		6: "SHUT_DOWN",
-	}
-	ConnectionStatus_value = map[string]int32{
-		"UNKNOWN_CONNECTION_STATUS": 0,
-		"CONNECTED":                 1,
-		"DISCONNECTED":              2,
-		"CONNECTED_SETUP_FAILED":    3,
-		"CONNECTING":                4,
-		"SHUTTING_DOWN":             5,
-		"SHUT_DOWN":                 6,
-	}
-)
-
-func (x ConnectionStatus) Enum() *ConnectionStatus {
-	p := new(ConnectionStatus)
-	*p = x
-	return p
-}
-
-func (x ConnectionStatus) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (ConnectionStatus) Descriptor() protoreflect.EnumDescriptor {
-	return file_nodeb_info_proto_enumTypes[1].Descriptor()
-}
-
-func (ConnectionStatus) Type() protoreflect.EnumType {
-	return &file_nodeb_info_proto_enumTypes[1]
-}
-
-func (x ConnectionStatus) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use ConnectionStatus.Descriptor instead.
-func (ConnectionStatus) EnumDescriptor() ([]byte, []int) {
-	return file_nodeb_info_proto_rawDescGZIP(), []int{1}
-}
-
 type Node_Type int32
 
 const (
@@ -188,11 +127,11 @@ func (x Node_Type) String() string {
 }
 
 func (Node_Type) Descriptor() protoreflect.EnumDescriptor {
-	return file_nodeb_info_proto_enumTypes[2].Descriptor()
+	return file_nodeb_info_proto_enumTypes[1].Descriptor()
 }
 
 func (Node_Type) Type() protoreflect.EnumType {
-	return &file_nodeb_info_proto_enumTypes[2]
+	return &file_nodeb_info_proto_enumTypes[1]
 }
 
 func (x Node_Type) Number() protoreflect.EnumNumber {
@@ -237,11 +176,11 @@ func (x Failure_Type) String() string {
 }
 
 func (Failure_Type) Descriptor() protoreflect.EnumDescriptor {
-	return file_nodeb_info_proto_enumTypes[3].Descriptor()
+	return file_nodeb_info_proto_enumTypes[2].Descriptor()
 }
 
 func (Failure_Type) Type() protoreflect.EnumType {
-	return &file_nodeb_info_proto_enumTypes[3]
+	return &file_nodeb_info_proto_enumTypes[2]
 }
 
 func (x Failure_Type) Number() protoreflect.EnumNumber {
@@ -552,18 +491,8 @@ var file_nodeb_info_proto_rawDesc = []byte{
 	0x4f, 0x54, 0x4f, 0x43, 0x4f, 0x4c, 0x10, 0x00, 0x12, 0x14, 0x0a, 0x10, 0x58, 0x32, 0x5f, 0x53,
 	0x45, 0x54, 0x55, 0x50, 0x5f, 0x52, 0x45, 0x51, 0x55, 0x45, 0x53, 0x54, 0x10, 0x01, 0x12, 0x19,
 	0x0a, 0x15, 0x45, 0x4e, 0x44, 0x43, 0x5f, 0x58, 0x32, 0x5f, 0x53, 0x45, 0x54, 0x55, 0x50, 0x5f,
-	0x52, 0x45, 0x51, 0x55, 0x45, 0x53, 0x54, 0x10, 0x02, 0x2a, 0xa0, 0x01, 0x0a, 0x10, 0x43, 0x6f,
-	0x6e, 0x6e, 0x65, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x12, 0x1d,
-	0x0a, 0x19, 0x55, 0x4e, 0x4b, 0x4e, 0x4f, 0x57, 0x4e, 0x5f, 0x43, 0x4f, 0x4e, 0x4e, 0x45, 0x43,
-	0x54, 0x49, 0x4f, 0x4e, 0x5f, 0x53, 0x54, 0x41, 0x54, 0x55, 0x53, 0x10, 0x00, 0x12, 0x0d, 0x0a,
-	0x09, 0x43, 0x4f, 0x4e, 0x4e, 0x45, 0x43, 0x54, 0x45, 0x44, 0x10, 0x01, 0x12, 0x10, 0x0a, 0x0c,
-	0x44, 0x49, 0x53, 0x43, 0x4f, 0x4e, 0x4e, 0x45, 0x43, 0x54, 0x45, 0x44, 0x10, 0x02, 0x12, 0x1a,
-	0x0a, 0x16, 0x43, 0x4f, 0x4e, 0x4e, 0x45, 0x43, 0x54, 0x45, 0x44, 0x5f, 0x53, 0x45, 0x54, 0x55,
-	0x50, 0x5f, 0x46, 0x41, 0x49, 0x4c, 0x45, 0x44, 0x10, 0x03, 0x12, 0x0e, 0x0a, 0x0a, 0x43, 0x4f,
-	0x4e, 0x4e, 0x45, 0x43, 0x54, 0x49, 0x4e, 0x47, 0x10, 0x04, 0x12, 0x11, 0x0a, 0x0d, 0x53, 0x48,
-	0x55, 0x54, 0x54, 0x49, 0x4e, 0x47, 0x5f, 0x44, 0x4f, 0x57, 0x4e, 0x10, 0x05, 0x12, 0x0d, 0x0a,
-	0x09, 0x53, 0x48, 0x55, 0x54, 0x5f, 0x44, 0x4f, 0x57, 0x4e, 0x10, 0x06, 0x62, 0x06, 0x70, 0x72,
-	0x6f, 0x74, 0x6f, 0x33,
+	0x52, 0x45, 0x51, 0x55, 0x45, 0x53, 0x54, 0x10, 0x02, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f,
+	0x33,
 }
 
 var (
@@ -578,16 +507,16 @@ func file_nodeb_info_proto_rawDescGZIP() []byte {
 	return file_nodeb_info_proto_rawDescData
 }
 
-var file_nodeb_info_proto_enumTypes = make([]protoimpl.EnumInfo, 4)
+var file_nodeb_info_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
 var file_nodeb_info_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_nodeb_info_proto_goTypes = []interface{}{
 	(E2ApplicationProtocol)(0), // 0: entities.E2ApplicationProtocol
-	(ConnectionStatus)(0),      // 1: entities.ConnectionStatus
-	(Node_Type)(0),             // 2: entities.Node.Type
-	(Failure_Type)(0),          // 3: entities.Failure.Type
-	(*NodebInfo)(nil),          // 4: entities.NodebInfo
-	(*Node)(nil),               // 5: entities.Node
-	(*Failure)(nil),            // 6: entities.Failure
+	(Node_Type)(0),             // 1: entities.Node.Type
+	(Failure_Type)(0),          // 2: entities.Failure.Type
+	(*NodebInfo)(nil),          // 3: entities.NodebInfo
+	(*Node)(nil),               // 4: entities.Node
+	(*Failure)(nil),            // 5: entities.Failure
+	(ConnectionStatus)(0),      // 6: entities.ConnectionStatus
 	(*GlobalNbId)(nil),         // 7: entities.GlobalNbId
 	(*Enb)(nil),                // 8: entities.Enb
 	(*Gnb)(nil),                // 9: entities.Gnb
@@ -595,12 +524,12 @@ var file_nodeb_info_proto_goTypes = []interface{}{
 }
 var file_nodeb_info_proto_depIdxs = []int32{
 	0,  // 0: entities.NodebInfo.e2_application_protocol:type_name -> entities.E2ApplicationProtocol
-	1,  // 1: entities.NodebInfo.connection_status:type_name -> entities.ConnectionStatus
+	6,  // 1: entities.NodebInfo.connection_status:type_name -> entities.ConnectionStatus
 	7,  // 2: entities.NodebInfo.global_nb_id:type_name -> entities.GlobalNbId
-	2,  // 3: entities.NodebInfo.node_type:type_name -> entities.Node.Type
+	1,  // 3: entities.NodebInfo.node_type:type_name -> entities.Node.Type
 	8,  // 4: entities.NodebInfo.enb:type_name -> entities.Enb
 	9,  // 5: entities.NodebInfo.gnb:type_name -> entities.Gnb
-	3,  // 6: entities.NodebInfo.failure_type:type_name -> entities.Failure.Type
+	2,  // 6: entities.NodebInfo.failure_type:type_name -> entities.Failure.Type
 	10, // 7: entities.NodebInfo.setup_failure:type_name -> entities.SetupFailure
 	8,  // [8:8] is the sub-list for method output_type
 	8,  // [8:8] is the sub-list for method input_type
@@ -665,7 +594,7 @@ func file_nodeb_info_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_nodeb_info_proto_rawDesc,
-			NumEnums:      4,
+			NumEnums:      3,
 			NumMessages:   3,
 			NumExtensions: 0,
 			NumServices:   0,

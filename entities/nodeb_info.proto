@@ -29,50 +29,41 @@ import "x2_setup_failure_response.proto";
 import "nb_identity.proto";
 
 message NodebInfo {
-    string ran_name = 1;
-    string ip = 2;
-    uint32 port = 3;
-    E2ApplicationProtocol e2_application_protocol = 4;
-    ConnectionStatus connection_status = 5;
-    GlobalNbId global_nb_id = 6;
-    Node.Type node_type = 7;
-    oneof configuration {
-        Enb enb = 8;
-        Gnb gnb = 9;
-    }
-    Failure.Type failure_type = 10;
-    SetupFailure setup_failure = 11;
-    string associated_e2t_instance_address = 12;
+  string ran_name = 1;
+  string ip = 2;
+  uint32 port = 3;
+  E2ApplicationProtocol e2_application_protocol = 4;
+  ConnectionStatus connection_status = 5;
+  GlobalNbId global_nb_id = 6;
+  Node.Type node_type = 7;
+  oneof configuration {
+    Enb enb = 8;
+    Gnb gnb = 9;
+  }
+  Failure.Type failure_type = 10;
+  SetupFailure setup_failure = 11;
+  string associated_e2t_instance_address = 12;
 }
 
 enum E2ApplicationProtocol {
-    UNKNOWN_E2_APPLICATION_PROTOCOL = 0;
-    X2_SETUP_REQUEST = 1;
-    ENDC_X2_SETUP_REQUEST = 2;
+  UNKNOWN_E2_APPLICATION_PROTOCOL = 0;
+  X2_SETUP_REQUEST = 1;
+  ENDC_X2_SETUP_REQUEST = 2;
 }
 
-enum ConnectionStatus {
-    UNKNOWN_CONNECTION_STATUS = 0;
-    CONNECTED = 1;
-    DISCONNECTED = 2;
-    CONNECTED_SETUP_FAILED = 3;
-    CONNECTING = 4;
-    SHUTTING_DOWN = 5;
-    SHUT_DOWN = 6;
-}
 
 message Node {
-    enum Type {
-        UNKNOWN = 0;
-        ENB = 1;
-        GNB = 2;
-    }
+  enum Type {
+    UNKNOWN = 0;
+    ENB = 1;
+    GNB = 2;
+  }
 }
 
 message Failure {
-    enum Type {
-        UNKNOWN_TYPE = 0;
-        X2_SETUP_FAILURE = 1;
-        ENDC_X2_SETUP_FAILURE = 2;
-    }
+  enum Type {
+    UNKNOWN_TYPE = 0;
+    X2_SETUP_FAILURE = 1;
+    ENDC_X2_SETUP_FAILURE = 2;
+  }
 }
