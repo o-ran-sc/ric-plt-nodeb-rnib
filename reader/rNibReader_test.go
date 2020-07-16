@@ -369,21 +369,13 @@ func TestGetListNodesIdsSuccess(t *testing.T) {
 		t.Errorf("#rNibReader_test.TestGetListNodesIdsSuccess - Failed to marshal nodeb identity entity. Error: %v", err)
 	}
 
-	name2 := "name2"
-	nbIdentity2 := &entities.NbIdentity{InventoryName: name2}
-	data2, err := proto.Marshal(nbIdentity2)
-	if err != nil {
-		t.Errorf("#rNibReader_test.TestGetListNodesIdsSuccess - Failed to marshal nodeb identity entity. Error: %v", err)
-	}
-
 	sdlInstanceMock.On("GetMembers", entities.Node_GNB.String()).Return([]string{string(data)}, nilError)
 	sdlInstanceMock.On("GetMembers", entities.Node_ENB.String()).Return([]string{string(data1)}, nilError)
-	sdlInstanceMock.On("GetMembers", entities.Node_UNKNOWN.String()).Return([]string{string(data2)}, nilError)
 
 	ids, er := w.GetListNodebIds()
 	assert.Nil(t, er)
 	assert.NotNil(t, ids)
-	assert.Len(t, ids, 3)
+	assert.Len(t, ids, 2)
 }
 
 func TestGetListEnbIdsUnmarshalFailure(t *testing.T) {

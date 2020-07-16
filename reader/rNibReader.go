@@ -178,12 +178,7 @@ func (w *rNibReaderInstance) GetListNodebIds() ([]*entities.NbIdentity, error) {
 	if err != nil {
 		return nil, common.NewInternalError(err)
 	}
-	dataUnknown, err := w.sdl.GetMembers(entities.Node_UNKNOWN.String())
-	if err != nil {
-		return nil, common.NewInternalError(err)
-	}
 	allIds := append(dataEnb, dataGnb...)
-	allIds = append(allIds, dataUnknown...)
 	data, rnibErr := w.unmarshalIdentityList(allIds)
 	return data, rnibErr
 }
