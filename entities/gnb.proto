@@ -30,6 +30,7 @@ import "additional_cell_information.proto";
 message Gnb{
 	repeated ServedNRCell served_nr_cells = 1;
 	repeated RanFunction ran_functions = 2;
+	GnbType gnb_type = 3;
 }
 
 message ServedNRCell{
@@ -151,3 +152,8 @@ message NrNeighbourInformation{
 	string configured_stac = 6;
 }
 
+enum GnbType{
+	UNKNOWN_GNB_TYPE = 0;
+	GNB = 1;
+	EN_GNB = 2;
+}
