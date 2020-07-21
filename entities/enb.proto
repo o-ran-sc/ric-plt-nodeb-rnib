@@ -159,6 +159,9 @@ enum EnbType{
 	HOME_ENB = 2;
 	SHORT_MACRO_ENB = 3;
 	LONG_MACRO_ENB = 4;
+	MACRO_NG_ENB = 5;
+	SHORT_MACRO_NG_ENB = 6;
+	LONG_MACRO_NG_ENB = 7;
 }
 
 enum SubframeAssignment{
