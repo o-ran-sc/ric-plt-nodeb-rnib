@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
      
-FROM nexus3.o-ran-sc.org:10004/o-ran-sc/bldr-ubuntu18-c-go:8-u18.04 as ubuntu
+FROM nexus3.o-ran-sc.org:10004/o-ran-sc/bldr-ubuntu18-c-go:10-u18.04 as ubuntu
 RUN apt-get update && apt-get -q -y install cmake ksh alien
 ADD . /tmp
 WORKDIR /tmp

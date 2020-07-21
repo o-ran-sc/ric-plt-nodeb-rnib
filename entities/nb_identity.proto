@@ -43,4 +43,6 @@ message NbIdentity{
   string inventory_name = 1;
   GlobalNbId global_nb_id = 2;
   ConnectionStatus connection_status = 3;
+  int64 health_check_timestamp_sent = 4;
+  int64 health_check_timestamp_received = 5;
 }
