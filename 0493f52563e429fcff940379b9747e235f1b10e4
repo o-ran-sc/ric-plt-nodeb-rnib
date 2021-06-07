@@ -16,6 +16,29 @@
       "message": "For review. SDL version update.",
       "revId": "0493f52563e429fcff940379b9747e235f1b10e4",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1afa4c5e_e2b33dc4",
+        "filename": "reader/go.mod",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000475
+      },
+      "writtenOn": "2021-06-07T12:43:26Z",
+      "side": 1,
+      "message": "I think it will result in change in go.sum as well",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 93
+      },
+      "revId": "0493f52563e429fcff940379b9747e235f1b10e4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
   ]
 }
