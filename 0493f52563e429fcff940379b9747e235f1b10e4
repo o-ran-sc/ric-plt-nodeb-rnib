@@ -39,6 +39,30 @@
       },
       "revId": "0493f52563e429fcff940379b9747e235f1b10e4",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ffaade72_0623174a",
+        "filename": "reader/go.mod",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2021-06-07T12:55:33Z",
+      "side": 1,
+      "message": "Thanks for the comment. I ran \"go mod tidy\" under reader directory but it didn\u0027t produce any updates to go.sum file. I don\u0027t see that the old version of reader/go.sum would have any references to any old sdl versions.",
+      "parentUuid": "1afa4c5e_e2b33dc4",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 93
+      },
+      "revId": "0493f52563e429fcff940379b9747e235f1b10e4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
   ]
 }
