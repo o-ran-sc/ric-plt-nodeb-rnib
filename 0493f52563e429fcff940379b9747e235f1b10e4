@@ -80,6 +80,30 @@
       },
       "revId": "0493f52563e429fcff940379b9747e235f1b10e4",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "10dd90e4_70e43190",
+        "filename": "reader/go.mod",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000475
+      },
+      "writtenOn": "2021-06-07T17:20:45Z",
+      "side": 1,
+      "message": "okay",
+      "parentUuid": "ffaade72_0623174a",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 93
+      },
+      "revId": "0493f52563e429fcff940379b9747e235f1b10e4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
   ]
 }
