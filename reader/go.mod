@@ -15,4 +15,4 @@ replace gerrit.o-ran-sc.org/r/ric-plt/nodeb-rnib.git/common => ../common
 
 replace gerrit.o-ran-sc.org/r/ric-plt/nodeb-rnib.git/entities => ../entities
 
-replace gerrit.o-ran-sc.org/r/ric-plt/sdlgo => gerrit.o-ran-sc.org/r/ric-plt/sdlgo.git v0.5.0
+replace gerrit.o-ran-sc.org/r/ric-plt/sdlgo => gerrit.o-ran-sc.org/r/ric-plt/sdlgo.git v0.7.0
