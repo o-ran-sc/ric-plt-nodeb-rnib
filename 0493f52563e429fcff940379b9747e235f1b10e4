@@ -35,6 +35,23 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "319943e0_6e8c9aa1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2021-06-08T04:50:58Z",
+      "side": 1,
+      "message": "Hi,\nThanks for publishing the change. How about creating new tags pointing to this change, should we create new tags now or what has been operation model what you have followed in nodeb-rnib repo? Can someone of owners of this repo create the tags if you think that the change is good enough and tags should be created.\nRegards,\nTimo",
+      "revId": "0493f52563e429fcff940379b9747e235f1b10e4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1afa4c5e_e2b33dc4",
