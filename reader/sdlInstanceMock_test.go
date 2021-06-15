@@ -119,3 +119,77 @@ func TestSetIfNotExists(t *testing.T){
         assert.Nil(t, err)
         assert.NotNil(t, res)
 }
+
+func TestAddMember(t *testing.T){
+        var ret []interface{}
+        sdlInstanceMockTest := initSdlInstanceMockTest()
+        sdlInstanceMockTest.On("AddMember", "group", []interface{}{ret}).Return(nil)
+        err := sdlInstanceMockTest.AddMember("group", ret)
+        assert.Nil(t, err)
+}
+
+func TestRemoveMember(t *testing.T){
+        var ret []interface{}
+        sdlInstanceMockTest := initSdlInstanceMockTest()
+        sdlInstanceMockTest.On("RemoveMember", "group", []interface{}{ret}).Return(nil)
+        err := sdlInstanceMockTest.RemoveMember("group", ret)
+        assert.Nil(t, err)
+}
+
+func TestSetAndPublish(t *testing.T){
+        var pairs []interface{}
+	var channelsAndEvents []string
+        sdlInstanceMockTest := initSdlInstanceMockTest()
+        sdlInstanceMockTest.On("SetAndPublish", channelsAndEvents, []interface{}{pairs}).Return(nil)
+        err := sdlInstanceMockTest.SetAndPublish(channelsAndEvents, pairs)
+        assert.Nil(t, err)
+}
+
+func TestSetIfAndPublish(t *testing.T){
+        var newData map[string]interface{}
+        var oldData map[string]interface{}
+        var group []string
+        sdlInstanceMockTest := initSdlInstanceMockTest()
+        sdlInstanceMockTest.On("SetIfAndPublish", group, "key", oldData, newData).Return(true, nil)
+        res, err := sdlInstanceMockTest.SetIfAndPublish(group, "key", oldData, newData)
+        assert.Nil(t, err)
+        assert.NotNil(t, res)
+}
+
+func TestSet(t *testing.T){
+        var pairs []interface{}
+        sdlInstanceMockTest := initSdlInstanceMockTest()
+        sdlInstanceMockTest.On("Set", []interface{}{pairs}).Return(nil)
+        err := sdlInstanceMockTest.Set(pairs)
+        assert.Nil(t, err)
+}
+
+func TestSetIf(t *testing.T){
+        var newData map[string]interface{}
+        var oldData map[string]interface{}
+        sdlInstanceMockTest := initSdlInstanceMockTest()
+        sdlInstanceMockTest.On("SetIf", "key", newData,  oldData).Return(true, nil)
+        res, err := sdlInstanceMockTest.SetIf("key", newData,  oldData)
+        assert.Nil(t, err)
+        assert.NotNil(t, res)
+}
+
+func TestGetAll(t *testing.T){
+        var data []string
+        sdlInstanceMockTest := initSdlInstanceMockTest()
+        sdlInstanceMockTest.On("GetAll").Return(data, nil)
+        res, err := sdlInstanceMockTest.GetAll()
+        assert.Nil(t, err)
+        assert.Nil(t, res)
+}
+
+func TestSetIfNotExistsAndPublish(t *testing.T){
+        var data map[string]interface{}
+        var channelsAndEvents []string
+        sdlInstanceMockTest := initSdlInstanceMockTest()
+        sdlInstanceMockTest.On("SetIfNotExistsAndPublish", channelsAndEvents, "key", data).Return(true, nil)
+        res, err := sdlInstanceMockTest.SetIfNotExistsAndPublish(channelsAndEvents, "key", data)
+        assert.Nil(t, err)
+        assert.NotNil(t, res)
+}
+
