@@ -19,9 +19,9 @@
 
 
 package common
-/*
-ISdlInstance integrates (wraps) the functionality that sdlgo library provides
- */
+
+//ISdlInstance integrates (wraps) the functionality that sdlgo library provides
+//Deprecated: Will be removed in a future release.
 type ISdlInstance interface {
 	SubscribeChannel(cb func(string, ...string), channels ...string) error
 	UnsubscribeChannel(channels ...string) error

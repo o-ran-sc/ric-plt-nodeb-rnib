@@ -1,6 +1,6 @@
 //
-// Copyright 2019 AT&T Intellectual Property
-// Copyright 2019 Nokia
+// Copyright 2021 AT&T Intellectual Property
+// Copyright 2021 Nokia
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -31,20 +31,19 @@ import (
 	"time"
 )
 
-func initSdlSyncStorageMock() (w RNibReader, sdlStorageMock *MockSdlSyncStorage) {
-	sdlStorageMock = new(MockSdlSyncStorage)
-	w = GetNewRNibReader(sdlStorageMock)
+//Deprecated: This file will be removed in a future release when SDL SdlInstance usage will be replaced by SynchStorage.
+//Valid RNIB Reader unit tests are in rNibReader_test.go file, rNibReaderDeprecated_test.go will exist until SdlInstance
+//usage will be removed from the RNIB source code.
+
+func initSdlInstanceMock() (w RNibReader, sdlInstanceMock *MockSdlInstance) {
+	sdlInstanceMock = new(MockSdlInstance)
+	w = GetRNibReader(sdlInstanceMock)
 	return
 }
 
-func TestGetRNibNamespace(t *testing.T) {
-	ns := common.GetRNibNamespace()
-	assert.Equal(t, "e2Manager", ns)
-}
-
-func TestGetNodeB(t *testing.T) {
+func TestGetNodeBDeprecated(t *testing.T) {
 	name := "name"
-	w, sdlInstanceMock := initSdlSyncStorageMock()
+	w, sdlInstanceMock := initSdlInstanceMock()
 	nb := entities.NodebInfo{}
 	nb.ConnectionStatus = 1
 	nb.Ip = "localhost"
@@ -63,7 +62,7 @@ func TestGetNodeB(t *testing.T) {
 		t.Errorf("#rNibReader_test.TestGetNodeB - failed to validate key parameter")
 	}
 	ret := map[string]interface{}{redisKey: string(data)}
-	sdlInstanceMock.On("Get", common.GetRNibNamespace(), []string{redisKey}).Return(ret, e)
+	sdlInstanceMock.On("Get", []string{redisKey}).Return(ret, e)
 	getNb, er := w.GetNodeb(name)
 	assert.Nil(t, er)
 	assert.Equal(t, getNb.Ip, nb.Ip)
@@ -73,16 +72,16 @@ func TestGetNodeB(t *testing.T) {
 	assert.Equal(t, getNb.GetEnb().GetServedCells()[0].Tac, nb.GetEnb().GetServedCells()[0].Tac)
 }
 
-func TestGetNodeBNotFoundFailure(t *testing.T) {
+func TestGetNodeBNotFoundFailureDeprecated(t *testing.T) {
 	name := "name"
-	w, sdlInstanceMock := initSdlSyncStorageMock()
+	w, sdlInstanceMock := initSdlInstanceMock()
 	var e error
 	var ret map[string]interface{}
 	redisKey, rNibErr := common.ValidateAndBuildNodeBNameKey(name)
 	if rNibErr != nil {
 		t.Errorf("#rNibReader_test.TestGetNodeBNotFoundFailure - failed to validate key parameter")
 	}
-	sdlInstanceMock.On("Get", common.GetRNibNamespace(), []string{redisKey}).Return(ret, e)
+	sdlInstanceMock.On("Get", []string{redisKey}).Return(ret, e)
 	getNb, er := w.GetNodeb(name)
 	assert.NotNil(t, er)
 	assert.Nil(t, getNb)
@@ -90,9 +89,9 @@ func TestGetNodeBNotFoundFailure(t *testing.T) {
 	assert.EqualValues(t, "#rNibReader.getByKeyAndUnmarshal - entity of type *entities.NodebInfo not found. Key: RAN:name", er.Error())
 }
 
-func TestGetNodeBUnmarshalFailure(t *testing.T) {
+func TestGetNodeBUnmarshalFailureDeprecated(t *testing.T) {
 	name := "name"
-	w, sdlInstanceMock := initSdlSyncStorageMock()
+	w, sdlInstanceMock := initSdlInstanceMock()
 	var e error
 	ret := make(map[string]interface{}, 1)
 	redisKey, rNibErr := common.ValidateAndBuildNodeBNameKey(name)
@@ -100,26 +99,26 @@ func TestGetNodeBUnmarshalFailure(t *testing.T) {
 		t.Errorf("#rNibReader_test.TestGetNodeBUnmarshalFailure - failed to validate key parameter")
 	}
 	ret[redisKey] = "data"
-	sdlInstanceMock.On("Get", common.GetRNibNamespace(), []string{redisKey}).Return(ret, e)
+	sdlInstanceMock.On("Get", []string{redisKey}).Return(ret, e)
 	getNb, er := w.GetNodeb(name)
 	assert.NotNil(t, er)
 	assert.Nil(t, getNb)
 	assert.IsType(t, &common.InternalError{}, er)
-	assert.Contains(t,  er.Error(), "proto:")
+	assert.Contains(t, er.Error(), "proto:")
 }
 
-func TestGetNodeBSdlgoFailure(t *testing.T) {
+func TestGetNodeBSdlgoFailureDeprecated(t *testing.T) {
 	name := "name"
 	errMsg := "expected Sdlgo error"
 	errMsgExpected := "expected Sdlgo error"
-	w, sdlInstanceMock := initSdlSyncStorageMock()
+	w, sdlInstanceMock := initSdlInstanceMock()
 	e := errors.New(errMsg)
 	var ret map[string]interface{}
 	redisKey, rNibErr := common.ValidateAndBuildNodeBNameKey(name)
 	if rNibErr != nil {
 		t.Errorf("#rNibReader_test.TestGetNodeBSdlgoFailure - failed to validate key parameter")
 	}
-	sdlInstanceMock.On("Get", common.GetRNibNamespace(), []string{redisKey}).Return(ret, e)
+	sdlInstanceMock.On("Get", []string{redisKey}).Return(ret, e)
 	getNb, er := w.GetNodeb(name)
 	assert.NotNil(t, er)
 	assert.Nil(t, getNb)
@@ -127,9 +126,9 @@ func TestGetNodeBSdlgoFailure(t *testing.T) {
 	assert.EqualValues(t, errMsgExpected, er.Error())
 }
 
-func TestGetNodeBCellsListEnb(t *testing.T) {
+func TestGetNodeBCellsListEnbDeprecated(t *testing.T) {
 	name := "name"
-	w, sdlInstanceMock := initSdlSyncStorageMock()
+	w, sdlInstanceMock := initSdlInstanceMock()
 	nb := entities.NodebInfo{}
 	nb.ConnectionStatus = 1
 	nb.Ip = "localhost"
@@ -148,7 +147,7 @@ func TestGetNodeBCellsListEnb(t *testing.T) {
 		t.Errorf("#rNibReader_test.TestGetNodeBCellsListEnb - failed to validate key parameter")
 	}
 	ret := map[string]interface{}{redisKey: string(data)}
-	sdlInstanceMock.On("Get", common.GetRNibNamespace(), []string{redisKey}).Return(ret, e)
+	sdlInstanceMock.On("Get", []string{redisKey}).Return(ret, e)
 	cells, er := w.GetCellList(name)
 	assert.Nil(t, er)
 	assert.NotNil(t, cells)
@@ -157,9 +156,9 @@ func TestGetNodeBCellsListEnb(t *testing.T) {
 	assert.Equal(t, retCell.Tac, "tac")
 }
 
-func TestGetNodeBCellsListGnb(t *testing.T) {
+func TestGetNodeBCellsListGnbDeprecated(t *testing.T) {
 	name := "name"
-	w, sdlInstanceMock := initSdlSyncStorageMock()
+	w, sdlInstanceMock := initSdlInstanceMock()
 	nb := entities.NodebInfo{}
 	nb.ConnectionStatus = 1
 	nb.Ip = "localhost"
@@ -179,7 +178,7 @@ func TestGetNodeBCellsListGnb(t *testing.T) {
 		t.Errorf("#rNibReader_test.TestGetNodeBCellsListGnb - failed to validate key parameter")
 	}
 	ret := map[string]interface{}{redisKey: string(data)}
-	sdlInstanceMock.On("Get", common.GetRNibNamespace(), []string{redisKey}).Return(ret, e)
+	sdlInstanceMock.On("Get", []string{redisKey}).Return(ret, e)
 	cells, er := w.GetCellList(name)
 	assert.Nil(t, er)
 	assert.NotNil(t, cells)
@@ -188,9 +187,9 @@ func TestGetNodeBCellsListGnb(t *testing.T) {
 	assert.Equal(t, retCell.GetServedNrCellInformation().GetNrPci(), uint32(10))
 }
 
-func TestGetNodeBCellsListNodeUnmarshalFailure(t *testing.T) {
+func TestGetNodeBCellsListNodeUnmarshalFailureDeprecated(t *testing.T) {
 	name := "name"
-	w, sdlInstanceMock := initSdlSyncStorageMock()
+	w, sdlInstanceMock := initSdlInstanceMock()
 	var e error
 	ret := make(map[string]interface{}, 1)
 	redisKey, rNibErr := common.ValidateAndBuildNodeBNameKey(name)
@@ -198,24 +197,24 @@ func TestGetNodeBCellsListNodeUnmarshalFailure(t *testing.T) {
 		t.Errorf("#rNibReader_test.TestGetNodeBCellsListNodeUnmarshalFailure - failed to validate key parameter")
 	}
 	ret[redisKey] = "data"
-	sdlInstanceMock.On("Get", common.GetRNibNamespace(), []string{redisKey}).Return(ret, e)
+	sdlInstanceMock.On("Get", []string{redisKey}).Return(ret, e)
 	cells, er := w.GetCellList(name)
 	assert.NotNil(t, er)
 	assert.Nil(t, cells)
 	assert.IsType(t, &common.InternalError{}, er)
-	assert.Contains(t,  er.Error(), "proto:")
+	assert.Contains(t, er.Error(), "proto:")
 }
 
-func TestGetNodeBCellsListNodeNotFoundFailure(t *testing.T) {
+func TestGetNodeBCellsListNodeNotFoundFailureDeprecated(t *testing.T) {
 	name := "name"
-	w, sdlInstanceMock := initSdlSyncStorageMock()
+	w, sdlInstanceMock := initSdlInstanceMock()
 	var e error
 	var ret map[string]interface{}
 	redisKey, rNibErr := common.ValidateAndBuildNodeBNameKey(name)
 	if rNibErr != nil {
 		t.Errorf("#rNibReader_test.TestGetNodeBCellsListNodeNotFoundFailure - failed to validate key parameter")
 	}
-	sdlInstanceMock.On("Get", common.GetRNibNamespace(), []string{redisKey}).Return(ret, e)
+	sdlInstanceMock.On("Get", []string{redisKey}).Return(ret, e)
 	cells, er := w.GetCellList(name)
 	assert.NotNil(t, er)
 	assert.Nil(t, cells)
@@ -223,9 +222,9 @@ func TestGetNodeBCellsListNodeNotFoundFailure(t *testing.T) {
 	assert.EqualValues(t, "#rNibReader.getByKeyAndUnmarshal - entity of type *entities.NodebInfo not found. Key: RAN:name", er.Error())
 }
 
-func TestGetNodeBCellsListNotFoundFailureEnb(t *testing.T) {
+func TestGetNodeBCellsListNotFoundFailureEnbDeprecated(t *testing.T) {
 	name := "name"
-	w, sdlInstanceMock := initSdlSyncStorageMock()
+	w, sdlInstanceMock := initSdlInstanceMock()
 	nb := entities.NodebInfo{}
 	nb.ConnectionStatus = 1
 	nb.Ip = "localhost"
@@ -242,15 +241,15 @@ func TestGetNodeBCellsListNotFoundFailureEnb(t *testing.T) {
 		t.Errorf("#rNibReader_test.TestGetNodeBCellsListNotFoundFailureEnb - failed to validate key parameter")
 	}
 	ret := map[string]interface{}{redisKey: string(data)}
-	sdlInstanceMock.On("Get", common.GetRNibNamespace(), []string{redisKey}).Return(ret, e)
+	sdlInstanceMock.On("Get", []string{redisKey}).Return(ret, e)
 	_, er := w.GetCellList(name)
 	assert.NotNil(t, er)
 	assert.EqualValues(t, "#rNibReader.GetCellList - served cells not found. Responding node RAN name: name.", er.Error())
 }
 
-func TestGetNodeBCellsListNotFoundFailureGnb(t *testing.T) {
+func TestGetNodeBCellsListNotFoundFailureGnbDeprecated(t *testing.T) {
 	name := "name"
-	w, sdlInstanceMock := initSdlSyncStorageMock()
+	w, sdlInstanceMock := initSdlInstanceMock()
 	nb := entities.NodebInfo{}
 	nb.ConnectionStatus = 1
 	nb.Ip = "localhost"
@@ -267,30 +266,30 @@ func TestGetNodeBCellsListNotFoundFailureGnb(t *testing.T) {
 		t.Errorf("#rNibReader_test.TestGetNodeBCellsListNotFoundFailureGnb - failed to validate key parameter")
 	}
 	ret := map[string]interface{}{redisKey: string(data)}
-	sdlInstanceMock.On("Get", common.GetRNibNamespace(), []string{redisKey}).Return(ret, e)
+	sdlInstanceMock.On("Get", []string{redisKey}).Return(ret, e)
 	_, er := w.GetCellList(name)
 	assert.NotNil(t, er)
 	assert.EqualValues(t, "#rNibReader.GetCellList - served cells not found. Responding node RAN name: name.", er.Error())
 }
 
-func TestGetListGnbIdsUnmarshalFailure(t *testing.T) {
-	w, sdlInstanceMock := initSdlSyncStorageMock()
+func TestGetListGnbIdsUnmarshalFailureDeprecated(t *testing.T) {
+	w, sdlInstanceMock := initSdlInstanceMock()
 	var e error
-	sdlInstanceMock.On("GetMembers", common.GetRNibNamespace(), entities.Node_GNB.String()).Return([]string{"data"}, e)
+	sdlInstanceMock.On("GetMembers", entities.Node_GNB.String()).Return([]string{"data"}, e)
 	ids, er := w.GetListGnbIds()
 	assert.NotNil(t, er)
 	assert.Nil(t, ids)
 	assert.IsType(t, &common.InternalError{}, er)
-	assert.Contains(t,  er.Error(), "proto:")
+	assert.Contains(t, er.Error(), "proto:")
 }
 
-func TestGetListGnbIdsSdlgoFailure(t *testing.T) {
+func TestGetListGnbIdsSdlgoFailureDeprecated(t *testing.T) {
 	errMsg := "expected Sdlgo error"
 	errMsgExpected := "expected Sdlgo error"
-	w, sdlInstanceMock := initSdlSyncStorageMock()
+	w, sdlInstanceMock := initSdlInstanceMock()
 	e := errors.New(errMsg)
 	var data []string
-	sdlInstanceMock.On("GetMembers", common.GetRNibNamespace(), entities.Node_GNB.String()).Return(data, e)
+	sdlInstanceMock.On("GetMembers", entities.Node_GNB.String()).Return(data, e)
 	ids, er := w.GetListGnbIds()
 	assert.NotNil(t, er)
 	assert.Nil(t, ids)
@@ -298,8 +297,8 @@ func TestGetListGnbIdsSdlgoFailure(t *testing.T) {
 	assert.EqualValues(t, errMsgExpected, er.Error())
 }
 
-func TestGetListNodesIdsGnbSdlgoFailure(t *testing.T) {
-	w, sdlInstanceMock := initSdlSyncStorageMock()
+func TestGetListNodesIdsGnbSdlgoFailureDeprecated(t *testing.T) {
+	w, sdlInstanceMock := initSdlInstanceMock()
 
 	name := "name"
 	plmnId := "02f829"
@@ -310,13 +309,13 @@ func TestGetListNodesIdsGnbSdlgoFailure(t *testing.T) {
 	if err != nil {
 		t.Errorf("#rNibReader_test.TestGetListNodesIdsGnbSdlgoFailure - Failed to marshal nodeb identity entity. Error: %v", err)
 	}
-	sdlInstanceMock.On("GetMembers", common.GetRNibNamespace(), entities.Node_ENB.String()).Return([]string{string(data)}, nilError)
+	sdlInstanceMock.On("GetMembers", entities.Node_ENB.String()).Return([]string{string(data)}, nilError)
 
 	errMsg := "expected Sdlgo error"
 	errMsgExpected := "expected Sdlgo error"
 	expectedError := errors.New(errMsg)
 	var nilData []string
-	sdlInstanceMock.On("GetMembers", common.GetRNibNamespace(), entities.Node_GNB.String()).Return(nilData, expectedError)
+	sdlInstanceMock.On("GetMembers", entities.Node_GNB.String()).Return(nilData, expectedError)
 
 	ids, er := w.GetListNodebIds()
 	assert.NotNil(t, er)
@@ -325,8 +324,8 @@ func TestGetListNodesIdsGnbSdlgoFailure(t *testing.T) {
 	assert.EqualValues(t, errMsgExpected, er.Error())
 }
 
-func TestGetListNodesIdsEnbSdlgoFailure(t *testing.T) {
-	w, sdlInstanceMock := initSdlSyncStorageMock()
+func TestGetListNodesIdsEnbSdlgoFailureDeprecated(t *testing.T) {
+	w, sdlInstanceMock := initSdlInstanceMock()
 
 	name := "name"
 	plmnId := "02f829"
@@ -337,13 +336,13 @@ func TestGetListNodesIdsEnbSdlgoFailure(t *testing.T) {
 	if err != nil {
 		t.Errorf("#rNibReader_test.TestGetListNodesIdsEnbSdlgoFailure - Failed to marshal nodeb identity entity. Error: %v", err)
 	}
-	sdlInstanceMock.On("GetMembers", common.GetRNibNamespace(), entities.Node_GNB.String()).Return([]string{string(data)}, nilError)
+	sdlInstanceMock.On("GetMembers", entities.Node_GNB.String()).Return([]string{string(data)}, nilError)
 
 	errMsg := "expected Sdlgo error"
 	errMsgExpected := "expected Sdlgo error"
 	expectedError := errors.New(errMsg)
 	var nilData []string
-	sdlInstanceMock.On("GetMembers", common.GetRNibNamespace(), entities.Node_ENB.String()).Return(nilData, expectedError)
+	sdlInstanceMock.On("GetMembers", entities.Node_ENB.String()).Return(nilData, expectedError)
 
 	ids, er := w.GetListNodebIds()
 	assert.NotNil(t, er)
@@ -352,8 +351,8 @@ func TestGetListNodesIdsEnbSdlgoFailure(t *testing.T) {
 	assert.EqualValues(t, errMsgExpected, er.Error())
 }
 
-func TestGetListNodesIdsSuccess(t *testing.T) {
-	w, sdlInstanceMock := initSdlSyncStorageMock()
+func TestGetListNodesIdsSuccessDeprecated(t *testing.T) {
+	w, sdlInstanceMock := initSdlInstanceMock()
 	var nilError error
 
 	name := "name"
@@ -374,8 +373,8 @@ func TestGetListNodesIdsSuccess(t *testing.T) {
 		t.Errorf("#rNibReader_test.TestGetListNodesIdsSuccess - Failed to marshal nodeb identity entity. Error: %v", err)
 	}
 
-	sdlInstanceMock.On("GetMembers", common.GetRNibNamespace(), entities.Node_GNB.String()).Return([]string{string(data)}, nilError)
-	sdlInstanceMock.On("GetMembers", common.GetRNibNamespace(), entities.Node_ENB.String()).Return([]string{string(data1)}, nilError)
+	sdlInstanceMock.On("GetMembers", entities.Node_GNB.String()).Return([]string{string(data)}, nilError)
+	sdlInstanceMock.On("GetMembers", entities.Node_ENB.String()).Return([]string{string(data1)}, nilError)
 
 	ids, er := w.GetListNodebIds()
 	assert.Nil(t, er)
@@ -383,29 +382,29 @@ func TestGetListNodesIdsSuccess(t *testing.T) {
 	assert.Len(t, ids, 2)
 }
 
-func TestGetListEnbIdsUnmarshalFailure(t *testing.T) {
-	w, sdlInstanceMock := initSdlSyncStorageMock()
+func TestGetListEnbIdsUnmarshalFailureDeprecated(t *testing.T) {
+	w, sdlInstanceMock := initSdlInstanceMock()
 	var e error
-	sdlInstanceMock.On("GetMembers", common.GetRNibNamespace(), entities.Node_ENB.String()).Return([]string{"data"}, e)
+	sdlInstanceMock.On("GetMembers", entities.Node_ENB.String()).Return([]string{"data"}, e)
 	ids, er := w.GetListEnbIds()
 	assert.NotNil(t, er)
 	assert.Nil(t, ids)
 	assert.IsType(t, &common.InternalError{}, er)
-	assert.Contains(t,  er.Error(), "proto:")
+	assert.Contains(t, er.Error(), "proto:")
 }
 
-func TestGetListEnbIdsOneId(t *testing.T) {
+func TestGetListEnbIdsOneIdDeprecated(t *testing.T) {
 	name := "name"
 	plmnId := "02f829"
 	nbId := "4a952a0a"
-	w, sdlInstanceMock := initSdlSyncStorageMock()
+	w, sdlInstanceMock := initSdlInstanceMock()
 	nbIdentity := &entities.NbIdentity{InventoryName: name, GlobalNbId: &entities.GlobalNbId{PlmnId: plmnId, NbId: nbId}}
 	var e error
 	data, err := proto.Marshal(nbIdentity)
 	if err != nil {
 		t.Errorf("#rNibReader_test.TestGetListEnbIds - Failed to marshal nodeb identity entity. Error: %v", err)
 	}
-	sdlInstanceMock.On("GetMembers", common.GetRNibNamespace(), entities.Node_ENB.String()).Return([]string{string(data)}, e)
+	sdlInstanceMock.On("GetMembers", entities.Node_ENB.String()).Return([]string{string(data)}, e)
 	ids, er := w.GetListEnbIds()
 	assert.Nil(t, er)
 	assert.Len(t, ids, 1)
@@ -414,21 +413,21 @@ func TestGetListEnbIdsOneId(t *testing.T) {
 	assert.Equal(t, (ids)[0].GetGlobalNbId().GetNbId(), nbIdentity.GetGlobalNbId().GetNbId())
 }
 
-func TestGetListEnbIdsNoIds(t *testing.T) {
-	w, sdlInstanceMock := initSdlSyncStorageMock()
+func TestGetListEnbIdsNoIdsDeprecated(t *testing.T) {
+	w, sdlInstanceMock := initSdlInstanceMock()
 	var e error
-	sdlInstanceMock.On("GetMembers", common.GetRNibNamespace(), entities.Node_ENB.String()).Return([]string{}, e)
+	sdlInstanceMock.On("GetMembers", entities.Node_ENB.String()).Return([]string{}, e)
 	ids, er := w.GetListEnbIds()
 	assert.Nil(t, er)
 	assert.Len(t, ids, 0)
 }
 
-func TestGetListEnbIds(t *testing.T) {
+func TestGetListEnbIdsDeprecated(t *testing.T) {
 	name := "name"
 	plmnId := 0x02f829
 	nbId := 0x4a952a0a
 	listSize := 3
-	w, sdlInstanceMock := initSdlSyncStorageMock()
+	w, sdlInstanceMock := initSdlInstanceMock()
 	idsData := make([]string, listSize)
 	idsEntities := make([]*entities.NbIdentity, listSize)
 	for i := 0; i < listSize; i++ {
@@ -441,7 +440,7 @@ func TestGetListEnbIds(t *testing.T) {
 		idsEntities[i] = nbIdentity
 	}
 	var e error
-	sdlInstanceMock.On("GetMembers", common.GetRNibNamespace(), entities.Node_ENB.String()).Return(idsData, e)
+	sdlInstanceMock.On("GetMembers", entities.Node_ENB.String()).Return(idsData, e)
 	ids, er := w.GetListEnbIds()
 	assert.Nil(t, er)
 	assert.Len(t, ids, listSize)
@@ -452,18 +451,18 @@ func TestGetListEnbIds(t *testing.T) {
 	}
 }
 
-func TestGetListGnbIdsOneId(t *testing.T) {
+func TestGetListGnbIdsOneIdDeprecated(t *testing.T) {
 	name := "name"
 	plmnId := "02f829"
 	nbId := "4a952a0a"
-	w, sdlInstanceMock := initSdlSyncStorageMock()
+	w, sdlInstanceMock := initSdlInstanceMock()
 	nbIdentity := &entities.NbIdentity{InventoryName: name, GlobalNbId: &entities.GlobalNbId{PlmnId: plmnId, NbId: nbId}}
 	var e error
 	data, err := proto.Marshal(nbIdentity)
 	if err != nil {
 		t.Errorf("#rNibReader_test.TestGetListGnbIds - Failed to marshal nodeb identity entity. Error: %v", err)
 	}
-	sdlInstanceMock.On("GetMembers", common.GetRNibNamespace(), entities.Node_GNB.String()).Return([]string{string(data)}, e)
+	sdlInstanceMock.On("GetMembers", entities.Node_GNB.String()).Return([]string{string(data)}, e)
 	ids, er := w.GetListGnbIds()
 	assert.Nil(t, er)
 	assert.Len(t, ids, 1)
@@ -472,21 +471,21 @@ func TestGetListGnbIdsOneId(t *testing.T) {
 	assert.Equal(t, (ids)[0].GetGlobalNbId().GetNbId(), nbIdentity.GetGlobalNbId().GetNbId())
 }
 
-func TestGetListGnbIdsNoIds(t *testing.T) {
-	w, sdlInstanceMock := initSdlSyncStorageMock()
+func TestGetListGnbIdsNoIdsDeprecated(t *testing.T) {
+	w, sdlInstanceMock := initSdlInstanceMock()
 	var e error
-	sdlInstanceMock.On("GetMembers", common.GetRNibNamespace(), entities.Node_GNB.String()).Return([]string{}, e)
+	sdlInstanceMock.On("GetMembers", entities.Node_GNB.String()).Return([]string{}, e)
 	ids, er := w.GetListGnbIds()
 	assert.Nil(t, er)
 	assert.Len(t, ids, 0)
 }
 
-func TestGetListGnbIds(t *testing.T) {
+func TestGetListGnbIdsDeprecated(t *testing.T) {
 	name := "name"
 	plmnId := 0x02f829
 	nbId := 0x4a952a0a
 	listSize := 3
-	w, sdlInstanceMock := initSdlSyncStorageMock()
+	w, sdlInstanceMock := initSdlInstanceMock()
 	idsData := make([]string, listSize)
 	idsEntities := make([]*entities.NbIdentity, listSize)
 	for i := 0; i < listSize; i++ {
@@ -499,7 +498,7 @@ func TestGetListGnbIds(t *testing.T) {
 		idsEntities[i] = nbIdentity
 	}
 	var e error
-	sdlInstanceMock.On("GetMembers", common.GetRNibNamespace(), entities.Node_GNB.String()).Return(idsData, e)
+	sdlInstanceMock.On("GetMembers", entities.Node_GNB.String()).Return(idsData, e)
 	ids, er := w.GetListGnbIds()
 	assert.Nil(t, er)
 	assert.Len(t, ids, listSize)
@@ -510,13 +509,13 @@ func TestGetListGnbIds(t *testing.T) {
 	}
 }
 
-func TestGetListEnbIdsSdlgoFailure(t *testing.T) {
+func TestGetListEnbIdsSdlgoFailureDeprecated(t *testing.T) {
 	errMsg := "expected Sdlgo error"
 	errMsgExpected := "expected Sdlgo error"
-	w, sdlInstanceMock := initSdlSyncStorageMock()
+	w, sdlInstanceMock := initSdlInstanceMock()
 	e := errors.New(errMsg)
 	var data []string
-	sdlInstanceMock.On("GetMembers", common.GetRNibNamespace(), entities.Node_ENB.String()).Return(data, e)
+	sdlInstanceMock.On("GetMembers", entities.Node_ENB.String()).Return(data, e)
 	ids, er := w.GetListEnbIds()
 	assert.NotNil(t, er)
 	assert.Nil(t, ids)
@@ -524,31 +523,31 @@ func TestGetListEnbIdsSdlgoFailure(t *testing.T) {
 	assert.EqualValues(t, errMsgExpected, er.Error())
 }
 
-func TestGetCountGnbListOneId(t *testing.T) {
-	w, sdlInstanceMock := initSdlSyncStorageMock()
+func TestGetCountGnbListOneIdDeprecated(t *testing.T) {
+	w, sdlInstanceMock := initSdlInstanceMock()
 	var e error
-	sdlInstanceMock.On("GroupSize", common.GetRNibNamespace(), entities.Node_GNB.String()).Return(1, e)
+	sdlInstanceMock.On("GroupSize", entities.Node_GNB.String()).Return(1, e)
 	count, er := w.GetCountGnbList()
 	assert.Nil(t, er)
 	assert.Equal(t, count, 1)
 }
 
-func TestGetCountGnbList(t *testing.T) {
-	w, sdlInstanceMock := initSdlSyncStorageMock()
+func TestGetCountGnbListDeprecated(t *testing.T) {
+	w, sdlInstanceMock := initSdlInstanceMock()
 	var e error
-	sdlInstanceMock.On("GroupSize", common.GetRNibNamespace(), entities.Node_GNB.String()).Return(3, e)
+	sdlInstanceMock.On("GroupSize", entities.Node_GNB.String()).Return(3, e)
 	count, er := w.GetCountGnbList()
 	assert.Nil(t, er)
 	assert.Equal(t, count, 3)
 }
 
-func TestGetCountGnbListSdlgoFailure(t *testing.T) {
+func TestGetCountGnbListSdlgoFailureDeprecated(t *testing.T) {
 	errMsg := "expected Sdlgo error"
 	errMsgExpected := "expected Sdlgo error"
-	w, sdlInstanceMock := initSdlSyncStorageMock()
+	w, sdlInstanceMock := initSdlInstanceMock()
 	e := errors.New(errMsg)
 	var count int
-	sdlInstanceMock.On("GroupSize", common.GetRNibNamespace(), entities.Node_GNB.String()).Return(count, e)
+	sdlInstanceMock.On("GroupSize", entities.Node_GNB.String()).Return(count, e)
 	count, er := w.GetCountGnbList()
 	assert.NotNil(t, er)
 	assert.Equal(t, 0, count)
@@ -556,10 +555,10 @@ func TestGetCountGnbListSdlgoFailure(t *testing.T) {
 	assert.EqualValues(t, errMsgExpected, er.Error())
 }
 
-func TestGetCell(t *testing.T) {
+func TestGetCellDeprecated(t *testing.T) {
 	name := "name"
 	var pci uint32 = 10
-	w, sdlInstanceMock := initSdlSyncStorageMock()
+	w, sdlInstanceMock := initSdlInstanceMock()
 	cellEntity := entities.Cell{Type: entities.Cell_LTE_CELL, Cell: &entities.Cell_ServedCellInfo{ServedCellInfo: &entities.ServedCellInfo{Pci: pci}}}
 	cellData, err := proto.Marshal(&cellEntity)
 	if err != nil {
@@ -571,7 +570,7 @@ func TestGetCell(t *testing.T) {
 		t.Errorf("#rNibReader_test.TestGetCell - failed to validate key parameter")
 	}
 	ret := map[string]interface{}{key: string(cellData)}
-	sdlInstanceMock.On("Get", common.GetRNibNamespace(), []string{key}).Return(ret, e)
+	sdlInstanceMock.On("Get", []string{key}).Return(ret, e)
 	cell, er := w.GetCell(name, pci)
 	assert.Nil(t, er)
 	assert.NotNil(t, cell)
@@ -580,17 +579,17 @@ func TestGetCell(t *testing.T) {
 	assert.Equal(t, cell.GetServedCellInfo().GetPci(), pci)
 }
 
-func TestGetCellNotFoundFailure(t *testing.T) {
+func TestGetCellNotFoundFailureDeprecated(t *testing.T) {
 	name := "name"
 	var pci uint32
-	w, sdlInstanceMock := initSdlSyncStorageMock()
+	w, sdlInstanceMock := initSdlInstanceMock()
 	var e error
 	var ret map[string]interface{}
 	key, rNibErr := common.ValidateAndBuildCellNamePciKey(name, pci)
 	if rNibErr != nil {
 		t.Errorf("#rNibReader_test.TestGetCellNotFoundFailure - failed to validate key parameter")
 	}
-	sdlInstanceMock.On("Get", common.GetRNibNamespace(), []string{key}).Return(ret, e)
+	sdlInstanceMock.On("Get", []string{key}).Return(ret, e)
 	cell, er := w.GetCell(name, pci)
 	assert.NotNil(t, er)
 	assert.Nil(t, cell)
@@ -598,10 +597,10 @@ func TestGetCellNotFoundFailure(t *testing.T) {
 	assert.EqualValues(t, "#rNibReader.getByKeyAndUnmarshal - entity of type *entities.Cell not found. Key: PCI:name:00", er.Error())
 }
 
-func TestGetCellUnmarshalFailure(t *testing.T) {
+func TestGetCellUnmarshalFailureDeprecated(t *testing.T) {
 	name := "name"
 	var pci uint32
-	w, sdlInstanceMock := initSdlSyncStorageMock()
+	w, sdlInstanceMock := initSdlInstanceMock()
 	var e error
 	ret := make(map[string]interface{}, 1)
 	key, rNibErr := common.ValidateAndBuildCellNamePciKey(name, pci)
@@ -609,27 +608,27 @@ func TestGetCellUnmarshalFailure(t *testing.T) {
 		t.Errorf("#rNibReader_test.TestGetCellUnmarshalFailure - failed to validate key parameter")
 	}
 	ret[key] = "data"
-	sdlInstanceMock.On("Get", common.GetRNibNamespace(), []string{key}).Return(ret, e)
+	sdlInstanceMock.On("Get", []string{key}).Return(ret, e)
 	cell, er := w.GetCell(name, pci)
 	assert.NotNil(t, er)
 	assert.Nil(t, cell)
 	assert.IsType(t, &common.InternalError{}, er)
-	assert.Contains(t,  er.Error(), "proto:")
+	assert.Contains(t, er.Error(), "proto:")
 }
 
-func TestGetCellSdlgoFailure(t *testing.T) {
+func TestGetCellSdlgoFailureDeprecated(t *testing.T) {
 	name := "name"
 	var pci uint32
 	errMsg := "expected Sdlgo error"
 	errMsgExpected := "expected Sdlgo error"
-	w, sdlInstanceMock := initSdlSyncStorageMock()
+	w, sdlInstanceMock := initSdlInstanceMock()
 	e := errors.New(errMsg)
 	var ret map[string]interface{}
 	key, rNibErr := common.ValidateAndBuildCellNamePciKey(name, pci)
 	if rNibErr != nil {
 		t.Errorf("#rNibReader_test.TestGetCellSdlgoFailure - failed to validate key parameter")
 	}
-	sdlInstanceMock.On("Get", common.GetRNibNamespace(), []string{key}).Return(ret, e)
+	sdlInstanceMock.On("Get", []string{key}).Return(ret, e)
 	cell, er := w.GetCell(name, pci)
 	assert.NotNil(t, er)
 	assert.Nil(t, cell)
@@ -637,8 +636,8 @@ func TestGetCellSdlgoFailure(t *testing.T) {
 	assert.EqualValues(t, errMsgExpected, er.Error())
 }
 
-func TestGetNodebById(t *testing.T) {
-	w, sdlInstanceMock := initSdlSyncStorageMock()
+func TestGetNodebByIdDeprecated(t *testing.T) {
+	w, sdlInstanceMock := initSdlInstanceMock()
 	nb := entities.NodebInfo{NodeType: entities.Node_ENB}
 	nb.ConnectionStatus = 1
 	nb.Ip = "localhost"
@@ -660,7 +659,7 @@ func TestGetNodebById(t *testing.T) {
 		t.Errorf("Failed to validate nodeb identity, plmnId: %s, nbId: %s", plmnId, nbId)
 	}
 	ret := map[string]interface{}{key: string(data)}
-	sdlInstanceMock.On("Get", common.GetRNibNamespace(), []string{key}).Return(ret, e)
+	sdlInstanceMock.On("Get", []string{key}).Return(ret, e)
 	globalNbId := &entities.GlobalNbId{PlmnId: plmnId, NbId: nbId}
 	getNb, er := w.GetNodebByGlobalNbId(entities.Node_ENB, globalNbId)
 	assert.Nil(t, er)
@@ -671,17 +670,17 @@ func TestGetNodebById(t *testing.T) {
 	assert.Equal(t, getNb.GetEnb().GetServedCells()[0].Tac, nb.GetEnb().GetServedCells()[0].Tac)
 }
 
-func TestGetNodebByIdNotFoundFailureEnb(t *testing.T) {
+func TestGetNodebByIdNotFoundFailureEnbDeprecated(t *testing.T) {
 	plmnId := "02f829"
 	nbId := "4a952a0a"
-	w, sdlInstanceMock := initSdlSyncStorageMock()
+	w, sdlInstanceMock := initSdlInstanceMock()
 	var e error
 	key, rNibErr := common.ValidateAndBuildNodeBIdKey(entities.Node_ENB.String(), plmnId, nbId)
 	if rNibErr != nil {
 		t.Errorf("Failed to validate nodeb identity, plmnId: %s, nbId: %s", plmnId, nbId)
 	}
 	var ret map[string]interface{}
-	sdlInstanceMock.On("Get", common.GetRNibNamespace(), []string{key}).Return(ret, e)
+	sdlInstanceMock.On("Get", []string{key}).Return(ret, e)
 	globalNbId := &entities.GlobalNbId{PlmnId: plmnId, NbId: nbId}
 	getNb, er := w.GetNodebByGlobalNbId(entities.Node_ENB, globalNbId)
 	assert.NotNil(t, er)
@@ -690,17 +689,17 @@ func TestGetNodebByIdNotFoundFailureEnb(t *testing.T) {
 	assert.EqualValues(t, "#rNibReader.getByKeyAndUnmarshal - entity of type *entities.NodebInfo not found. Key: ENB:02f829:4a952a0a", er.Error())
 }
 
-func TestGetNodebByIdNotFoundFailureGnb(t *testing.T) {
+func TestGetNodebByIdNotFoundFailureGnbDeprecated(t *testing.T) {
 	plmnId := "02f829"
 	nbId := "4a952a0a"
-	w, sdlInstanceMock := initSdlSyncStorageMock()
+	w, sdlInstanceMock := initSdlInstanceMock()
 	var e error
 	key, rNibErr := common.ValidateAndBuildNodeBIdKey(entities.Node_GNB.String(), plmnId, nbId)
 	if rNibErr != nil {
 		t.Errorf("Failed to validate nodeb identity, plmnId: %s, nbId: %s", plmnId, nbId)
 	}
 	var ret map[string]interface{}
-	sdlInstanceMock.On("Get", common.GetRNibNamespace(), []string{key}).Return(ret, e)
+	sdlInstanceMock.On("Get", []string{key}).Return(ret, e)
 	globalNbId := &entities.GlobalNbId{PlmnId: plmnId, NbId: nbId}
 	getNb, er := w.GetNodebByGlobalNbId(entities.Node_GNB, globalNbId)
 	assert.NotNil(t, er)
@@ -709,10 +708,10 @@ func TestGetNodebByIdNotFoundFailureGnb(t *testing.T) {
 	assert.EqualValues(t, "#rNibReader.getByKeyAndUnmarshal - entity of type *entities.NodebInfo not found. Key: GNB:02f829:4a952a0a", er.Error())
 }
 
-func TestGetNodeByIdUnmarshalFailure(t *testing.T) {
+func TestGetNodeByIdUnmarshalFailureDeprecated(t *testing.T) {
 	plmnId := "02f829"
 	nbId := "4a952a0a"
-	w, sdlInstanceMock := initSdlSyncStorageMock()
+	w, sdlInstanceMock := initSdlInstanceMock()
 	key, rNibErr := common.ValidateAndBuildNodeBIdKey(entities.Node_ENB.String(), plmnId, nbId)
 	if rNibErr != nil {
 		t.Errorf("Failed to validate nodeb identity, plmnId: %s, nbId: %s", plmnId, nbId)
@@ -720,28 +719,28 @@ func TestGetNodeByIdUnmarshalFailure(t *testing.T) {
 	var e error
 	ret := make(map[string]interface{}, 1)
 	ret[key] = "data"
-	sdlInstanceMock.On("Get", common.GetRNibNamespace(), []string{key}).Return(ret, e)
+	sdlInstanceMock.On("Get", []string{key}).Return(ret, e)
 	globalNbId := &entities.GlobalNbId{PlmnId: plmnId, NbId: nbId}
 	getNb, er := w.GetNodebByGlobalNbId(entities.Node_ENB, globalNbId)
 	assert.NotNil(t, er)
 	assert.Nil(t, getNb)
 	assert.IsType(t, &common.InternalError{}, er)
-	assert.Contains(t,  er.Error(), "proto:")
+	assert.Contains(t, er.Error(), "proto:")
 }
 
-func TestGetNodeByIdSdlgoFailure(t *testing.T) {
+func TestGetNodeByIdSdlgoFailureDeprecated(t *testing.T) {
 	plmnId := "02f829"
 	nbId := "4a952a0a"
 	errMsg := "expected Sdlgo error"
 	errMsgExpected := "expected Sdlgo error"
-	w, sdlInstanceMock := initSdlSyncStorageMock()
+	w, sdlInstanceMock := initSdlInstanceMock()
 	key, rNibErr := common.ValidateAndBuildNodeBIdKey(entities.Node_GNB.String(), plmnId, nbId)
 	if rNibErr != nil {
 		t.Errorf("Failed to validate nodeb identity, plmnId: %s, nbId: %s", plmnId, nbId)
 	}
 	e := errors.New(errMsg)
 	var ret map[string]interface{}
-	sdlInstanceMock.On("Get", common.GetRNibNamespace(), []string{key}).Return(ret, e)
+	sdlInstanceMock.On("Get", []string{key}).Return(ret, e)
 	globalNbId := &entities.GlobalNbId{PlmnId: plmnId, NbId: nbId}
 	getNb, er := w.GetNodebByGlobalNbId(entities.Node_GNB, globalNbId)
 	assert.NotNil(t, er)
@@ -750,10 +749,10 @@ func TestGetNodeByIdSdlgoFailure(t *testing.T) {
 	assert.EqualValues(t, errMsgExpected, er.Error())
 }
 
-func TestGetCellById(t *testing.T) {
+func TestGetCellByIdDeprecated(t *testing.T) {
 	cellId := "aaaa"
 	var pci uint32 = 10
-	w, sdlInstanceMock := initSdlSyncStorageMock()
+	w, sdlInstanceMock := initSdlInstanceMock()
 	cellEntity := entities.Cell{Type: entities.Cell_LTE_CELL, Cell: &entities.Cell_ServedCellInfo{ServedCellInfo: &entities.ServedCellInfo{Pci: pci}}}
 	cellData, err := proto.Marshal(&cellEntity)
 	if err != nil {
@@ -765,7 +764,7 @@ func TestGetCellById(t *testing.T) {
 		t.Errorf("#rNibReader_test.TestGetCellById - failed to validate key parameter")
 	}
 	ret := map[string]interface{}{key: string(cellData)}
-	sdlInstanceMock.On("Get", common.GetRNibNamespace(), []string{key}).Return(ret, e)
+	sdlInstanceMock.On("Get", []string{key}).Return(ret, e)
 	cell, er := w.GetCellById(entities.Cell_LTE_CELL, cellId)
 	assert.Nil(t, er)
 	assert.NotNil(t, cell)
@@ -774,16 +773,16 @@ func TestGetCellById(t *testing.T) {
 	assert.Equal(t, cell.GetServedCellInfo().GetPci(), pci)
 }
 
-func TestGetCellByIdNotFoundFailureEnb(t *testing.T) {
+func TestGetCellByIdNotFoundFailureEnbDeprecated(t *testing.T) {
 	cellId := "bbbb"
-	w, sdlInstanceMock := initSdlSyncStorageMock()
+	w, sdlInstanceMock := initSdlInstanceMock()
 	var e error
 	var ret map[string]interface{}
 	key, rNibErr := common.ValidateAndBuildCellIdKey(cellId)
 	if rNibErr != nil {
 		t.Errorf("#rNibReader_test.TestGetCellByIdNotFoundFailure - failed to validate key parameter")
 	}
-	sdlInstanceMock.On("Get", common.GetRNibNamespace(), []string{key}).Return(ret, e)
+	sdlInstanceMock.On("Get", []string{key}).Return(ret, e)
 	cell, er := w.GetCellById(entities.Cell_LTE_CELL, cellId)
 	assert.NotNil(t, er)
 	assert.Nil(t, cell)
@@ -791,16 +790,16 @@ func TestGetCellByIdNotFoundFailureEnb(t *testing.T) {
 	assert.EqualValues(t, "#rNibReader.getByKeyAndUnmarshal - entity of type *entities.Cell not found. Key: CELL:bbbb", er.Error())
 }
 
-func TestGetCellByIdNotFoundFailureGnb(t *testing.T) {
+func TestGetCellByIdNotFoundFailureGnbDeprecated(t *testing.T) {
 	cellId := "bbbb"
-	w, sdlInstanceMock := initSdlSyncStorageMock()
+	w, sdlInstanceMock := initSdlInstanceMock()
 	var e error
 	var ret map[string]interface{}
 	key, rNibErr := common.ValidateAndBuildNrCellIdKey(cellId)
 	if rNibErr != nil {
 		t.Errorf("#rNibReader_test.TestGetCellByIdNotFoundFailure - failed to validate key parameter")
 	}
-	sdlInstanceMock.On("Get", common.GetRNibNamespace(), []string{key}).Return(ret, e)
+	sdlInstanceMock.On("Get", []string{key}).Return(ret, e)
 	cell, er := w.GetCellById(entities.Cell_NR_CELL, cellId)
 	assert.NotNil(t, er)
 	assert.Nil(t, cell)
@@ -808,9 +807,9 @@ func TestGetCellByIdNotFoundFailureGnb(t *testing.T) {
 	assert.EqualValues(t, "#rNibReader.getByKeyAndUnmarshal - entity of type *entities.Cell not found. Key: NRCELL:bbbb", er.Error())
 }
 
-func TestGetCellByIdTypeValidationFailure(t *testing.T) {
+func TestGetCellByIdTypeValidationFailureDeprecated(t *testing.T) {
 	cellId := "dddd"
-	w, _ := initSdlSyncStorageMock()
+	w, _ := initSdlInstanceMock()
 	cell, er := w.GetCellById(5, cellId)
 	assert.NotNil(t, er)
 	assert.Nil(t, cell)
@@ -818,9 +817,9 @@ func TestGetCellByIdTypeValidationFailure(t *testing.T) {
 	assert.EqualValues(t, "#rNibReader.GetCellById - invalid cell type: 5", er.Error())
 }
 
-func TestGetCellByIdValidationFailureGnb(t *testing.T) {
+func TestGetCellByIdValidationFailureGnbDeprecated(t *testing.T) {
 	cellId := ""
-	w, _ := initSdlSyncStorageMock()
+	w, _ := initSdlInstanceMock()
 	cell, er := w.GetCellById(entities.Cell_NR_CELL, cellId)
 	assert.NotNil(t, er)
 	assert.Nil(t, cell)
@@ -828,9 +827,9 @@ func TestGetCellByIdValidationFailureGnb(t *testing.T) {
 	assert.EqualValues(t, "#utils.ValidateAndBuildNrCellIdKey - an empty cell id received", er.Error())
 }
 
-func TestGetCellByIdValidationFailureEnb(t *testing.T) {
+func TestGetCellByIdValidationFailureEnbDeprecated(t *testing.T) {
 	cellId := ""
-	w, _ := initSdlSyncStorageMock()
+	w, _ := initSdlInstanceMock()
 	cell, er := w.GetCellById(entities.Cell_LTE_CELL, cellId)
 	assert.NotNil(t, er)
 	assert.Nil(t, cell)
@@ -838,10 +837,10 @@ func TestGetCellByIdValidationFailureEnb(t *testing.T) {
 	assert.EqualValues(t, "#utils.ValidateAndBuildCellIdKey - an empty cell id received", er.Error())
 }
 
-func TestGetRanLoadInformation(t *testing.T) {
+func TestGetRanLoadInformationDeprecated(t *testing.T) {
 	name := "name"
-	w, sdlInstanceMock := initSdlSyncStorageMock()
-	loadInfo := generateRanLoadInformation()
+	w, sdlInstanceMock := initSdlInstanceMock()
+	loadInfo := generateRanLoadInformationDeprecated()
 	var e error
 	data, err := proto.Marshal(loadInfo)
 	if err != nil {
@@ -852,7 +851,7 @@ func TestGetRanLoadInformation(t *testing.T) {
 		t.Errorf("#rNibReader_test.TestGetRanLoadInformationNotFoundFailure - failed to validate key parameter")
 	}
 	ret := map[string]interface{}{redisKey: string(data)}
-	sdlInstanceMock.On("Get", common.GetRNibNamespace(), []string{redisKey}).Return(ret, e)
+	sdlInstanceMock.On("Get", []string{redisKey}).Return(ret, e)
 	getLoadInfo, er := w.GetRanLoadInformation(name)
 	assert.Nil(t, er)
 	assert.NotNil(t, getLoadInfo)
@@ -867,9 +866,9 @@ func TestGetRanLoadInformation(t *testing.T) {
 	assert.EqualValues(t, expected, actual)
 }
 
-func TestGetRanLoadInformationValidationFailure(t *testing.T) {
+func TestGetRanLoadInformationValidationFailureDeprecated(t *testing.T) {
 	name := ""
-	w, _ := initSdlSyncStorageMock()
+	w, _ := initSdlInstanceMock()
 	getNb, er := w.GetRanLoadInformation(name)
 	assert.NotNil(t, er)
 	assert.Nil(t, getNb)
@@ -877,16 +876,16 @@ func TestGetRanLoadInformationValidationFailure(t *testing.T) {
 	assert.EqualValues(t, "#utils.ValidateAndBuildRanLoadInformationKey - an empty inventory name received", er.Error())
 }
 
-func TestGetRanLoadInformationNotFoundFailure(t *testing.T) {
+func TestGetRanLoadInformationNotFoundFailureDeprecated(t *testing.T) {
 	name := "name"
-	w, sdlInstanceMock := initSdlSyncStorageMock()
+	w, sdlInstanceMock := initSdlInstanceMock()
 	var e error
 	var ret map[string]interface{}
 	redisKey, rNibErr := common.ValidateAndBuildRanLoadInformationKey(name)
 	if rNibErr != nil {
 		t.Errorf("#rNibReader_test.TestGetRanLoadInformationNotFoundFailure - failed to validate key parameter")
 	}
-	sdlInstanceMock.On("Get", common.GetRNibNamespace(), []string{redisKey}).Return(ret, e)
+	sdlInstanceMock.On("Get", []string{redisKey}).Return(ret, e)
 	getNb, er := w.GetRanLoadInformation(name)
 	assert.NotNil(t, er)
 	assert.Nil(t, getNb)
@@ -894,9 +893,9 @@ func TestGetRanLoadInformationNotFoundFailure(t *testing.T) {
 	assert.EqualValues(t, "#rNibReader.getByKeyAndUnmarshal - entity of type *entities.RanLoadInformation not found. Key: LOAD:name", er.Error())
 }
 
-func TestGetRanLoadInformationUnmarshalFailure(t *testing.T) {
+func TestGetRanLoadInformationUnmarshalFailureDeprecated(t *testing.T) {
 	name := "name"
-	w, sdlInstanceMock := initSdlSyncStorageMock()
+	w, sdlInstanceMock := initSdlInstanceMock()
 	var e error
 	ret := make(map[string]interface{}, 1)
 	redisKey, rNibErr := common.ValidateAndBuildRanLoadInformationKey(name)
@@ -904,26 +903,26 @@ func TestGetRanLoadInformationUnmarshalFailure(t *testing.T) {
 		t.Errorf("#rNibReader_test.TestGetRanLoadInformationUnmarshalFailure - failed to validate key parameter")
 	}
 	ret[redisKey] = "data"
-	sdlInstanceMock.On("Get", common.GetRNibNamespace(), []string{redisKey}).Return(ret, e)
+	sdlInstanceMock.On("Get", []string{redisKey}).Return(ret, e)
 	getNb, er := w.GetRanLoadInformation(name)
 	assert.NotNil(t, er)
 	assert.Nil(t, getNb)
 	assert.IsType(t, &common.InternalError{}, er)
-	assert.Contains(t,  er.Error(), "proto:")
+	assert.Contains(t, er.Error(), "proto:")
 }
 
-func TestGetRanLoadInformationSdlgoFailure(t *testing.T) {
+func TestGetRanLoadInformationSdlgoFailureDeprecated(t *testing.T) {
 	name := "name"
 	errMsg := "expected Sdlgo error"
 	errMsgExpected := "expected Sdlgo error"
-	w, sdlInstanceMock := initSdlSyncStorageMock()
+	w, sdlInstanceMock := initSdlInstanceMock()
 	e := errors.New(errMsg)
 	var ret map[string]interface{}
 	redisKey, rNibErr := common.ValidateAndBuildRanLoadInformationKey(name)
 	if rNibErr != nil {
 		t.Errorf("#rNibReader_test.TestGetRanLoadInformationSdlgoFailure - failed to validate key parameter")
 	}
-	sdlInstanceMock.On("Get", common.GetRNibNamespace(), []string{redisKey}).Return(ret, e)
+	sdlInstanceMock.On("Get", []string{redisKey}).Return(ret, e)
 	getNb, er := w.GetRanLoadInformation(name)
 	assert.NotNil(t, er)
 	assert.Nil(t, getNb)
@@ -931,7 +930,7 @@ func TestGetRanLoadInformationSdlgoFailure(t *testing.T) {
 	assert.EqualValues(t, errMsgExpected, er.Error())
 }
 
-func generateCellLoadInformation() *entities.CellLoadInformation {
+func generateCellLoadInformationDeprecated() *entities.CellLoadInformation {
 	cellLoadInformation := entities.CellLoadInformation{}
 
 	cellLoadInformation.CellId = "123"
@@ -993,18 +992,18 @@ func generateCellLoadInformation() *entities.CellLoadInformation {
 	return &cellLoadInformation
 }
 
-func generateRanLoadInformation() *entities.RanLoadInformation {
+func generateRanLoadInformationDeprecated() *entities.RanLoadInformation {
 	ranLoadInformation := entities.RanLoadInformation{}
 
 	ranLoadInformation.LoadTimestamp = uint64(time.Now().UnixNano())
 
-	cellLoadInformation := generateCellLoadInformation()
+	cellLoadInformation := generateCellLoadInformationDeprecated()
 	ranLoadInformation.CellLoadInfos = []*entities.CellLoadInformation{cellLoadInformation}
 
 	return &ranLoadInformation
 }
 
-func TestGetE2TInstanceSuccess(t *testing.T) {
+func TestGetE2TInstanceSuccessDeprecated(t *testing.T) {
 	address := "10.10.2.15:9800"
 	redisKey, validationErr := common.ValidateAndBuildE2TInstanceKey(address)
 
@@ -1012,9 +1011,9 @@ func TestGetE2TInstanceSuccess(t *testing.T) {
 		t.Errorf("#rNibReader_test.TestGetE2TInstanceSuccess - Failed to build E2T Instance key. Error: %v", validationErr)
 	}
 
-	w, sdlInstanceMock := initSdlSyncStorageMock()
+	w, sdlInstanceMock := initSdlInstanceMock()
 
-	e2tInstance := generateE2tInstance(address)
+	e2tInstance := generateE2tInstanceDeprecated(address)
 	data, err := json.Marshal(e2tInstance)
 
 	if err != nil {
@@ -1023,15 +1022,15 @@ func TestGetE2TInstanceSuccess(t *testing.T) {
 
 	var e error
 	ret := map[string]interface{}{redisKey: string(data)}
-	sdlInstanceMock.On("Get", common.GetRNibNamespace(), []string{redisKey}).Return(ret, e)
+	sdlInstanceMock.On("Get", []string{redisKey}).Return(ret, e)
 
 	res, rNibErr := w.GetE2TInstance(address)
 	assert.Nil(t, rNibErr)
 	assert.Equal(t, e2tInstance, res)
 }
 
-func TestUnmarshal(t *testing.T) {
-	e2tInstance := generateE2tInstance("10.0.2.15:5555")
+func TestUnmarshalDeprecated(t *testing.T) {
+	e2tInstance := generateE2tInstanceDeprecated("10.0.2.15:5555")
 	marshaled, _ := json.Marshal(e2tInstance)
 	m := map[string]interface{}{
 		"whatever": string(marshaled),
@@ -1041,15 +1040,15 @@ func TestUnmarshal(t *testing.T) {
 	assert.Nil(t, err)
 }
 
-func TestGetE2TInstanceEmptyAddressFailure(t *testing.T) {
-	w, _ := initSdlSyncStorageMock()
+func TestGetE2TInstanceEmptyAddressFailureDeprecated(t *testing.T) {
+	w, _ := initSdlInstanceMock()
 	res, err := w.GetE2TInstance("")
 	assert.NotNil(t, err)
 	assert.IsType(t, &common.ValidationError{}, err)
 	assert.Nil(t, res)
 }
 
-func TestGetE2TInstanceSdlError(t *testing.T) {
+func TestGetE2TInstanceSdlErrorDeprecated(t *testing.T) {
 	address := "10.10.2.15:9800"
 	redisKey, validationErr := common.ValidateAndBuildE2TInstanceKey(address)
 
@@ -1057,39 +1056,39 @@ func TestGetE2TInstanceSdlError(t *testing.T) {
 		t.Errorf("#rNibReader_test.TestGetE2TInstanceSuccess - Failed to build E2T Instance key. Error: %v", validationErr)
 	}
 
-	w, sdlInstanceMock := initSdlSyncStorageMock()
+	w, sdlInstanceMock := initSdlInstanceMock()
 
 	expectedErr := errors.New("expected error")
 	var ret map[string]interface{}
-	sdlInstanceMock.On("Get", common.GetRNibNamespace(), []string{redisKey}).Return(ret, expectedErr)
+	sdlInstanceMock.On("Get", []string{redisKey}).Return(ret, expectedErr)
 
 	res, rNibErr := w.GetE2TInstance(address)
 	assert.NotNil(t, rNibErr)
 	assert.Nil(t, res)
 }
 
-func generateE2tInstance(address string) *entities.E2TInstance {
-	e2tInstance := entities.NewE2TInstance(address,"")
+func generateE2tInstanceDeprecated(address string) *entities.E2TInstance {
+	e2tInstance := entities.NewE2TInstance(address, "")
 	e2tInstance.AssociatedRanList = []string{"test1", "test2"}
 	e2tInstance.DeletionTimestamp = time.Now().UnixNano()
 	return e2tInstance
 }
 
-func TestGetE2TAddressesSdlError(t *testing.T) {
-	w, sdlInstanceMock := initSdlSyncStorageMock()
+func TestGetE2TAddressesSdlErrorDeprecated(t *testing.T) {
+	w, sdlInstanceMock := initSdlInstanceMock()
 
 	expectedErr := errors.New("expected error")
 	var ret map[string]interface{}
-	sdlInstanceMock.On("Get", common.GetRNibNamespace(), []string{E2TAddressesKey}).Return(ret, expectedErr)
+	sdlInstanceMock.On("Get", []string{E2TAddressesKey}).Return(ret, expectedErr)
 
 	res, rNibErr := w.GetE2TAddresses()
 	assert.NotNil(t, rNibErr)
 	assert.Nil(t, res)
 }
 
-func TestGetE2TAddressesSuccess(t *testing.T) {
+func TestGetE2TAddressesSuccessDeprecated(t *testing.T) {
 	address := "10.10.2.15:9800"
-	w, sdlInstanceMock := initSdlSyncStorageMock()
+	w, sdlInstanceMock := initSdlInstanceMock()
 
 	e2tAddresses := []string{address}
 	data, err := json.Marshal(e2tAddresses)
@@ -1100,101 +1099,101 @@ func TestGetE2TAddressesSuccess(t *testing.T) {
 
 	var e error
 	ret := map[string]interface{}{E2TAddressesKey: string(data)}
-	sdlInstanceMock.On("Get", common.GetRNibNamespace(), []string{E2TAddressesKey}).Return(ret, e)
+	sdlInstanceMock.On("Get", []string{E2TAddressesKey}).Return(ret, e)
 
 	res, rNibErr := w.GetE2TAddresses()
 	assert.Nil(t, rNibErr)
 	assert.Equal(t, e2tAddresses, res)
 }
 
-func TestGetE2TInstancesSuccess(t *testing.T) {
+func TestGetE2TInstancesSuccessDeprecated(t *testing.T) {
 	address := "10.10.2.15:9800"
 	address2 := "10.10.2.16:9800"
 	redisKey, _ := common.ValidateAndBuildE2TInstanceKey(address)
 	redisKey2, _ := common.ValidateAndBuildE2TInstanceKey(address2)
 
-	w, sdlInstanceMock := initSdlSyncStorageMock()
+	w, sdlInstanceMock := initSdlInstanceMock()
 
-	e2tInstance1 := generateE2tInstance(address)
-	e2tInstance2 := generateE2tInstance(address2)
+	e2tInstance1 := generateE2tInstanceDeprecated(address)
+	e2tInstance2 := generateE2tInstanceDeprecated(address2)
 
 	data1, _ := json.Marshal(e2tInstance1)
 	data2, _ := json.Marshal(e2tInstance2)
 
 	var e error
 	ret := map[string]interface{}{redisKey: string(data1), redisKey2: string(data2)}
-	sdlInstanceMock.On("Get", common.GetRNibNamespace(), []string{redisKey, redisKey2}).Return(ret, e)
+	sdlInstanceMock.On("Get", []string{redisKey, redisKey2}).Return(ret, e)
 
 	res, err := w.GetE2TInstances([]string{address, address2})
 	assert.Nil(t, err)
 	assert.Equal(t, []*entities.E2TInstance{e2tInstance1, e2tInstance2}, res)
 }
 
-func TestGetE2TInstancesUnmarhalPartialSuccess(t *testing.T) {
+func TestGetE2TInstancesUnmarhalPartialSuccessDeprecated(t *testing.T) {
 	address := "10.10.2.15:9800"
 	address2 := "10.10.2.16:9800"
 	redisKey, _ := common.ValidateAndBuildE2TInstanceKey(address)
 	redisKey2, _ := common.ValidateAndBuildE2TInstanceKey(address2)
 
-	w, sdlInstanceMock := initSdlSyncStorageMock()
+	w, sdlInstanceMock := initSdlInstanceMock()
 
-	e2tInstance1 := generateE2tInstance(address)
+	e2tInstance1 := generateE2tInstanceDeprecated(address)
 	data1, _ := json.Marshal(e2tInstance1)
 
 	var e error
 	ret := map[string]interface{}{redisKey: string(data1), redisKey2: "abc"}
-	sdlInstanceMock.On("Get", common.GetRNibNamespace(), []string{redisKey, redisKey2}).Return(ret, e)
+	sdlInstanceMock.On("Get", []string{redisKey, redisKey2}).Return(ret, e)
 
 	res, err := w.GetE2TInstances([]string{address, address2})
 	assert.Nil(t, err)
 	assert.Equal(t, []*entities.E2TInstance{e2tInstance1}, res)
 }
 
-func TestGetE2TInstancesSdlFailure(t *testing.T) {
+func TestGetE2TInstancesSdlFailureDeprecated(t *testing.T) {
 	address := "10.10.2.15:9800"
 	address2 := "10.10.2.16:9800"
 	redisKey, _ := common.ValidateAndBuildE2TInstanceKey(address)
 	redisKey2, _ := common.ValidateAndBuildE2TInstanceKey(address2)
 
-	w, sdlInstanceMock := initSdlSyncStorageMock()
+	w, sdlInstanceMock := initSdlInstanceMock()
 
-	sdlInstanceMock.On("Get", common.GetRNibNamespace(), []string{redisKey, redisKey2}).Return(map[string]interface{}{}, fmt.Errorf(""))
+	sdlInstanceMock.On("Get", []string{redisKey, redisKey2}).Return(map[string]interface{}{}, fmt.Errorf(""))
 	_, err := w.GetE2TInstances([]string{address, address2})
 	assert.IsType(t, &common.InternalError{}, err)
 }
 
-func TestGetE2TInstancesEmptyData(t *testing.T) {
+func TestGetE2TInstancesEmptyDataDeprecated(t *testing.T) {
 	address := "10.10.2.15:9800"
 	address2 := "10.10.2.16:9800"
 	redisKey, _ := common.ValidateAndBuildE2TInstanceKey(address)
 	redisKey2, _ := common.ValidateAndBuildE2TInstanceKey(address2)
 
-	w, sdlInstanceMock := initSdlSyncStorageMock()
+	w, sdlInstanceMock := initSdlInstanceMock()
 
-	sdlInstanceMock.On("Get", common.GetRNibNamespace(), []string{redisKey, redisKey2}).Return(map[string]interface{}{}, nil)
+	sdlInstanceMock.On("Get", []string{redisKey, redisKey2}).Return(map[string]interface{}{}, nil)
 	_, err := w.GetE2TInstances([]string{address, address2})
 	assert.IsType(t, &common.ResourceNotFoundError{}, err)
 }
 
-func TestGetGeneralConfiguration(t *testing.T) {
+func TestGetGeneralConfigurationDeprecated(t *testing.T) {
 
 	key := common.BuildGeneralConfigurationKey()
-	w, sdlInstanceMock := initSdlSyncStorageMock()
+	w, sdlInstanceMock := initSdlInstanceMock()
 
 	configurationData := "{\"enableRic\":true}"
-	sdlInstanceMock.On("Get", common.GetRNibNamespace(), []string{key}).Return(map[string]interface{}{key: configurationData}, nil)
+	sdlInstanceMock.On("Get", []string{key}).Return(map[string]interface{}{key: configurationData}, nil)
 
 	res, rNibErr := w.GetGeneralConfiguration()
 	assert.Nil(t, rNibErr)
 	assert.Equal(t, true, res.EnableRic)
 }
 
-func TestGetGeneralConfigurationNotFound(t *testing.T) {
+func TestGetGeneralConfigurationNotFoundDeprecated(t *testing.T) {
 
 	key := common.BuildGeneralConfigurationKey()
-	w, sdlInstanceMock := initSdlSyncStorageMock()
+	w, sdlInstanceMock := initSdlInstanceMock()
 
-	sdlInstanceMock.On("Get", common.GetRNibNamespace(), []string{key}).Return(map[string]interface{}{}, nil)
+	sdlInstanceMock.On("Get", []string{key}).Return(map[string]interface{}{}, nil)
 
 	_, rNibErr := w.GetGeneralConfiguration()
 
@@ -1202,12 +1201,12 @@ func TestGetGeneralConfigurationNotFound(t *testing.T) {
 	assert.Equal(t, "#rNibReader.getByKeyAndUnmarshalJson - entity of type *entities.GeneralConfiguration not found. Key: GENERAL", rNibErr.Error())
 }
 
-func TestGetGeneralConfigurationSdlFailure(t *testing.T) {
+func TestGetGeneralConfigurationSdlFailureDeprecated(t *testing.T) {
 
 	key := common.BuildGeneralConfigurationKey()
-	w, sdlInstanceMock := initSdlSyncStorageMock()
+	w, sdlInstanceMock := initSdlInstanceMock()
 
-	sdlInstanceMock.On("Get", common.GetRNibNamespace(), []string{key}).Return(map[string]interface{}{}, fmt.Errorf("sdl error"))
+	sdlInstanceMock.On("Get", []string{key}).Return(map[string]interface{}{}, fmt.Errorf("sdl error"))
 
 	_, rNibErr := w.GetGeneralConfiguration()
 
@@ -1216,13 +1215,13 @@ func TestGetGeneralConfigurationSdlFailure(t *testing.T) {
 	assert.Equal(t, "sdl error", rNibErr.Error())
 }
 
-func TestGetGeneralConfigurationUnmarshalError(t *testing.T) {
+func TestGetGeneralConfigurationUnmarshalErrorDeprecated(t *testing.T) {
 
 	key := common.BuildGeneralConfigurationKey()
-	w, sdlInstanceMock := initSdlSyncStorageMock()
+	w, sdlInstanceMock := initSdlInstanceMock()
 
 	configurationData := "{\"enableRic :true}"
-	sdlInstanceMock.On("Get", common.GetRNibNamespace(), []string{key}).Return(map[string]interface{}{key: configurationData}, nil)
+	sdlInstanceMock.On("Get", []string{key}).Return(map[string]interface{}{key: configurationData}, nil)
 
 	_, rNibErr := w.GetGeneralConfiguration()
 
@@ -1232,7 +1231,7 @@ func TestGetGeneralConfigurationUnmarshalError(t *testing.T) {
 
 //integration tests
 //
-//func TestGetEnbInteg(t *testing.T){
+//func TestGetEnbIntegDeprecated(t *testing.T){
 //	name := "nameEnb1"
 //	Init("namespace", 1)
 //	w := GetRNibReader()
@@ -1244,7 +1243,7 @@ func TestGetGeneralConfigurationUnmarshalError(t *testing.T) {
 //	}
 //}
 //
-//func TestGetEnbCellsInteg(t *testing.T){
+//func TestGetEnbCellsIntegDeprecated(t *testing.T){
 //	name := "nameEnb1"
 //	Init("namespace", 1)
 //	w := GetRNibReader()
@@ -1258,7 +1257,7 @@ func TestGetGeneralConfigurationUnmarshalError(t *testing.T) {
 //	}
 //}
 //
-//func TestGetGnbInteg(t *testing.T){
+//func TestGetGnbIntegDeprecated(t *testing.T){
 //	name := "nameGnb1"
 //	Init("namespace", 1)
 //	w := GetRNibReader()
@@ -1270,7 +1269,7 @@ func TestGetGeneralConfigurationUnmarshalError(t *testing.T) {
 //	}
 //}
 //
-//func TestGetGnbCellsInteg(t *testing.T){
+//func TestGetGnbCellsIntegDeprecated(t *testing.T){
 //	name := "nameGnb1"
 //	Init("namespace", 1)
 //	w := GetRNibReader()
@@ -1284,7 +1283,7 @@ func TestGetGeneralConfigurationUnmarshalError(t *testing.T) {
 //	}
 //}
 //
-//func TestGetListEnbIdsInteg(t *testing.T) {
+//func TestGetListEnbIdsIntegDeprecated(t *testing.T) {
 //	Init("namespace", 1)
 //	w := GetRNibReader()
 //	ids, err := w.GetListEnbIds()
@@ -1297,7 +1296,7 @@ func TestGetGeneralConfigurationUnmarshalError(t *testing.T) {
 //	}
 //}
 //
-//func TestGetListGnbIdsInteg(t *testing.T) {
+//func TestGetListGnbIdsIntegDeprecated(t *testing.T) {
 //	Init("namespace", 1)
 //	w := GetRNibReader()
 //	ids, err := w.GetListGnbIds()
@@ -1310,7 +1309,7 @@ func TestGetGeneralConfigurationUnmarshalError(t *testing.T) {
 //	}
 //}
 //
-//func TestGetCountGnbListInteg(t *testing.T) {
+//func TestGetCountGnbListIntegDeprecated(t *testing.T) {
 //	Init("namespace", 1)
 //	w := GetRNibReader()
 //	count, err := w.GetCountGnbList()
@@ -1321,7 +1320,7 @@ func TestGetGeneralConfigurationUnmarshalError(t *testing.T) {
 //	}
 //}
 //
-//func TestGetGnbCellInteg(t *testing.T){
+//func TestGetGnbCellIntegDeprecated(t *testing.T){
 //	name := "nameGnb7"
 //	pci := 0x0a
 //	Init("namespace", 1)
@@ -1334,7 +1333,7 @@ func TestGetGeneralConfigurationUnmarshalError(t *testing.T) {
 //	}
 //}
 //
-//func TestGetEnbCellInteg(t *testing.T) {
+//func TestGetEnbCellIntegDeprecated(t *testing.T) {
 //	name := "nameEnb1"
 //	pci := 0x22
 //	Init("namespace", 1)
@@ -1347,7 +1346,7 @@ func TestGetGeneralConfigurationUnmarshalError(t *testing.T) {
 //	}
 //}
 //
-//func TestGetEnbCellByIdInteg(t *testing.T){
+//func TestGetEnbCellByIdIntegDeprecated(t *testing.T){
 //	Init("namespace", 1)
 //	w := GetRNibReader()
 //	cell, err := w.GetCellById(entities.Cell_NR_CELL, "45d")
@@ -1358,7 +1357,7 @@ func TestGetGeneralConfigurationUnmarshalError(t *testing.T) {
 //	}
 //}
 //
-//func TestGetListNbIdsInteg(t *testing.T) {
+//func TestGetListNbIdsIntegDeprecated(t *testing.T) {
 //	Init("e2Manager", 1)
 //	w := GetRNibReader()
 //	ids, err := w.GetListNodebIds()
@@ -1371,7 +1370,7 @@ func TestGetGeneralConfigurationUnmarshalError(t *testing.T) {
 //	}
 //}
 //
-//func TestGetRanLoadInformationInteg(t *testing.T){
+//func TestGetRanLoadInformationIntegDeprecated(t *testing.T){
 //	Init("e2Manager", 1)
 //	w := GetRNibReader()
 //	ranLoadInformation, err := w.GetRanLoadInformation("ran_integ")
@@ -1382,7 +1381,7 @@ func TestGetGeneralConfigurationUnmarshalError(t *testing.T) {
 //	fmt.Printf("#rNibReader_test.TestGetRanLoadInformationInteg - GNB ID: %s\n", ranLoadInformation)
 //}
 
-//func TestGetE2TInstancesInteg(t *testing.T) {
+//func TestGetE2TInstancesIntegDeprecated(t *testing.T) {
 //	db := sdlgo.NewDatabase()
 //	sdl := sdlgo.NewSdlInstance("e2Manager", db)
 //	rnibReader := GetRNibReader(sdl)

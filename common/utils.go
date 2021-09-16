@@ -23,6 +23,9 @@ import (
 	"fmt"
 )
 
+//SDL namespace used by the RNIB
+const rnibNamespace = "e2Manager"
+
 /*
 ValidateAndBuildCellIdKey builds key according to the specified format returns the resulting string
 */
@@ -111,4 +114,9 @@ func MapE2TAddressesToKeys(addresses []string) []string {
 	}
 
 	return keys
+}
+
+//GetRNibNamespace returns namespace used by the RNIB in SDL.
+func GetRNibNamespace() string {
+	return rnibNamespace
 }
