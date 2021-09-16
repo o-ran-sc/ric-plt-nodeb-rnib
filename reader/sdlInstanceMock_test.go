@@ -24,11 +24,15 @@ import (
         "github.com/stretchr/testify/assert"
 )
 
+//Deprecated: Will be removed in a future release and tests in sdlSyncStorageMock_test.go
+//should be used instead.
 func initSdlInstanceMockTest() (sdlInstanceMockTest *MockSdlInstance) {
         sdlInstanceMockTest = new(MockSdlInstance)
         return
 }
 
+//Deprecated: Will be removed in a future release and tests in sdlSyncStorageMock_test.go
+//should be used instead.
 func TestRemoveAll(t *testing.T){
         sdlInstanceMockTest := initSdlInstanceMockTest()
         sdlInstanceMockTest.On("RemoveAll").Return(nil)
@@ -36,6 +40,8 @@ func TestRemoveAll(t *testing.T){
         assert.Nil(t, err)
 }
 
+//Deprecated: Will be removed in a future release and tests in sdlSyncStorageMock_test.go
+//should be used instead.
 func TestRemove(t *testing.T){
         var data []string
         sdlInstanceMockTest := initSdlInstanceMockTest()
@@ -45,6 +51,8 @@ func TestRemove(t *testing.T){
 
 }
 
+//Deprecated: Will be removed in a future release and tests in sdlSyncStorageMock_test.go
+//should be used instead.
 func TestRemoveIf(t *testing.T){
         var data map[string]interface{}
 	key := "key"
@@ -56,6 +64,8 @@ func TestRemoveIf(t *testing.T){
 
 }
 
+//Deprecated: Will be removed in a future release and tests in sdlSyncStorageMock_test.go
+//should be used instead.
 func TestRemoveGroup(t *testing.T){
 	group := "group"
         sdlInstanceMockTest := initSdlInstanceMockTest()
@@ -65,6 +75,8 @@ func TestRemoveGroup(t *testing.T){
 
 }
 
+//Deprecated: Will be removed in a future release and tests in sdlSyncStorageMock_test.go
+//should be used instead.
 func TestRemoveIfAndPublish(t *testing.T){
         var data map[string]interface{}
         var channelsAndEvents []string
@@ -77,6 +89,8 @@ func TestRemoveIfAndPublish(t *testing.T){
 
 }
 
+//Deprecated: Will be removed in a future release and tests in sdlSyncStorageMock_test.go
+//should be used instead.
 func TestRemoveAndPublish(t *testing.T){
         var channelsAndEvents []string
         var keys []string
@@ -86,6 +100,8 @@ func TestRemoveAndPublish(t *testing.T){
         assert.Nil(t, err)
 }
 
+//Deprecated: Will be removed in a future release and tests in sdlSyncStorageMock_test.go
+//should be used instead.
 func TestRemoveAllAndPublish(t *testing.T){
         var channelsAndEvents []string
         sdlInstanceMockTest := initSdlInstanceMockTest()
@@ -94,6 +110,8 @@ func TestRemoveAllAndPublish(t *testing.T){
         assert.Nil(t, err)
 }
 
+//Deprecated: Will be removed in a future release and tests in sdlSyncStorageMock_test.go
+//should be used instead.
 func TestIsMember(t *testing.T){
         var ret map[string]interface{}
         sdlInstanceMockTest := initSdlInstanceMockTest()
@@ -103,6 +121,8 @@ func TestIsMember(t *testing.T){
         assert.NotNil(t, res)
 }
 
+//Deprecated: Will be removed in a future release and tests in sdlSyncStorageMock_test.go
+//should be used instead.
 func TestClose(t *testing.T){
         sdlInstanceMockTest := initSdlInstanceMockTest()
         sdlInstanceMockTest.On("Close").Return(nil)
@@ -110,6 +130,8 @@ func TestClose(t *testing.T){
         assert.Nil(t, err)
 }
 
+//Deprecated: Will be removed in a future release and tests in sdlSyncStorageMock_test.go
+//should be used instead.
 func TestSetIfNotExists(t *testing.T){
 	var data map[string]interface{}
         key := "key"
@@ -120,6 +142,8 @@ func TestSetIfNotExists(t *testing.T){
         assert.NotNil(t, res)
 }
 
+//Deprecated: Will be removed in a future release and tests in sdlSyncStorageMock_test.go
+//should be used instead.
 func TestAddMember(t *testing.T){
         var ret []interface{}
         sdlInstanceMockTest := initSdlInstanceMockTest()
@@ -128,6 +152,8 @@ func TestAddMember(t *testing.T){
         assert.Nil(t, err)
 }
 
+//Deprecated: Will be removed in a future release and tests in sdlSyncStorageMock_test.go
+//should be used instead.
 func TestRemoveMember(t *testing.T){
         var ret []interface{}
         sdlInstanceMockTest := initSdlInstanceMockTest()
@@ -136,6 +162,8 @@ func TestRemoveMember(t *testing.T){
         assert.Nil(t, err)
 }
 
+//Deprecated: Will be removed in a future release and tests in sdlSyncStorageMock_test.go
+//should be used instead.
 func TestSetAndPublish(t *testing.T){
         var pairs []interface{}
 	var channelsAndEvents []string
@@ -145,6 +173,8 @@ func TestSetAndPublish(t *testing.T){
         assert.Nil(t, err)
 }
 
+//Deprecated: Will be removed in a future release and tests in sdlSyncStorageMock_test.go
+//should be used instead.
 func TestSetIfAndPublish(t *testing.T){
         var newData map[string]interface{}
         var oldData map[string]interface{}
@@ -156,6 +186,8 @@ func TestSetIfAndPublish(t *testing.T){
         assert.NotNil(t, res)
 }
 
+//Deprecated: Will be removed in a future release and tests in sdlSyncStorageMock_test.go
+//should be used instead.
 func TestSet(t *testing.T){
         var pairs []interface{}
         sdlInstanceMockTest := initSdlInstanceMockTest()
@@ -164,6 +196,8 @@ func TestSet(t *testing.T){
         assert.Nil(t, err)
 }
 
+//Deprecated: Will be removed in a future release and tests in sdlSyncStorageMock_test.go
+//should be used instead.
 func TestSetIf(t *testing.T){
         var newData map[string]interface{}
         var oldData map[string]interface{}
@@ -174,6 +208,8 @@ func TestSetIf(t *testing.T){
         assert.NotNil(t, res)
 }
 
+//Deprecated: Will be removed in a future release and tests in sdlSyncStorageMock_test.go
+//should be used instead.
 func TestGetAll(t *testing.T){
         var data []string
         sdlInstanceMockTest := initSdlInstanceMockTest()
@@ -183,6 +219,8 @@ func TestGetAll(t *testing.T){
         assert.Nil(t, res)
 }
 
+//Deprecated: Will be removed in a future release and tests in sdlSyncStorageMock_test.go
+//should be used instead.
 func TestSetIfNotExistsAndPublish(t *testing.T){
         var data map[string]interface{}
         var channelsAndEvents []string
@@ -192,4 +230,3 @@ func TestSetIfNotExistsAndPublish(t *testing.T){
         assert.Nil(t, err)
         assert.NotNil(t, res)
 }
-

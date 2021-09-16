@@ -5,6 +5,7 @@ go 1.12
 require (
 	gerrit.o-ran-sc.org/r/ric-plt/nodeb-rnib.git/common v1.0.48
 	gerrit.o-ran-sc.org/r/ric-plt/nodeb-rnib.git/entities v1.0.48
+	gerrit.o-ran-sc.org/r/ric-plt/sdlgo v0.7.0
 	github.com/golang/protobuf v1.4.2
 	github.com/google/go-cmp v0.4.1 // indirect
 	github.com/pkg/errors v0.8.1
