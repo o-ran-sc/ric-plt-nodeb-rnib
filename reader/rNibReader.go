@@ -30,7 +30,9 @@ import (
 const E2TAddressesKey = "E2TAddresses"
 
 type rNibReaderInstance struct {
-	sdl common.ISdlInstance
+	sdl        common.ISdlInstance //Deprecated: Will be removed in a future release and replaced by sdlStorage
+	sdlStorage common.ISdlSyncStorage
+	ns         string
 }
 
 /*
@@ -67,11 +69,23 @@ type RNibReader interface {
 	GetGeneralConfiguration() (*entities.GeneralConfiguration, error)
 }
 
-/*
-GetRNibReader returns reference to RNibReader
-*/
+//GetNewRNibReader returns reference to RNibReader
+func GetNewRNibReader(storage common.ISdlSyncStorage) RNibReader {
+	return &rNibReaderInstance{
+		sdl: nil,
+		sdlStorage: storage,
+		ns:         common.GetRNibNamespace(),
+	}
+}
+
+//GetRNibReader returns reference to RNibReader
+//Deprecated: Will be removed in a future release, please use GetNewRNibReader instead.
 func GetRNibReader(sdl common.ISdlInstance) RNibReader {
-	return &rNibReaderInstance{sdl: sdl}
+	return &rNibReaderInstance{
+		sdl:        sdl,
+		sdlStorage: nil,
+		ns:         "",
+	}
 }
 
 func (w *rNibReaderInstance) GetNodeb(inventoryName string) (*entities.NodebInfo, error) {
@@ -128,7 +142,13 @@ func (w *rNibReaderInstance) GetListEnbIds() ([]*entities.NbIdentity, error) {
 }
 
 func (w *rNibReaderInstance) GetCountGnbList() (int, error) {
-	size, err := w.sdl.GroupSize(entities.Node_GNB.String())
+	var size int64
+	var err error
+	if w.sdlStorage != nil {
+		size, err = w.sdlStorage.GroupSize(w.ns, entities.Node_GNB.String())
+	} else {
+		size, err = w.sdl.GroupSize(entities.Node_GNB.String())
+	}
 	if err != nil {
 		return 0, common.NewInternalError(err)
 	}
@@ -170,11 +190,21 @@ func (w *rNibReaderInstance) GetCellById(cellType entities.Cell_Type, cellId str
 }
 
 func (w *rNibReaderInstance) GetListNodebIds() ([]*entities.NbIdentity, error) {
-	dataEnb, err := w.sdl.GetMembers(entities.Node_ENB.String())
+	var dataEnb, dataGnb []string
+	var err error
+	if w.sdlStorage != nil {
+		dataEnb, err = w.sdlStorage.GetMembers(w.ns, entities.Node_ENB.String())
+	} else {
+		dataEnb, err = w.sdl.GetMembers(entities.Node_ENB.String())
+	}
 	if err != nil {
 		return nil, common.NewInternalError(err)
 	}
-	dataGnb, err := w.sdl.GetMembers(entities.Node_GNB.String())
+	if w.sdlStorage != nil {
+		dataGnb, err = w.sdlStorage.GetMembers(w.ns, entities.Node_GNB.String())
+	} else {
+		dataGnb, err = w.sdl.GetMembers(entities.Node_GNB.String())
+	}
 	if err != nil {
 		return nil, common.NewInternalError(err)
 	}
@@ -210,11 +240,18 @@ func (w *rNibReaderInstance) GetE2TInstance(address string) (*entities.E2TInstan
 }
 
 func (w *rNibReaderInstance) GetE2TInstances(addresses []string) ([]*entities.E2TInstance, error) {
+	var data map[string]interface{}
+	var err error
+
 	keys := common.MapE2TAddressesToKeys(addresses)
 
 	e2tInstances := []*entities.E2TInstance{}
 
-	data, err := w.sdl.Get(keys)
+	if w.sdlStorage != nil {
+		data, err = w.sdlStorage.Get(w.ns, keys)
+	} else {
+		data, err = w.sdl.Get(keys)
+	}
 
 	if err != nil {
 		return []*entities.E2TInstance{}, common.NewInternalError(err)
@@ -259,7 +296,13 @@ func (w *rNibReaderInstance) GetGeneralConfiguration() (*entities.GeneralConfigu
 }
 
 func (w *rNibReaderInstance) getByKeyAndUnmarshalJson(key string, entity interface{}) error {
-	data, err := w.sdl.Get([]string{key})
+	var data map[string]interface{}
+	var err error
+	if w.sdlStorage != nil {
+		data, err = w.sdlStorage.Get(w.ns, []string{key})
+	} else {
+		data, err = w.sdl.Get([]string{key})
+	}
 
 	if err != nil {
 		return common.NewInternalError(err)
@@ -276,7 +319,14 @@ func (w *rNibReaderInstance) getByKeyAndUnmarshalJson(key string, entity interfa
 }
 
 func (w *rNibReaderInstance) getByKeyAndUnmarshal(key string, entity proto.Message) error {
-	data, err := w.sdl.Get([]string{key})
+	var data map[string]interface{}
+	var err error
+	if w.sdlStorage != nil {
+		data, err = w.sdlStorage.Get(w.ns, []string{key})
+	} else {
+		data, err = w.sdl.Get([]string{key})
+	}
+
 	if err != nil {
 		return common.NewInternalError(err)
 	}
@@ -291,7 +341,13 @@ func (w *rNibReaderInstance) getByKeyAndUnmarshal(key string, entity proto.Messa
 }
 
 func (w *rNibReaderInstance) getListNodebIdsByType(nbType string) ([]*entities.NbIdentity, error) {
-	data, err := w.sdl.GetMembers(nbType)
+	var data []string
+	var err error
+	if w.sdlStorage != nil {
+		data, err = w.sdlStorage.GetMembers(w.ns, nbType)
+	} else {
+		data, err = w.sdl.GetMembers(nbType)
+	}
 	if err != nil {
 		return nil, common.NewInternalError(err)
 	}
