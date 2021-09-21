@@ -33,6 +33,23 @@
       "message": "Thanks Subhash for the merge.\nJenkins job failed still, I have no idea why. Anyone else ideas why it failed?\nhttps://jenkins.o-ran-sc.org/job/ric-plt-nodeb-rnib-docker-ci-pc-merge-master/36/console\n\nAnyway, I need to ask you also (anyone who has committer rights for the nodeb-rnib repo) to create new git tags, because I don\u0027t have access rights to do that either.\nSo, can someone create these four tags (with below name and revision hash) either from command line or from gerrit view (https://gerrit.o-ran-sc.org/r/admin/repos/ric-plt/nodeb-rnib,tags)\n\nv1.2.1 \t\n56ebd5ecd345c12a5a4e44423fd3f6753aa5471d\n\ncommon/v1.2.1  \n56ebd5ecd345c12a5a4e44423fd3f6753aa5471d\n\nentities/v1.2.1  \n56ebd5ecd345c12a5a4e44423fd3f6753aa5471d\n\nreader/v1.2.1 \n56ebd5ecd345c12a5a4e44423fd3f6753aa5471d",
       "revId": "56ebd5ecd345c12a5a4e44423fd3f6753aa5471d",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7139acf7_866a1706",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001460
+      },
+      "writtenOn": "2021-09-21T22:54:45Z",
+      "side": 1,
+      "message": "remerge",
+      "revId": "56ebd5ecd345c12a5a4e44423fd3f6753aa5471d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
   ]
 }
