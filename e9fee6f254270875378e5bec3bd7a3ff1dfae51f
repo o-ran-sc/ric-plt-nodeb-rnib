@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c7984317_d8fba7d3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2021-09-21T05:07:46Z",
+      "side": 1,
+      "message": "Thanks for +1 Subhash and Manoj. I forgot to bump module versions in reader/go.mod file earlier, so I updated it now in Patchset3. I\u0027m sorry about this extra Patchset3 change.\nI think Subhash you can do the merge.",
+      "revId": "e9fee6f254270875378e5bec3bd7a3ff1dfae51f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
