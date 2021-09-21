@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "07e2ea55_2744a337",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2021-09-21T09:33:27Z",
+      "side": 1,
+      "message": "For review. This is continuation for the old (merged) review +/6705 that missed binary artifacts version bump. With this new review we are upgrading binary (Debian package) artifacts version and also golang module versions to 1.2.1 version.",
+      "revId": "56ebd5ecd345c12a5a4e44423fd3f6753aa5471d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
