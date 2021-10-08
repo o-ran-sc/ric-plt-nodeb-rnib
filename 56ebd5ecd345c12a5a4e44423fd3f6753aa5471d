@@ -118,6 +118,23 @@
       "message": "remerge",
       "revId": "56ebd5ecd345c12a5a4e44423fd3f6753aa5471d",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "50a7d871_7fdd6351",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2021-10-08T03:57:47Z",
+      "side": 1,
+      "message": "Thanks a lot Kevin for your support, RNIB 1.2.1 package is now in the packagecloud.io.",
+      "revId": "56ebd5ecd345c12a5a4e44423fd3f6753aa5471d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
   ]
 }
