@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a719eac_97f85e0e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2021-10-13T20:01:32Z",
+      "side": 1,
+      "message": "For review. Please also submit this change if it looks ok and create new v1.2.2 git tags.",
+      "revId": "b29115d06df89d3a9c32d253406a5ffe4ef835c0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
