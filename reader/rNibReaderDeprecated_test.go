@@ -27,6 +27,7 @@ import (
 	"github.com/golang/protobuf/proto"
 	"github.com/pkg/errors"
 	"github.com/stretchr/testify/assert"
+	"strconv"
 	"testing"
 	"time"
 )
@@ -431,7 +432,13 @@ func TestGetListEnbIdsDeprecated(t *testing.T) {
 	idsData := make([]string, listSize)
 	idsEntities := make([]*entities.NbIdentity, listSize)
 	for i := 0; i < listSize; i++ {
-		nbIdentity := &entities.NbIdentity{InventoryName: name, GlobalNbId: &entities.GlobalNbId{PlmnId: string(plmnId + i), NbId: string(nbId + i)}}
+		nbIdentity := &entities.NbIdentity{
+			InventoryName: name,
+			GlobalNbId: &entities.GlobalNbId{
+				PlmnId: strconv.FormatInt(int64(plmnId+i), 16),
+				NbId:   strconv.FormatInt(int64(nbId+i), 16),
+			},
+		}
 		data, err := proto.Marshal(nbIdentity)
 		if err != nil {
 			t.Errorf("#rNibReader_test.TestGetListEnbIds - Failed to marshal nodeb identity entity. Error: %v", err)
@@ -489,7 +496,13 @@ func TestGetListGnbIdsDeprecated(t *testing.T) {
 	idsData := make([]string, listSize)
 	idsEntities := make([]*entities.NbIdentity, listSize)
 	for i := 0; i < listSize; i++ {
-		nbIdentity := &entities.NbIdentity{InventoryName: name, GlobalNbId: &entities.GlobalNbId{PlmnId: string(plmnId + i), NbId: string(nbId + i)}}
+		nbIdentity := &entities.NbIdentity{
+			InventoryName: name,
+			GlobalNbId: &entities.GlobalNbId{
+				PlmnId: strconv.FormatInt(int64(plmnId+i), 16),
+				NbId:   strconv.FormatInt(int64(nbId+i), 16),
+			},
+		}
 		data, err := proto.Marshal(nbIdentity)
 		if err != nil {
 			t.Errorf("#rNibReader_test.TestGetListGnbIds - Failed to marshal nodeb identity entity. Error: %v", err)

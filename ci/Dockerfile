@@ -16,6 +16,13 @@
 
 FROM nexus3.o-ran-sc.org:10002/o-ran-sc/bldr-ubuntu18-c-go:1.9.0 as ubuntu
 RUN apt-get update && apt-get -q -y install cmake ksh alien
+
+# Update CA certificates
+RUN apt update && apt install --reinstall -y \
+  ca-certificates \
+  && \
+  update-ca-certificates
+
 ADD . /tmp
 WORKDIR /tmp
 

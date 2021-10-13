@@ -34,11 +34,10 @@ fi
      new_name=${project_name}_$ver
      echo $new_names
      dpkg-deb --build $target_dir
-     mkdir -p export
+     mkdir -p /export
     
      echo "mv *.deb $new_name.deb"
      mv *.deb  $new_name.deb
      echo "deb package is: $project_name_$ver.deb"
     
     ls -al *.deb
-    

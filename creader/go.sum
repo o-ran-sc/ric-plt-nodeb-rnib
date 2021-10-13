@@ -4,8 +4,8 @@ gerrit.o-ran-sc.org/r/ric-plt/nodeb-rnib.git/entities v1.0.35 h1:tkM3yE8UzmuH4nf
 gerrit.o-ran-sc.org/r/ric-plt/nodeb-rnib.git/entities v1.0.35/go.mod h1:G+4sUBMbLfQ+RrGS65U15tKmbnP+/1b5oLTPmMfyfT4=
 gerrit.o-ran-sc.org/r/ric-plt/nodeb-rnib.git/reader v1.0.35 h1:LcxnUUDwsCzYEISKmkjkyYfg/lnLt8ofkPiGK69vNIA=
 gerrit.o-ran-sc.org/r/ric-plt/nodeb-rnib.git/reader v1.0.35/go.mod h1:2bSaXTpECbZieB8bMnubTqMwF3n+mMBxlTaAXvcduNg=
-gerrit.o-ran-sc.org/r/ric-plt/sdlgo.git v0.7.0 h1:mxlBo54jxwHHFmGYzFI+fBIkOGwarQP4dx2KBxQ8ln8=
-gerrit.o-ran-sc.org/r/ric-plt/sdlgo.git v0.7.0/go.mod h1:KCHu4JkWnw2Ro6P747wU9S2t7zxFLmBNCiYvGZo3CHo=
+gerrit.o-ran-sc.org/r/ric-plt/sdlgo.git v0.8.0 h1:H7GtCRC+pGn6oOxYalUZr7LinQX5jQCVa+ConX7PB5Q=
+gerrit.o-ran-sc.org/r/ric-plt/sdlgo.git v0.8.0/go.mod h1:KCHu4JkWnw2Ro6P747wU9S2t7zxFLmBNCiYvGZo3CHo=
 github.com/davecgh/go-spew v1.1.0 h1:ZDRjVQ15GmhC3fiQ8ni8+OwkZQO4DARzQgrnXU1Liz8=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/fsnotify/fsnotify v1.4.7 h1:IXs+QLmnXW2CcXuY+8Mzv/fWEsPGWxqefPtCP5CnV9I=
