@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f3b6c6ab_4d793749",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2021-10-19T08:15:15Z",
+      "side": 1,
+      "message": "Thanks for reviewing and merging change sets. Can someone create also new v1.2.2 git tags or are we waiting RNIB Jenkins jobs to finish? It seems to me that there are some general issues with Jenkins, because there are so many jobs pending in the build queue:\nhttps://jenkins.o-ran-sc.org/",
+      "revId": "4b9efbf4b46af5e0ac22f120ae11a5dc70f928f2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
