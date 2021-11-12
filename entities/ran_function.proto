@@ -23,9 +23,10 @@
 
 syntax = "proto3";
 package entities;
-
+option go_package ="./entities";
 message RanFunction {
     uint32 ran_function_id = 1;
     string ran_function_definition = 2;
     uint32 ran_function_revision = 3;
+    string ran_function_oid = 4;
 }
