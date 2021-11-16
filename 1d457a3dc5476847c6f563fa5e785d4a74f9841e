@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2cda92a3_78b0e7f6",
+        "filename": "reader/go.mod",
+        "patchSetId": 1
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1000475
+      },
+      "writtenOn": "2021-11-16T10:11:38Z",
+      "side": 1,
+      "message": "common 1.2.3 tag is not available.",
+      "range": {
+        "startLine": 6,
+        "startChar": 46,
+        "endLine": 6,
+        "endChar": 59
+      },
+      "revId": "1d457a3dc5476847c6f563fa5e785d4a74f9841e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
