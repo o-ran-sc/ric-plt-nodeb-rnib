@@ -67,6 +67,8 @@ type RNibReader interface {
 	GetE2TAddresses() ([]string, error)
 
 	GetGeneralConfiguration() (*entities.GeneralConfiguration, error)
+
+    GetRanFunctionDefinition(inventoryName string, Oid string) ([]string, error)
 }
 
 //GetNewRNibReader returns reference to RNibReader
@@ -76,6 +78,22 @@ func GetNewRNibReader(storage common.ISdlSyncStorage) RNibReader {
 		sdlStorage: storage,
 		ns:         common.GetRNibNamespace(),
 	}
+}
+
+//GetRanFunctionDefinition from the OID
+func (w *rNibReaderInstance) GetRanFunctionDefinition(inventoryName string, Oid string) ([]string, error){
+    nb, err := w.GetNodeb (inventoryName)
+    if (nb.GetGnb() != nil) {
+        ranFunction := nb.GetGnb().RanFunctions
+        functionDefinitionList := make([]string, len(ranFunction))
+        for _, ranFunction := range ranFunction {
+            if (Oid == ranFunction.RanFunctionOid) {
+                functionDefinitionList = append(functionDefinitionList ,ranFunction.RanFunctionDefinition)
+                }
+        }
+        return functionDefinitionList, err
+    }
+    return nil, common.NewResourceNotFoundErrorf("#rNibReader.GetCellList - served cells not found. Responding node RAN name: %    s.", inventoryName)
 }
 
 //GetRNibReader returns reference to RNibReader

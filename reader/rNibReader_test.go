@@ -1243,6 +1243,35 @@ func TestGetGeneralConfigurationUnmarshalError(t *testing.T) {
 	assert.Equal(t, rNibErr.Error(), "unexpected end of JSON input")
 }
 
+func TestGetRanFunctionDefinition(t *testing.T) {
+    name := "name"
+    oid := "1.3.6.1.4.1.1.2.2.2"
+    w, sdlInstanceMock := initSdlSyncStorageMock()
+    nb := entities.NodebInfo{}
+    nb.ConnectionStatus = 1
+    nb.Ip = "localhost"
+    nb.Port = 5656
+    enb := entities.Enb{}
+    cell := entities.ServedCellInfo{Tac: "tac"}
+    enb.ServedCells = []*entities.ServedCellInfo{&cell}
+    nb.Configuration = &entities.NodebInfo_Enb{Enb: &enb}
+    var e error
+    data, err := proto.Marshal(&nb)
+    if err != nil {
+        t.Errorf("#rNibReader_test.GetRanFunctionDefinition - Failed to marshal ENB instance. Error: %v", err)
+    }
+    redisKey, rNibErr := common.ValidateAndBuildNodeBNameKey(name)
+    if rNibErr != nil {
+        t.Errorf("#rNibReader_test.TestRanFunctionDefinition - failed to validate key parameter")
+    }
+    ret := map[string]interface{}{redisKey: string(data)}
+    sdlInstanceMock.On("Get", common.GetRNibNamespace(), []string{redisKey}).Return(ret, e)
+    ranFuncs, er := w.GetRanFunctionDefinition(name, oid)
+    //assert.Nil(t, er)
+    assert.IsType(t, &common.ResourceNotFoundError{}, er)
+    assert.Nil(t, ranFuncs)
+}
+
 //integration tests
 //
 //func TestGetEnbInteg(t *testing.T){
