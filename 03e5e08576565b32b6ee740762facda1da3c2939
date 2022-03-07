@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e83e12d_08e59dc7",
+        "filename": "reader/rNibReader.go",
+        "patchSetId": 2
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2022-03-07T12:40:30Z",
+      "side": 1,
+      "message": "Should Oid argument be re-named as oid?",
+      "revId": "03e5e08576565b32b6ee740762facda1da3c2939",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e0c64183_5fe7ad8c",
+        "filename": "reader/rNibReader.go",
+        "patchSetId": 2
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2022-03-07T12:40:30Z",
+      "side": 1,
+      "message": "We create functionDefinitionList list here with the same length as ranFunction.\nLater in the code we append new items to list if oid matches and this furthermore increases functionDefinitionList list length. So, I think length of functionDefinitionList list will be wrong if you execute len(functionDefinitionList).",
+      "revId": "03e5e08576565b32b6ee740762facda1da3c2939",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
