@@ -25,11 +25,13 @@ syntax = "proto3";
 package entities;
 
 import "additional_cell_information.proto";
+import "e2_node_component_config.proto";
 
 message Enb{
 	EnbType enb_type = 1;
 	repeated ServedCellInfo served_cells = 2;
 	repeated string gu_group_ids = 3;
+	repeated E2NodeComponentConfig node_configs = 4;
 }
 
 message ServedCellInfo{
