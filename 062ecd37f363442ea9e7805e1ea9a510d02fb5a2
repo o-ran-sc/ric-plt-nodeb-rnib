@@ -117,6 +117,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "26feaab2_6ce075ee",
+        "filename": "entities/e2_node_component_config.proto",
+        "patchSetId": 2
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1000108
+      },
+      "writtenOn": "2022-03-24T15:23:37Z",
+      "side": 1,
+      "message": "It\u0027s string in enitities/nb_identity.proto but we could rework that as well. Maybe we stick with string (and the three bytes hex representation) that we already use now. Thinking of it, let\u0027s stick with that.",
+      "parentUuid": "ccc0c1e7_67817c52",
+      "revId": "062ecd37f363442ea9e7805e1ea9a510d02fb5a2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "114dd489_54f9f9af",
         "filename": "entities/e2_node_component_config.proto",
         "patchSetId": 2
@@ -128,6 +146,24 @@
       "writtenOn": "2022-03-24T14:11:04Z",
       "side": 1,
       "message": "enb_id - Can we add a type here? one could derive from the length of the original bitstring the type, but then we have a leading zero problem, i.e., one would always have to correctly add leading zeros (to make it 18, 20, 21, or 28 bits). This is further complicated by X2 and Xn using different definitions.\n\nAnother option is to define this as a oneof( int32 macro-eNB-ID, int32 short-Macro-eNB-ID ...) with four options combined from Xn and X2.",
+      "revId": "062ecd37f363442ea9e7805e1ea9a510d02fb5a2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6f1df949_40b0a2ec",
+        "filename": "entities/e2_node_component_config.proto",
+        "patchSetId": 2
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1000108
+      },
+      "writtenOn": "2022-03-24T15:23:37Z",
+      "side": 1,
+      "message": "note that in entities/enb.proto we have the definition below. Maybe teh one thing worth re-using from existing definitions. But a re-work is also ok.\n\nenum EnbType{\n        UNKNOWN_ENB_TYPE \u003d 0;\n        MACRO_ENB \u003d 1;\n        HOME_ENB \u003d 2;\n        SHORT_MACRO_ENB \u003d 3;\n        LONG_MACRO_ENB \u003d 4;\n        MACRO_NG_ENB \u003d 5;\n        SHORT_MACRO_NG_ENB \u003d 6;\n        LONG_MACRO_NG_ENB \u003d 7;\n}",
+      "parentUuid": "114dd489_54f9f9af",
       "revId": "062ecd37f363442ea9e7805e1ea9a510d02fb5a2",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
