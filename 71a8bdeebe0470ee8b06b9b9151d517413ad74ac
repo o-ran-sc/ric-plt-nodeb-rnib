@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "81a975f0_a36c64e9",
+        "filename": "entities/node_config.proto",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1001314
+      },
+      "writtenOn": "2022-03-24T08:14:58Z",
+      "side": 1,
+      "message": "Shall we keep it as E2NodeComponentConfig ?",
+      "revId": "71a8bdeebe0470ee8b06b9b9151d517413ad74ac",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
