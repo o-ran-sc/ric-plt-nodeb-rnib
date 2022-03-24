@@ -1,0 +1,135 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd89d8b4_ca93131e",
+        "filename": "entities/e2_node_component_config.proto",
+        "patchSetId": 2
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000108
+      },
+      "writtenOn": "2022-03-24T14:11:04Z",
+      "side": 1,
+      "message": "I think we generally should aim for alignement with the ASN.1 spec as a principle, i.e., try to map names 1:1 to ASN.1 spec and try to use spec capitalization\n\nHowever since E2NodeComponentConfig is not the exactly the same as E2nodeComponentConfiguration, i think it\u0027s good to use \"E2nodeComponentConfig\" (same as in current proposal, but with a small \"n\" in node.",
+      "range": {
+        "startLine": 26,
+        "startChar": 9,
+        "endLine": 26,
+        "endChar": 31
+      },
+      "revId": "062ecd37f363442ea9e7805e1ea9a510d02fb5a2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d0cfbd4f_bdecf1f7",
+        "filename": "entities/e2_node_component_config.proto",
+        "patchSetId": 2
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000108
+      },
+      "writtenOn": "2022-03-24T14:11:04Z",
+      "side": 1,
+      "message": "E2nodeComponentID",
+      "revId": "062ecd37f363442ea9e7805e1ea9a510d02fb5a2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f30d23d1_debb37d0",
+        "filename": "entities/e2_node_component_config.proto",
+        "patchSetId": 2
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000108
+      },
+      "writtenOn": "2022-03-24T14:11:04Z",
+      "side": 1,
+      "message": "this looks good",
+      "range": {
+        "startLine": 28,
+        "startChar": 16,
+        "endLine": 34,
+        "endChar": 16
+      },
+      "revId": "062ecd37f363442ea9e7805e1ea9a510d02fb5a2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7699bdb7_a2cdd7e0",
+        "filename": "entities/e2_node_component_config.proto",
+        "patchSetId": 2
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000108
+      },
+      "writtenOn": "2022-03-24T14:11:04Z",
+      "side": 1,
+      "message": "(1) I suggest an enum for this with values from spec: \"ng, xn, ..\"\n\n(2) Also use E2nodeComponentInterfaceType",
+      "revId": "062ecd37f363442ea9e7805e1ea9a510d02fb5a2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a6527ea_95e48d9b",
+        "filename": "entities/e2_node_component_config.proto",
+        "patchSetId": 2
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1000108
+      },
+      "writtenOn": "2022-03-24T14:11:04Z",
+      "side": 1,
+      "message": "I suggest name of ASN-1 spec: e2nodeComponentRequestPart and e2nodeComponentResponsePart",
+      "revId": "062ecd37f363442ea9e7805e1ea9a510d02fb5a2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ccc0c1e7_67817c52",
+        "filename": "entities/e2_node_component_config.proto",
+        "patchSetId": 2
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1000108
+      },
+      "writtenOn": "2022-03-24T14:11:04Z",
+      "side": 1,
+      "message": "should this be bytes (as asn.1 defines it as octet string (3 bytes)\nor\nint32",
+      "revId": "062ecd37f363442ea9e7805e1ea9a510d02fb5a2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "114dd489_54f9f9af",
+        "filename": "entities/e2_node_component_config.proto",
+        "patchSetId": 2
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1000108
+      },
+      "writtenOn": "2022-03-24T14:11:04Z",
+      "side": 1,
+      "message": "enb_id - Can we add a type here? one could derive from the length of the original bitstring the type, but then we have a leading zero problem, i.e., one would always have to correctly add leading zeros (to make it 18, 20, 21, or 28 bits). This is further complicated by X2 and Xn using different definitions.\n\nAnother option is to define this as a oneof( int32 macro-eNB-ID, int32 short-Macro-eNB-ID ...) with four options combined from Xn and X2.",
+      "revId": "062ecd37f363442ea9e7805e1ea9a510d02fb5a2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
