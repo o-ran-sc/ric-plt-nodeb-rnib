@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "478c1621_401acde4",
+        "filename": "entities/e2_node_component_config.proto",
+        "patchSetId": 2
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000475
+      },
+      "writtenOn": "2022-03-31T13:04:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dd89d8b4_ca93131e",
+      "range": {
+        "startLine": 26,
+        "startChar": 9,
+        "endLine": 26,
+        "endChar": 31
+      },
+      "revId": "062ecd37f363442ea9e7805e1ea9a510d02fb5a2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d0cfbd4f_bdecf1f7",
@@ -37,6 +61,24 @@
       "writtenOn": "2022-03-24T14:11:04Z",
       "side": 1,
       "message": "E2nodeComponentID",
+      "revId": "062ecd37f363442ea9e7805e1ea9a510d02fb5a2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7186c42f_6221662b",
+        "filename": "entities/e2_node_component_config.proto",
+        "patchSetId": 2
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000475
+      },
+      "writtenOn": "2022-03-31T13:04:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d0cfbd4f_bdecf1f7",
       "revId": "062ecd37f363442ea9e7805e1ea9a510d02fb5a2",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -64,6 +106,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c1278ecf_e8fb32e3",
+        "filename": "entities/e2_node_component_config.proto",
+        "patchSetId": 2
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000475
+      },
+      "writtenOn": "2022-03-31T13:04:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f30d23d1_debb37d0",
+      "range": {
+        "startLine": 28,
+        "startChar": 16,
+        "endLine": 34,
+        "endChar": 16
+      },
+      "revId": "062ecd37f363442ea9e7805e1ea9a510d02fb5a2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7699bdb7_a2cdd7e0",
@@ -81,6 +147,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "af118d92_4d16c66c",
+        "filename": "entities/e2_node_component_config.proto",
+        "patchSetId": 2
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000475
+      },
+      "writtenOn": "2022-03-31T13:04:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7699bdb7_a2cdd7e0",
+      "revId": "062ecd37f363442ea9e7805e1ea9a510d02fb5a2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5a6527ea_95e48d9b",
@@ -94,6 +178,24 @@
       "writtenOn": "2022-03-24T14:11:04Z",
       "side": 1,
       "message": "I suggest name of ASN-1 spec: e2nodeComponentRequestPart and e2nodeComponentResponsePart",
+      "revId": "062ecd37f363442ea9e7805e1ea9a510d02fb5a2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e19f4c5c_137f4413",
+        "filename": "entities/e2_node_component_config.proto",
+        "patchSetId": 2
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1000475
+      },
+      "writtenOn": "2022-03-31T13:04:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5a6527ea_95e48d9b",
       "revId": "062ecd37f363442ea9e7805e1ea9a510d02fb5a2",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -133,6 +235,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc041f10_2be5d975",
+        "filename": "entities/e2_node_component_config.proto",
+        "patchSetId": 2
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1000475
+      },
+      "writtenOn": "2022-03-31T13:04:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "26feaab2_6ce075ee",
+      "revId": "062ecd37f363442ea9e7805e1ea9a510d02fb5a2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "114dd489_54f9f9af",
@@ -164,6 +284,24 @@
       "side": 1,
       "message": "note that in entities/enb.proto we have the definition below. Maybe teh one thing worth re-using from existing definitions. But a re-work is also ok.\n\nenum EnbType{\n        UNKNOWN_ENB_TYPE \u003d 0;\n        MACRO_ENB \u003d 1;\n        HOME_ENB \u003d 2;\n        SHORT_MACRO_ENB \u003d 3;\n        LONG_MACRO_ENB \u003d 4;\n        MACRO_NG_ENB \u003d 5;\n        SHORT_MACRO_NG_ENB \u003d 6;\n        LONG_MACRO_NG_ENB \u003d 7;\n}",
       "parentUuid": "114dd489_54f9f9af",
+      "revId": "062ecd37f363442ea9e7805e1ea9a510d02fb5a2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "74f2f9ca_a1f92419",
+        "filename": "entities/e2_node_component_config.proto",
+        "patchSetId": 2
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1000475
+      },
+      "writtenOn": "2022-03-31T13:04:50Z",
+      "side": 1,
+      "message": "Done\n\nCreate a new type \"nb-types.proto\" to  avoid recursive dependency.",
+      "parentUuid": "6f1df949_40b0a2ec",
       "revId": "062ecd37f363442ea9e7805e1ea9a510d02fb5a2",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
