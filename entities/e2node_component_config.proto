@@ -1,0 +1,107 @@
+/*
+ * Copyright 2022 Samsung Electronics Co.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/*
+ * This source code is part of the near-RT RIC (RAN Intelligent Controller)
+ * platform project (RICP).
+ */
+
+
+ syntax = "proto3";
+ package entities;
+
+ import "nb_types.proto";
+
+ message E2nodeComponentConfig {
+     oneof E2nodeComponentID {
+        E2nodeComponentInterfaceNG e2nodeComponentInterfaceTypeNG = 1;
+        E2nodeComponentInterfaceXn e2nodeComponentInterfaceTypeXn = 2;
+        E2nodeComponentInterfaceE1 e2nodeComponentInterfaceTypeE1 = 3;
+        E2nodeComponentInterfaceF1 e2nodeComponentInterfaceTypeF1 = 4;
+        E2nodeComponentInterfaceW1 e2nodeComponentInterfaceTypeW1 = 5;
+        E2nodeComponentInterfaceS1 e2nodeComponentInterfaceTypeS1 = 6;
+        E2nodeComponentInterfaceX2 e2nodeComponentInterfaceTypeX2 = 7;
+     }
+     E2nodeComponentInterfaceType e2nodeComponentInterfaceType = 8;
+     bytes e2nodeComponentRequestPart = 9;
+     bytes e2nodeComponentResponsePart = 10;
+ }
+
+ message E2nodeComponentInterfaceNG {
+     string amf_name = 11;
+ }
+
+ message E2nodeComponentInterfaceXn {
+    oneof global_ng_ran_node_id {
+        GlobalNGENBID global_ngenb_id = 12;
+        GlobalGNBID global_gnb_id = 13;
+     }
+ }
+
+ message E2nodeComponentInterfaceE1 {
+    int64 gNB_cu_cp_id = 14;
+ }
+
+ message E2nodeComponentInterfaceF1 {
+    int64 gNB_du_id = 15;
+ }
+
+ message E2nodeComponentInterfaceW1 {
+     int64 ngenb_du_id = 16;
+}
+
+message E2nodeComponentInterfaceS1 {
+     string mme_name = 17;
+}
+
+message E2nodeComponentInterfaceX2 {
+    GlobalENBID global_enb_id = 18;
+    GlobalENGNBID global_engnb_id = 19;
+}
+
+message GlobalENBID {
+    string plmn_identity = 20;
+    string enb_id = 21;
+    EnbType enb_type = 22;
+}
+
+message GlobalENGNBID {
+    string plmn_identity = 23;
+    string gnb_id = 24;
+    GnbType gnb_type = 25;
+}
+
+message GlobalGNBID {
+    string plmn_identity = 26;
+    string gnb_id = 27;
+    GnbType gnb_type = 28;
+}
+
+message GlobalNGENBID {
+    string plmn_identity = 29;
+    string enb_id = 30;
+    EnbType enb_type = 31;
+}
+
+enum E2nodeComponentInterfaceType {
+    ng = 0;
+    xn = 1;
+    e1 = 2;
+    f1 = 3;
+    w1 = 5;
+    s1 = 6;
+    x2 = 7;
+}

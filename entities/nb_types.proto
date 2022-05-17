@@ -23,9 +23,21 @@
 
 syntax = "proto3";
 package entities;
-message RanFunction {
-    uint32 ran_function_id = 1;
-    string ran_function_definition = 2;
-    uint32 ran_function_revision = 3;
-    string ran_function_oid=4;
+
+enum EnbType{
+	UNKNOWN_ENB_TYPE = 0;
+	MACRO_ENB = 1;
+	HOME_ENB = 2;
+	SHORT_MACRO_ENB = 3;
+	LONG_MACRO_ENB = 4;
+	MACRO_NG_ENB = 5;
+	SHORT_MACRO_NG_ENB = 6;
+	LONG_MACRO_NG_ENB = 7;
 }
+
+enum GnbType{
+	UNKNOWN_GNB_TYPE = 0;
+	GNB = 1;
+	EN_GNB = 2;
+}
+
