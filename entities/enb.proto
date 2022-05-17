@@ -25,6 +25,7 @@ syntax = "proto3";
 package entities;
 
 import "additional_cell_information.proto";
+option go_package = "gerrit.o-ran-sc.org/r/ric-plt/nodeb-rnib/entities";
 
 message Enb{
 	EnbType enb_type = 1;
