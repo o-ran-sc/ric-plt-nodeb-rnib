@@ -23,6 +23,7 @@
 
 syntax = "proto3";
 package entities;
+option go_package = "gerrit.o-ran-sc.org/r/ric-plt/nodeb-rnib/entities";
 
 message AdditionalCellInformation {
   float cell_latitude = 1;

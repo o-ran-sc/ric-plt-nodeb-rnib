@@ -27,7 +27,7 @@ import "ran_function.proto";
 import "e2node_component_config.proto";
 import "additional_cell_information.proto";
 import "nb_types.proto";
-
+option go_package = "gerrit.o-ran-sc.org/r/ric-plt/nodeb-rnib/entities";
 
 message Gnb{
 	repeated ServedNRCell served_nr_cells = 1;

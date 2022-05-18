@@ -27,6 +27,7 @@ package entities;
 import "additional_cell_information.proto";
 import "e2node_component_config.proto";
 import "nb_types.proto";
+option go_package = "gerrit.o-ran-sc.org/r/ric-plt/nodeb-rnib/entities";
 
 message Enb{
 	EnbType enb_type = 1;

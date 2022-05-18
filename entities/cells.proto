@@ -26,6 +26,7 @@ package entities;
 import "cell.proto";
 import "gnb.proto";
 import "enb.proto";
+option go_package = "gerrit.o-ran-sc.org/r/ric-plt/nodeb-rnib/entities";
 
 message Cells{
     Cell.Type type = 1;

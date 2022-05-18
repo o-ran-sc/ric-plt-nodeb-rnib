@@ -27,6 +27,7 @@ import "gnb.proto";
 import "enb.proto";
 import "x2_setup_failure_response.proto";
 import "nb_identity.proto";
+option go_package = "gerrit.o-ran-sc.org/r/ric-plt/nodeb-rnib/entities";
 
 message NodebInfo {
   string ran_name = 1;
@@ -44,6 +45,7 @@ message NodebInfo {
   SetupFailure setup_failure = 11;
   string associated_e2t_instance_address = 12;
   bool setup_from_network = 13;
+  uint64 status_update_time_stamp = 14;
 }
 
 enum E2ApplicationProtocol {

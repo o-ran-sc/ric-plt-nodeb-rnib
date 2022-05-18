@@ -24,6 +24,7 @@
  package entities;
 
  import "nb_types.proto";
+ option go_package = "gerrit.o-ran-sc.org/r/ric-plt/nodeb-rnib/entities";
 
  message E2nodeComponentConfig {
      oneof E2nodeComponentID {
