@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2827f85e_59b76a07",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000108
+      },
+      "writtenOn": "2022-05-18T11:23:45Z",
+      "side": 1,
+      "message": "One of the release jobs has failed, but the deb package was pushed in an earlier step. The root cause for the failure is that I did not correct copy and paste the commit hash (I had an extra \"i\" before \"b962fcf573174c812f5a6a349221d99837e081fc\"). \n\nI think as next step the release job would have actually created a \"1.2.5\" git tag similar to what we did manually already. At least that’s what happens on RMR side. And for that it would have needed the commit hash. Since the tag also exists, I think we do not need to retry (which would mean 1.2.6).",
+      "revId": "dde45e629c176525de9e1aefbcc40633105a97eb",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
