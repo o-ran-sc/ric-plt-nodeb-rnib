@@ -1,0 +1,8 @@
+Verified+1: ORAN Jobbuilder <releng+oran-jobbuilder@linuxfoundation.org>
+Verified+1: Thoralf Czichy <thoralf.czichy@nokia.com>
+Code-Review+2: Thoralf Czichy <thoralf.czichy@nokia.com>
+Submitted-by: dhiraj verma <dhiraj.verma@nokia.com>
+Submitted-at: Wed, 18 May 2022 06:28:47 +0000
+Reviewed-on: https://gerrit.o-ran-sc.org/r/c/ric-plt/nodeb-rnib/+/8332
+Project: ric-plt/nodeb-rnib
+Branch: refs/heads/master
