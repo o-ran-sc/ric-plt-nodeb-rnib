@@ -1,0 +1,9 @@
+Code-Review+1: Manoj Manoj <manoj.1.manoj@nokia.com>
+Code-Review+2: Thoralf Czichy <thoralf.czichy@nokia.com>
+Verified+1: Thoralf Czichy <thoralf.czichy@nokia.com>
+Verified+1: ORAN Jobbuilder <releng+oran-jobbuilder@linuxfoundation.org>
+Submitted-by: dhiraj verma <dhiraj.verma@nokia.com>
+Submitted-at: Wed, 01 Jun 2022 09:32:55 +0000
+Reviewed-on: https://gerrit.o-ran-sc.org/r/c/ric-plt/nodeb-rnib/+/8471
+Project: ric-plt/nodeb-rnib
+Branch: refs/heads/master
