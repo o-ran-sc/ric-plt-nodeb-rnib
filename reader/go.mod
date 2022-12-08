@@ -3,8 +3,8 @@ module gerrit.o-ran-sc.org/r/ric-plt/nodeb-rnib.git/reader
 go 1.17
 
 require (
-	gerrit.o-ran-sc.org/r/ric-plt/nodeb-rnib.git/common v1.2.6
-	gerrit.o-ran-sc.org/r/ric-plt/nodeb-rnib.git/entities v1.2.6
+	gerrit.o-ran-sc.org/r/ric-plt/nodeb-rnib.git/common v1.2.7
+	gerrit.o-ran-sc.org/r/ric-plt/nodeb-rnib.git/entities v1.2.7
 	github.com/golang/protobuf v1.4.2
 	github.com/pkg/errors v0.8.1
 	github.com/stretchr/testify v1.3.0
