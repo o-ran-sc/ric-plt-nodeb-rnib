@@ -1,7 +1,7 @@
 ---
 package_name: rnib
-log_dir: "ric-plt-nodeb-rnib-docker-ci-pc-merge-master/53"
-ref: ib962fcf573174c812f5a6a349221d99837e081fc
-version: 1.2.5
+log_dir: "ric-plt-nodeb-rnib-docker-ci-pc-merge-master/60"
+ref: 55af6844b8eb5ee37cc3c99a42ea59b2398de2fa
+version: 1.2.7
 packages:
-    - name:  rnib_1.2.5_all.deb
+    - name:  rnib_1.2.7_all.deb
