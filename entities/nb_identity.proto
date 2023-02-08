@@ -33,6 +33,7 @@ enum ConnectionStatus {
   CONNECTING = 4;
   SHUTTING_DOWN = 5;
   SHUT_DOWN = 6;
+  UNDER_RESET = 7;
 }
 
 message GlobalNbId{
