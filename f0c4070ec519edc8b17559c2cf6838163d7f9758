@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "86fd0327_68ac78d7",
+        "filename": "entities/nb_identity.proto",
+        "patchSetId": 1
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1000475
+      },
+      "writtenOn": "2023-02-09T08:47:54Z",
+      "side": 1,
+      "message": "change the name to UNDER_RESET",
+      "range": {
+        "startLine": 36,
+        "startChar": 2,
+        "endLine": 36,
+        "endChar": 8
+      },
+      "revId": "f0c4070ec519edc8b17559c2cf6838163d7f9758",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
