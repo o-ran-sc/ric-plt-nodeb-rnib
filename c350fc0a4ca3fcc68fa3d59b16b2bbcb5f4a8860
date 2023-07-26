@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c9f487e8_2ed44a0a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000108
+      },
+      "writtenOn": "2023-07-26T10:19:38Z",
+      "side": 1,
+      "message": "Both former Nokia committers are not in the company anymore.",
+      "revId": "c350fc0a4ca3fcc68fa3d59b16b2bbcb5f4a8860",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
