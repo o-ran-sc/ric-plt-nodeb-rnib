@@ -1,6 +1,7 @@
 //
 // Copyright 2019 AT&T Intellectual Property
 // Copyright 2019 Nokia
+// Copyright 2023 Capgemini
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -42,7 +43,7 @@ type RNibReader interface {
 	// GetNodeb retrieves responding nodeb entity from redis DB by nodeb inventory name
 	GetNodeb(inventoryName string) (*entities.NodebInfo, error)
 	// GetNodebByGlobalNbId retrieves responding nodeb entity from redis DB by nodeb global Id
-	GetNodebByGlobalNbId(nodeType entities.Node_Type, globalNbId *entities.GlobalNbId) (*entities.NodebInfo, error)
+	GetNodebByGlobalNbId(nodeType entities.Node_Type, globalNbId *entities.GlobalNbId, cuupId string,duid string) (*entities.NodebInfo, error)
 	// GetCellList retrieves the list of cell entities belonging to responding nodeb entity from redis DB by nodeb inventory name
 	GetCellList(inventoryName string) (*entities.Cells, error)
 	// GetListGnbIds retrieves the list of gNodeb identity entities
@@ -119,8 +120,8 @@ func (w *rNibReaderInstance) GetNodeb(inventoryName string) (*entities.NodebInfo
 	return nbInfo, nil
 }
 
-func (w *rNibReaderInstance) GetNodebByGlobalNbId(nodeType entities.Node_Type, globalNbId *entities.GlobalNbId) (*entities.NodebInfo, error) {
-	key, rNibErr := common.ValidateAndBuildNodeBIdKey(nodeType.String(), globalNbId.GetPlmnId(), globalNbId.GetNbId())
+func (w *rNibReaderInstance) GetNodebByGlobalNbId(nodeType entities.Node_Type, globalNbId *entities.GlobalNbId, cuupid string, duid string) (*entities.NodebInfo, error) {
+	key, rNibErr := common.ValidateAndBuildNodeBIdKey(nodeType.String(), globalNbId.GetPlmnId(), globalNbId.GetNbId(), cuupid, duid)
 	if rNibErr != nil {
 		return nil, rNibErr
 	}
