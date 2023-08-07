@@ -1,6 +1,7 @@
 //
 // Copyright 2019 AT&T Intellectual Property
 // Copyright 2019 Nokia
+// Copyright 2023 Capgemini
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -59,7 +60,7 @@ func ValidateAndBuildNodeBNameKey(inventoryName string) (string, error) {
 /*
 ValidateAndBuildNodeBIdKey builds key according to the specified format returns the resulting string
 */
-func ValidateAndBuildNodeBIdKey(nodeType string, plmnId string, nbId string) (string, error) {
+func ValidateAndBuildNodeBIdKey(nodeType string, plmnId string, nbId string, cuupId string, duId string) (string, error) {
 	if nodeType == "" {
 		return "", NewValidationError("#utils.ValidateAndBuildNodeBIdKey - an empty node type received")
 	}
@@ -69,7 +70,15 @@ func ValidateAndBuildNodeBIdKey(nodeType string, plmnId string, nbId string) (st
 	if nbId == "" {
 		return "", NewValidationError("#utils.ValidateAndBuildNodeBIdKey - an empty nbId received")
 	}
+	if && cuupId != "" && duId != ""{
+		return fmt.Sprintf("%s:%s:%s", nodeType, plmnId, nbId), nil
+	}else if cuupId != "" {
+		return fmt.Sprintf("%s:%s:%s:%s", nodeType, plmnId, nbId, cuupId), nil
+	}else if duId != "" {
+		return fmt.Sprintf("%s:%s:%s:%s", nodeType, plmnId, nbId, duId ), nil
+	}else {
 	return fmt.Sprintf("%s:%s:%s", nodeType, plmnId, nbId), nil
+}
 }
 
 /*
