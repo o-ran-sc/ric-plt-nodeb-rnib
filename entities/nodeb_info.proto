@@ -1,6 +1,7 @@
 /*
  * Copyright 2019 AT&T Intellectual Property
  * Copyright 2019 Nokia
+ * Copyright 2023 Capgemini
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,6 +47,9 @@ message NodebInfo {
   string associated_e2t_instance_address = 12;
   bool setup_from_network = 13;
   uint64 status_update_time_stamp = 14;
+  string gnb_node_type = 15;
+  string cu_up_id = 16;
+  string du_id = 17;
 }
 
 enum E2ApplicationProtocol {
