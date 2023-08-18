@@ -1,0 +1,165 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c901c1e_985d48cc",
+        "filename": "common/utils.go",
+        "patchSetId": 3
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1002244
+      },
+      "writtenOn": "2023-08-18T12:16:55Z",
+      "side": 1,
+      "message": "cuupId value can be 0 as per E2AP spec. This check need to be removed",
+      "range": {
+        "startLine": 73,
+        "startChar": 4,
+        "endLine": 73,
+        "endChar": 17
+      },
+      "revId": "627875b65f3c6dbc947664156cc9ad5a50305bee",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "149b5c73_3a01b56c",
+        "filename": "common/utils.go",
+        "patchSetId": 3
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1002244
+      },
+      "writtenOn": "2023-08-18T12:16:55Z",
+      "side": 1,
+      "message": "duId value can be 0 as per E2AP spec. This check need to be removed",
+      "range": {
+        "startLine": 73,
+        "startChar": 37,
+        "endLine": 73,
+        "endChar": 48
+      },
+      "revId": "627875b65f3c6dbc947664156cc9ad5a50305bee",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a4ca138f_48db61af",
+        "filename": "common/utils.go",
+        "patchSetId": 3
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1002244
+      },
+      "writtenOn": "2023-08-18T12:16:55Z",
+      "side": 1,
+      "message": "This format is wrong. Ideally it should be nodeType,plmnId,nbId,cuupId,duId.",
+      "range": {
+        "startLine": 74,
+        "startChar": 39,
+        "endLine": 74,
+        "endChar": 75
+      },
+      "revId": "627875b65f3c6dbc947664156cc9ad5a50305bee",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ffaedd49_cf118f54",
+        "filename": "common/utils.go",
+        "patchSetId": 3
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1002244
+      },
+      "writtenOn": "2023-08-18T12:16:55Z",
+      "side": 1,
+      "message": "cuupId value can be 0 as per E2AP spec. This check need to be removed",
+      "range": {
+        "startLine": 75,
+        "startChar": 10,
+        "endLine": 75,
+        "endChar": 17
+      },
+      "revId": "627875b65f3c6dbc947664156cc9ad5a50305bee",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3110bbee_ca7f1639",
+        "filename": "common/utils.go",
+        "patchSetId": 3
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1002244
+      },
+      "writtenOn": "2023-08-18T12:16:55Z",
+      "side": 1,
+      "message": "This format is wrong. Ideally it should be nodeType,plmnId,nbId,cuupId",
+      "range": {
+        "startLine": 76,
+        "startChar": 36,
+        "endLine": 76,
+        "endChar": 65
+      },
+      "revId": "627875b65f3c6dbc947664156cc9ad5a50305bee",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "979fc561_74c2f164",
+        "filename": "common/utils.go",
+        "patchSetId": 3
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1002244
+      },
+      "writtenOn": "2023-08-18T12:16:55Z",
+      "side": 1,
+      "message": "duId value can be 0 as per E2AP spec. This check need to be removed",
+      "range": {
+        "startLine": 77,
+        "startChar": 10,
+        "endLine": 77,
+        "endChar": 21
+      },
+      "revId": "627875b65f3c6dbc947664156cc9ad5a50305bee",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "658862d4_14d46e2e",
+        "filename": "common/utils.go",
+        "patchSetId": 3
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1002244
+      },
+      "writtenOn": "2023-08-18T12:16:55Z",
+      "side": 1,
+      "message": "This format is wrong. Ideally it should be nodeType,plmnId,nbId,duId",
+      "range": {
+        "startLine": 78,
+        "startChar": 36,
+        "endLine": 78,
+        "endChar": 63
+      },
+      "revId": "627875b65f3c6dbc947664156cc9ad5a50305bee",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
