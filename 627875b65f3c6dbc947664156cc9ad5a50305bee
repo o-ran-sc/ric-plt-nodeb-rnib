@@ -72,6 +72,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c0ff272a_22f8e707",
+        "filename": "common/utils.go",
+        "patchSetId": 3
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1002076
+      },
+      "writtenOn": "2023-08-20T12:31:07Z",
+      "side": 1,
+      "message": "In other merge request",
+      "parentUuid": "a4ca138f_48db61af",
+      "range": {
+        "startLine": 74,
+        "startChar": 39,
+        "endLine": 74,
+        "endChar": 75
+      },
+      "revId": "627875b65f3c6dbc947664156cc9ad5a50305bee",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ffaedd49_cf118f54",
         "filename": "common/utils.go",
         "patchSetId": 3
