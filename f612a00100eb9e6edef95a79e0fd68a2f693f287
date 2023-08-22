@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9fde931b_0b063ec6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000108
+      },
+      "writtenOn": "2023-08-22T11:24:51Z",
+      "side": 1,
+      "message": "a dummy patchset #7 as a workaround to the github CI problem. This should retrigger the github check.",
+      "revId": "f612a00100eb9e6edef95a79e0fd68a2f693f287",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
