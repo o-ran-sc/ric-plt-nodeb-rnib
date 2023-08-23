@@ -1,0 +1,9 @@
+Code-Review+2: Thoralf Czichy <thoralf.czichy@nokia.com>
+Verified+1: ORAN Required GHA <releng+oran.required.gha@linuxfoundation.org>
+Verified+1: Thoralf Czichy <thoralf.czichy@nokia.com>
+Verified+1: ORAN Jobbuilder <releng+oran-jobbuilder@linuxfoundation.org>
+Submitted-by: Thoralf Czichy <thoralf.czichy@nokia.com>
+Submitted-at: Wed, 23 Aug 2023 07:49:09 +0000
+Reviewed-on: https://gerrit.o-ran-sc.org/r/c/ric-plt/nodeb-rnib/+/11666
+Project: ric-plt/nodeb-rnib
+Branch: refs/heads/master
